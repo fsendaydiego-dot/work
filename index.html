@@ -16,6 +16,25 @@
       --accent-hover: #64b8ff;
       --ring: rgba(62,166,255,0.45);
     }
+.banner {
+  background: linear-gradient(135deg, #1e2a47, #3a4f7a);
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.banner h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+}
+
+.banner .lead {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: #bfc9d9;
+}
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -117,11 +136,10 @@
 </head>
 <body>
   <main>
-    <header>
-      <h1>Open a Page</h1>
-      <p class="lead">Choose one of the options below. Each will open in a <strong>new tab</strong>.</p>
-    </header>
-
+<header class="banner">
+  <h1>Fe's • Workspace</h1>
+  <p class="lead">Text 1 • Text 2 • Text 3</p>
+</header>
     <section class="grid" aria-label="Page options">
       <!-- Option 1 -->
       <a class="card" href="./conversational-ai-ecosystem.html" target="_blank" rel="noopener noreferrer"
@@ -161,3 +179,4 @@
 </body>
 
 </html>
+
