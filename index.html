@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Select a Page</title>
+
+  <!-- Basic, readable styling you can adjust or remove -->
+  <style>
+    :root {
+      --bg: #0b1324;
+      --card: #151c2f;
+      --text: #e7edf5;
+      --subtle: #a9b4c4;
+      --accent: #3ea6ff;
+      --accent-hover: #64b8ff;
+      --ring: rgba(62,166,255,0.45);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 10% 10%, #101833 0%, var(--bg) 40%),
+                  radial-gradient(900px 600px at 90% 30%, #0f1b3a 0%, var(--bg) 40%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    main {
+      width: 100%;
+      max-width: 720px;
+      background: color-mix(in srgb, var(--card), #ffffff 2%);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+      padding: 28px;
+    }
+    header {
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+      margin: 0 0 6px 0;
+      letter-spacing: 0.2px;
+    }
+    p.lead {
+      margin: 0;
+      color: var(--subtle);
+      font-size: 0.95rem;
+    }
+
+    /* Link cards as “buttons” */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    a.card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 18px;
+      position: relative;
+      transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+      outline: none;
+    }
+    a.card:hover,
+    a.card:focus-visible {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent), white 35%);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35), 0 0 0 4px var(--ring);
+    }
+    .title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .desc {
+      color: var(--subtle);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+    .ext {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+    footer {
+      margin-top: 18px;
+      color: var(--subtle);
+      font-size: 0.85rem;
+    }
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.8em;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+      padding: 0.15em 0.35em;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Open a Page</h1>
+      <p class="lead">Choose one of the options below. Each will open in a <strong>new tab</strong>.</p>
+    </header>
+
+    <section class="grid" aria-label="Page options">
+      <!-- Option 1 -->
+      <a class="card" href="./conversational-ai-ecosystem.html" target="_blank" rel="noopener noreferrer"
+         aria-describedby="desc-report">
+        <div class="ext" aria-hidden="true">↗</div>
+        <div class="title">Conversational AI Ecosystem</div>
+        <div id="desc-report" class="desc">
+          Opens <code>report.html</code> in a separate browser tab.
+        </div>
+      </a>
+
+      <!-- Option 2 -->
+      <a class="card" href="./channel-player-positioning.html" target="_blank" rel="noopener noreferrer"
+         aria-describedby="desc-dashboard">
+        <div class="ext" aria-hidden="true">↗</div>
+        <div class="title">Channel Player Positioning</div>
+        <div id="desc-dashboard" class="desc">
+          Opens <code>dashboard.html</code> in a separate browser tab.
+        </div>
+      </a>
+
+      <!-- Option 3 -->
+      <a class="card" href="./ecosystem-dual-axis.html" target="_blank" rel="noopener noreferrer"
+         aria-describedby="desc-eco">
+        <div class="ext" aria-hidden="true">↗</div>
+        <div class="title">Ecosystem (Dual Axis)</div>
+        <div id="desc-eco" class="desc">
+          Opens <code>ecosystem-dual-axis.html</code> in a separate browser tab.
+        </div>
+      </a>
+    </section>
+
+    <footer>
+      Tip: hold <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span> while clicking to force a new tab—even if you remove <code>target="_blank"</code>.
+    </footer>
+  </main>
+</body>
+</html>
