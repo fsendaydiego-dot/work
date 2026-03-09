@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversational AI Ecosystem Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #080c12;
+    --surface: #0d1420;
+    --border: #1a2540;
+    --accent1: #00d4ff;
+    --accent2: #7b4fff;
+    --accent3: #ff6b35;
+    --accent4: #00e5a0;
+    --accent5: #ffd60a;
+    --text: #e8eef8;
+    --muted: #5a6a8a;
+    --glow1: rgba(0,212,255,0.15);
+    --glow2: rgba(123,79,255,0.15);
+    --glow3: rgba(255,107,53,0.15);
+    --glow4: rgba(0,229,160,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent1);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 0%, var(--accent1) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* Main ecosystem diagram */
+  .ecosystem {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Layer wrapper */
+  .layer {
+    position: relative;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .layer:nth-child(1) { animation-delay: 0.1s; }
+  .layer:nth-child(2) { animation-delay: 0.2s; }
+  .layer:nth-child(3) { animation-delay: 0.3s; }
+  .layer:nth-child(4) { animation-delay: 0.4s; }
+  .layer:nth-child(5) { animation-delay: 0.5s; }
+  .layer:nth-child(6) { animation-delay: 0.6s; }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 0 16px 0;
+  }
+
+  .layer-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    min-width: 60px;
+  }
+
+  .layer-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .layer-size {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+
+  /* Connector lines between layers */
+  .connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    position: relative;
+  }
+
+  .connector-line {
+    width: 2px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .connector-line::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 200%;
+    background: linear-gradient(to bottom, transparent, var(--accent1), transparent);
+    animation: flowDown 2s linear infinite;
+  }
+
+  .connector-arrow {
+    position: absolute;
+    bottom: 4px;
+    font-size: 16px;
+    color: var(--accent1);
+    opacity: 0.6;
+  }
+
+  /* Cards grid */
+  .cards-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .cards-grid.cols-1 { grid-template-columns: 1fr; }
+  .cards-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cards-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cards-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .cards-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+  @media (max-width: 900px) {
+    .cards-grid.cols-3,
+    .cards-grid.cols-4,
+    .cards-grid.cols-5 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr !important; }
+  }
+
+  /* Individual cards */
+  .card {
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  /* Color variants */
+  .card.blue { --c: var(--accent1); --g: var(--glow1); }
+  .card.purple { --c: var(--accent2); --g: var(--glow2); }
+  .card.orange { --c: var(--accent3); --g: var(--glow3); }
+  .card.green { --c: var(--accent4); --g: var(--glow4); }
+  .card.yellow { --c: var(--accent5); --g: rgba(255,214,10,0.15); }
+  .card.red { --c: #ff4d6d; --g: rgba(255,77,109,0.15); }
+
+  .card { border-color: color-mix(in srgb, var(--c) 20%, var(--border)); }
+  .card::before { background: var(--g); }
+  .card:hover { border-color: color-mix(in srgb, var(--c) 50%, transparent); box-shadow: 0 8px 32px var(--g); }
+
+  .card-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .card-sub {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .card-stat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    color: var(--c);
+    border: 1px solid color-mix(in srgb, var(--c) 25%, transparent);
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--c);
+    opacity: 0.6;
+    text-transform: uppercase;
+  }
+
+  /* HERO card — Agency Resellers */
+  .card.hero {
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--c) 8%, var(--surface)) 0%,
+      color-mix(in srgb, var(--c) 4%, var(--surface)) 100%
+    );
+    border: 2px solid color-mix(in srgb, var(--c) 60%, transparent);
+    box-shadow: 0 0 40px var(--g), inset 0 0 40px var(--g);
+  }
+
+  .card.hero .card-title {
+    font-size: 16px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: color-mix(in srgb, var(--c) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--c);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Flow arrows section */
+  .flow-section {
+    margin: 48px 0;
+    position: relative;
+    animation: fadeUp 0.8s 0.7s ease both;
+  }
+
+  .flow-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    overflow: hidden;
+  }
+
+  .flow-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    min-width: 120px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+
+  .flow-node:hover { transform: scale(1.05); }
+
+  .flow-node-icon { font-size: 28px; }
+
+  .flow-node-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .flow-node-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  .flow-node.highlight {
+    border-color: var(--accent3);
+    box-shadow: 0 0 24px var(--glow3);
+    background: color-mix(in srgb, var(--accent3) 8%, var(--surface));
+  }
+
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+    gap: 4px;
+  }
+
+  .flow-arrow-line {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(to right, var(--accent2), var(--accent1));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flow-arrow-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: white;
+    animation: shimmer 2s linear infinite;
+    opacity: 0.5;
+  }
+
+  .flow-arrow-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .flow-arrow-head {
+    font-size: 12px;
+    color: var(--accent1);
+    margin-left: -4px;
+  }
+
+  /* Market share bar */
+  .market-bar-section {
+    margin: 48px 0;
+    animation: fadeUp 0.8s 0.8s ease both;
+  }
+
+  .market-bar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .market-bar {
+    height: 52px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .market-bar-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.8);
+    transition: filter 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .market-bar-segment:hover { filter: brightness(1.15); }
+
+  .market-bar-segment span {
+    writing-mode: horizontal-tb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 4px;
+  }
+
+  .market-bar-labels {
+    display: flex;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .bar-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .bar-label-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 48px 0;
+    animation: fadeUp 0.8s 0.9s ease both;
+  }
+
+  @media (max-width: 600px) {
+    .stats-row { grid-template-columns: 1fr; }
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .stat-card.s1::after { background: var(--accent1); }
+  .stat-card.s2::after { background: var(--accent3); }
+  .stat-card.s3::after { background: var(--accent4); }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-card.s1 .stat-value { color: var(--accent1); }
+  .stat-card.s2 .stat-value { color: var(--accent3); }
+  .stat-card.s3 .stat-value { color: var(--accent4); }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .stat-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    margin-top: 8px;
+    color: var(--muted);
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    background: #151f35;
+    border: 1px solid var(--accent1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text);
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 240px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 8px 32px rgba(0,212,255,0.2);
+  }
+
+  .tooltip.visible { opacity: 1; }
+
+  .tooltip-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--accent1);
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes flowDown {
+    from { transform: translateY(-50%); }
+    to { transform: translateY(0%); }
+  }
+
+  @keyframes shimmer {
+    from { left: -100%; }
+    to { left: 100%; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* Section divider */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 32px;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border), transparent);
+  }
+
+  .divider-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Vertical connector between layers */
+  .v-connector {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+    position: relative;
+  }
+
+  .v-connector-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .v-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); opacity: 0.4; }
+  .v-dot:nth-child(2) { opacity: 0.6; }
+  .v-dot:nth-child(3) { opacity: 0.8; }
+
+</style>
+</head>
+<body>
+
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-title" id="tt-title"></div>
+  <div id="tt-body"></div>
+</div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-label">Market Structure Analysis · 2024</div>
+    <h1>Conversational AI<br>Ecosystem Map</h1>
+    <p>Where Agency Resellers (AAAs) sit within the full value chain — from foundational models to end customers</p>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div> Technology Infrastructure</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7b4fff"></div> Platform / Product Layer</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ff6b35"></div> Agency / Channel Layer ← YOU ARE HERE</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#00e5a0"></div> End Market / Buyers</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ffd60a"></div> High Growth Segment</div>
+  </div>
+
+  <!-- ECOSYSTEM LAYERS -->
+  <div class="ecosystem">
+
+    <!-- LAYER 1: Foundational Models -->
+    <div class="layer">
+      <div class="layer-header">
+        <span class="layer-number">LAYER 01</span>
+        <span class="layer-title" style="color:var(--accent1)">Foundational AI Models</span>
+        <span class="layer-size" style="color:var(--accent1); border-color:rgba(0,212,255,0.3)">Core Intelligence</span>
+      </div>
+      <div class="cards-grid cols-5">
+        <div class="card blue" data-tip="Anthropic" data-body="Claude model family — most advanced reasoning, long context, safety-focused. Powers many voice and chat agents via API.">
+          <span class="card-icon">🧠</span>
+          <div class="card-title">Anthropic</div>
+          <div class="card-sub">Claude model family</div>
+          <span class="card-stat">Claude 3.5 / 4</span>
+        </div>
+        <div class="card blue" data-tip="OpenAI" data-body="GPT-4o and o-series models. Largest developer ecosystem. Powers ChatGPT and thousands of downstream products.">
+          <span class="card-icon">⚡</span>
+          <div class="card-title">OpenAI</div>
+          <div class="card-sub">GPT model family</div>
+          <span class="card-stat">GPT-4o / o1</span>
+        </div>
+        <div class="card blue" data-tip="Google DeepMind" data-body="Gemini model family — multimodal, deeply integrated with Google services. Powers Gemini Live and CCAI.">
+          <span class="card-icon">🌐</span>
+          <div class="card-title">Google</div>
+          <div class="card-sub">Gemini model family</div>
+          <span class="card-stat">Gemini Ultra</span>
+        </div>
+        <div class="card blue" data-tip="Meta AI" data-body="Llama open-weight models — enables fully custom deployments. Foundation for many white-label agency builds.">
+          <span class="card-icon">🦙</span>
+          <div class="card-title">Meta AI</div>
+          <div class="card-sub">Llama open-weight</div>
+          <span class="card-stat">Llama 3.x</span>
+        </div>
+        <div class="card blue" data-tip="Mistral / Cohere" data-body="European and enterprise-grade open models. Popular for on-prem or custom agency deployments where data privacy is critical.">
+          <span class="card-icon">🔬</span>
+          <div class="card-title">Mistral / Cohere</div>
+          <div class="card-sub">Open & enterprise LLMs</div>
+          <span class="card-stat">Mistral / Command</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="v-connector"><div class="v-connector-inner"><div class="v-dot"></div><div class="v-dot"></div><div class="v-dot"></div></div></div>
+
+    <!-- LAYER 2: Speech & Voice Infrastructure -->
+    <div class="layer">
+      <div class="layer-header">
+        <span class="layer-number">LAYER 02</span>
+        <span class="layer-title" style="color:var(--accent1)">Speech & Voice Infrastructure</span>
+        <span class="layer-size" style="color:var(--accent1); border-color:rgba(0,212,255,0.3)">ASR · TTS · RTC</span>
+      </div>
+      <div class="cards-grid cols-4">
+        <div class="card blue" data-tip="Deepgram" data-body="Best-in-class real-time ASR (speech-to-text). Sub-300ms latency. Used by Vapi, Bland, and most voice agent platforms.">
+          <span class="card-icon">🎙️</span>
+          <div class="card-title">Deepgram</div>
+          <div class="card-sub">Real-time ASR · Speech-to-text</div>
+          <span class="card-stat">ASR · &lt;300ms</span>
+        </div>
+        <div class="card blue" data-tip="ElevenLabs" data-body="Industry-leading AI voice synthesis. Ultra-realistic TTS powering most consumer-facing voice agents. 1000+ voices.">
+          <span class="card-icon">🔊</span>
+          <div class="card-title">ElevenLabs</div>
+          <div class="card-sub">AI voice synthesis · TTS</div>
+          <span class="card-stat">TTS · 1000+ voices</span>
+        </div>
+        <div class="card blue" data-tip="Cartesia / Rime AI" data-body="Sub-100ms TTS streaming optimized specifically for real-time voice agent deployment. Critical for natural conversation flow.">
+          <span class="card-icon">⚡</span>
+          <div class="card-title">Cartesia / Rime</div>
+          <div class="card-sub">Ultra-low latency TTS</div>
+          <span class="card-stat">TTS · &lt;100ms</span>
+        </div>
+        <div class="card blue" data-tip="LiveKit / Daily.co" data-body="WebRTC and real-time communication infrastructure. Routes audio between callers and AI agents at scale.">
+          <span class="card-icon">📡</span>
+          <div class="card-title">LiveKit / Daily</div>
+          <div class="card-sub">WebRTC · RTC infrastructure</div>
+          <span class="card-stat">RTC · Audio routing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="v-connector"><div class="v-connector-inner"><div class="v-dot"></div><div class="v-dot"></div><div class="v-dot"></div></div></div>
+
+    <!-- LAYER 3: Conversational AI Platform Segments -->
+    <div class="layer">
+      <div class="layer-header">
+        <span class="layer-number">LAYER 03</span>
+        <span class="layer-title" style="color:var(--accent2)">Conversational AI Platform Segments</span>
+        <span class="layer-size" style="color:var(--accent2); border-color:rgba(123,79,255,0.3)">$13.5B · 2024</span>
+      </div>
+      <div class="cards-grid cols-4" style="margin-bottom:12px">
+        <div class="card purple" data-tip="General AI Assistants" data-body="22% share · $2.97B. Claude, ChatGPT, Gemini. Open-ended, consumer and knowledge worker facing. Fastest absolute growth.">
+          <div class="card-tag">22.0%</div>
+          <span class="card-icon">💬</span>
+          <div class="card-title">General AI Assistants</div>
+          <div class="card-sub">Claude · ChatGPT · Gemini</div>
+          <span class="card-stat">$2.97B · 35% CAGR</span>
+        </div>
+        <div class="card yellow" data-tip="Autonomous Voice Agents" data-body="20% share · $2.70B. Vapi, Retell, Bland, Air AI, Synthflow. FASTEST growing segment. Will reach $56B by 2034.">
+          <div class="card-tag">20.0% 🚀</div>
+          <span class="card-icon">📞</span>
+          <div class="card-title">Autonomous Voice Agents</div>
+          <div class="card-sub">Vapi · Bland · Retell · Synthflow</div>
+          <span class="card-stat">$2.70B · 35.5% CAGR</span>
+        </div>
+        <div class="card purple" data-tip="Enterprise Contact Center AI" data-body="13% share · $1.76B. Genesys, NICE, Five9. Large but losing relative share as Segment 8 cannibalizes it.">
+          <div class="card-tag">13.0%</div>
+          <span class="card-icon">🏢</span>
+          <div class="card-title">Enterprise Contact Center</div>
+          <div class="card-sub">Genesys · NICE · Five9</div>
+          <span class="card-stat">$1.76B · 18% CAGR</span>
+        </div>
+        <div class="card purple" data-tip="LLM-Powered Chatbots" data-body="10% share · $1.35B. Intercom Fin, Zendesk AI, Drift. Scoped support and sales bots for business websites.">
+          <div class="card-tag">10.0%</div>
+          <span class="card-icon">🤖</span>
+          <div class="card-title">LLM-Powered Chatbots</div>
+          <div class="card-sub">Intercom · Zendesk AI · Drift</div>
+          <span class="card-stat">$1.35B · 28% CAGR</span>
+        </div>
+      </div>
+      <div class="cards-grid cols-5">
+        <div class="card purple" data-tip="Conversational IVR" data-body="7% share · $0.94B. PolyAI, Replicant, SmartAction. Replacing legacy press-1 systems. Being absorbed by Segment 8.">
+          <div class="card-tag">7.0%</div>
+          <span class="card-icon">☎️</span>
+          <div class="card-title">Conv. IVR</div>
+          <div class="card-sub">PolyAI · Replicant</div>
+          <span class="card-stat">$0.94B · 20% CAGR</span>
+        </div>
+        <div class="card purple" data-tip="AI Copilots / Agent Assist" data-body="6% share · $0.81B. Microsoft Copilot, Salesforce Einstein, GitHub Copilot. Human-in-the-loop AI augmentation.">
+          <div class="card-tag">6.0%</div>
+          <span class="card-icon">🤝</span>
+          <div class="card-title">AI Copilots</div>
+          <div class="card-sub">Copilot · Einstein · GH Copilot</div>
+          <span class="card-stat">$0.81B · 32% CAGR</span>
+        </div>
+        <div class="card purple" data-tip="Conversation Intelligence" data-body="5.5% share · $0.74B. Gong, Chorus, Observe.AI. Analytics and coaching from recorded conversations.">
+          <div class="card-tag">5.5%</div>
+          <span class="card-icon">📊</span>
+          <div class="card-title">Conv. Intelligence</div>
+          <div class="card-sub">Gong · Chorus · Observe.AI</div>
+          <span class="card-stat">$0.74B · 22% CAGR</span>
+        </div>
+        <div class="card yellow" data-tip="Autonomous Task Agents" data-body="3% share today · $0.41B but growing at 45% CAGR. Will be 11.5% of ecosystem by 2034. CrewAI, LangChain, AutoGen.">
+          <div class="card-tag">3.0% 🚀</div>
+          <span class="card-icon">🦾</span>
+          <div class="card-title">Agentic AI</div>
+          <div class="card-sub">CrewAI · LangGraph · AutoGen</div>
+          <span class="card-stat">$0.41B · 45% CAGR</span>
+        </div>
+        <div class="card purple" data-tip="Other Segments" data-body="Remaining ~13.5%: Domain-Specific AI (5%), Dev Platforms (4%), Messaging/SMS (2%), Avatar AI (1.5%), Translation (1%), Rule-Based (1%).">
+          <div class="card-tag">13.5%</div>
+          <span class="card-icon">⋯</span>
+          <div class="card-title">Other Segments</div>
+          <div class="card-sub">Domain · Dev Tools · SMS · Avatar</div>
+          <span class="card-stat">$1.82B · Various CAGRs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="v-connector"><div class="v-connector-inner"><div class="v-dot"></div><div class="v-dot"></div><div class="v-dot"></div></div></div>
+
+    <!-- LAYER 4: AGENCY RESELLERS — THE HERO LAYER -->
+    <div class="layer">
+      <div class="layer-header">
+        <span class="layer-number">LAYER 04</span>
+        <span class="layer-title" style="color:var(--accent3)">Distribution & Implementation Layer</span>
+        <span class="layer-size" style="color:var(--accent3); border-color:rgba(255,107,53,0.3)">$1.30B · 2024 · 35% CAGR</span>
+      </div>
+
+      <!-- Hero card spanning full width -->
+      <div style="margin-bottom:12px">
+        <div class="card hero orange" style="padding:28px" data-tip="AI Automation Agencies (AAAs)" data-body="The distribution and implementation channel that delivers voice AI to the SMB market. Without this layer, Vapi and Synthflow would only reach enterprise/developer buyers.">
+          <div class="hero-badge">YOU ARE HERE · PRIMARY FOCUS</div>
+          <span class="card-icon" style="font-size:32px">🏷️</span>
+          <div class="card-title" style="font-size:18px; margin-bottom:8px">Voice AI Agency Resellers / AI Automation Agencies (AAAs)</div>
+          <div class="card-sub" style="font-size:13px; max-width:700px">Entrepreneurs and boutique agencies who white-label Vapi, Synthflow, Retell, and Bland AI — branding it as their own solution and deploying it to SMB clients who cannot self-serve on raw platforms. The primary go-to-market channel for Segment 8 into the long tail of the market.</div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:16px">
+            <span class="card-stat">$1.30B 2024</span>
+            <span class="card-stat">→ $7.87B 2030</span>
+            <span class="card-stat">→ $26.13B 2034</span>
+            <span class="card-stat">35% CAGR</span>
+            <span class="card-stat">~9.6% Ecosystem Share</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-types of agencies -->
+      <div class="cards-grid cols-4">
+        <div class="card orange" data-tip="Build & Deploy Agencies" data-body="Build custom voice agents and hand them off. One-time project fee $1,500–$15,000. No recurring revenue. Entry-level model.">
+          <span class="card-icon">🔧</span>
+          <div class="card-title">Build & Deploy</div>
+          <div class="card-sub">Custom build, one-time handoff</div>
+          <span class="card-stat">$1.5K–$15K / project</span>
+        </div>
+        <div class="card orange" data-tip="White-Label SaaS Resellers" data-body="Brand Vapi/Synthflow as their own product. Clients never see the platform. $300–$2,000/month recurring. High LTV.">
+          <span class="card-icon">📦</span>
+          <div class="card-title">White-Label SaaS</div>
+          <div class="card-sub">Own-brand platform resale</div>
+          <span class="card-stat">$300–$2K / month</span>
+        </div>
+        <div class="card orange" data-tip="Fully Managed Voice AI Service" data-body="Build, deploy, monitor, optimize, and manage ongoing. Highest LTV but highest service burden. $500–$5,000/month.">
+          <span class="card-icon">🔄</span>
+          <div class="card-title">Managed Service</div>
+          <div class="card-sub">Ongoing build + management</div>
+          <span class="card-stat">$500–$5K / month</span>
+        </div>
+        <div class="card orange" data-tip="GHL / Platform Bundlers" data-body="GoHighLevel resellers who layer voice AI into their GHL snapshot. Massive ecosystem of 100K+ agencies. $297–$997/month to clients.">
+          <span class="card-icon">🔌</span>
+          <div class="card-title">GHL Bundlers</div>
+          <div class="card-sub">GoHighLevel ecosystem</div>
+          <span class="card-stat">$297–$997 / month</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="v-connector"><div class="v-connector-inner"><div class="v-dot"></div><div class="v-dot"></div><div class="v-dot"></div></div></div>
+
+    <!-- LAYER 5: End Markets -->
+    <div class="layer">
+      <div class="layer-header">
+        <span class="layer-number">LAYER 05</span>
+        <span class="layer-title" style="color:var(--accent4)">End Markets · SMB Verticals</span>
+        <span class="layer-size" style="color:var(--accent4); border-color:rgba(0,229,160,0.3)">Long Tail Demand</span>
+      </div>
+      <div class="cards-grid cols-4">
+        <div class="card green" data-tip="Real Estate" data-body="Lead follow-up, showing scheduling, buyer qualification. High call volume, low availability of staff. Perfect voice AI fit.">
+          <span class="card-icon">🏠</span>
+          <div class="card-title">Real Estate</div>
+          <div class="card-sub">Lead follow-up · Showings</div>
+          <span class="card-stat">High volume</span>
+        </div>
+        <div class="card green" data-tip="Healthcare & Med Spas" data-body="Appointment booking, patient reminders, intake calls. Heavily regulated but massive call volume. Top vertical for agencies.">
+          <span class="card-icon">🏥</span>
+          <div class="card-title">Healthcare / Med Spas</div>
+          <div class="card-sub">Appointments · Reminders</div>
+          <span class="card-stat">Top vertical</span>
+        </div>
+        <div class="card green" data-tip="Home Services" data-body="Plumbers, HVAC, roofers, electricians. Estimate follow-up, job scheduling. Owners too busy to answer phones.">
+          <span class="card-icon">🔨</span>
+          <div class="card-title">Home Services</div>
+          <div class="card-sub">Estimates · Scheduling</div>
+          <span class="card-stat">Massive TAM</span>
+        </div>
+        <div class="card green" data-tip="Insurance" data-body="Lead qualification, policy renewals, claim intake. Heavily phone-dependent industry. Very receptive to automation.">
+          <span class="card-icon">🛡️</span>
+          <div class="card-title">Insurance</div>
+          <div class="card-sub">Lead qual · Renewals</div>
+          <span class="card-stat">High LTV</span>
+        </div>
+        <div class="card green" data-tip="Legal / Law Firms" data-body="Intake calls, consultation booking, case status updates. High value per call. Attorneys can't be interrupted constantly.">
+          <span class="card-icon">⚖️</span>
+          <div class="card-title">Legal / Law Firms</div>
+          <div class="card-sub">Intake · Consultations</div>
+          <span class="card-stat">High value</span>
+        </div>
+        <div class="card green" data-tip="Automotive Dealerships" data-body="Service reminders, lead nurturing, test drive scheduling. Marchex reports 40%+ of dealer calls go unanswered.">
+          <span class="card-icon">🚗</span>
+          <div class="card-title">Automotive</div>
+          <div class="card-sub">Service · Lead nurturing</div>
+          <span class="card-stat">40% missed calls</span>
+        </div>
+        <div class="card green" data-tip="Gyms & Fitness" data-body="Trial offer follow-up, membership retention, class booking. High churn industry benefiting from automated re-engagement.">
+          <span class="card-icon">💪</span>
+          <div class="card-title">Gyms & Fitness</div>
+          <div class="card-sub">Trials · Retention</div>
+          <span class="card-stat">High churn opp.</span>
+        </div>
+        <div class="card green" data-tip="Restaurants & Hospitality" data-body="Reservations, catering inquiries, event bookings. Phone lines constantly busy. Voice AI handles overflow perfectly.">
+          <span class="card-icon">🍽️</span>
+          <div class="card-title">Restaurants</div>
+          <div class="card-sub">Reservations · Events</div>
+          <span class="card-stat">Overflow handling</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="v-connector"><div class="v-connector-inner"><div class="v-dot"></div><div class="v-dot"></div><div class="v-dot"></div></div></div>
+
+    <!-- LAYER 6: End Users -->
+    <div class="layer">
+      <div class="layer-header">
+        <span class="layer-number">LAYER 06</span>
+        <span class="layer-title" style="color:var(--accent4)">End Users · Callers</span>
+        <span class="layer-size" style="color:var(--accent4); border-color:rgba(0,229,160,0.3)">Human Conversations</span>
+      </div>
+      <div class="cards-grid cols-4">
+        <div class="card green" data-tip="Leads & Prospects" data-body="Inbound and outbound prospects interacting with voice AI agents for qualification, information, and booking.">
+          <span class="card-icon">👤</span>
+          <div class="card-title">Leads & Prospects</div>
+          <div class="card-sub">Qualification · Booking</div>
+          <span class="card-stat">Outbound + Inbound</span>
+        </div>
+        <div class="card green" data-tip="Existing Customers" data-body="Current customers calling for support, updates, renewals, and service requests. Voice AI handles tier-1 without human agents.">
+          <span class="card-icon">👥</span>
+          <div class="card-title">Existing Customers</div>
+          <div class="card-sub">Support · Renewals</div>
+          <span class="card-stat">Retention focus</span>
+        </div>
+        <div class="card green" data-tip="Patients & Clients" data-body="Healthcare patients, legal clients, and professional service contacts who interact via phone for intake and scheduling.">
+          <span class="card-icon">🧑‍⚕️</span>
+          <div class="card-title">Patients & Clients</div>
+          <div class="card-sub">Intake · Scheduling</div>
+          <span class="card-stat">Regulated verticals</span>
+        </div>
+        <div class="card green" data-tip="General Public" data-body="Anyone calling a business phone number — increasingly likely to be answered by a voice AI agent rather than a human receptionist.">
+          <span class="card-icon">🌍</span>
+          <div class="card-title">General Public</div>
+          <div class="card-sub">Any inbound caller</div>
+          <span class="card-stat">Universal reach</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Value Chain Flow -->
+  <div class="section-divider"><div class="divider-line"></div><div class="divider-label">Value Chain Flow</div><div class="divider-line"></div></div>
+
+  <div class="flow-section">
+    <div class="flow-diagram">
+      <div class="flow-node" style="border-color:rgba(0,212,255,0.4)">
+        <div class="flow-node-icon">🧠</div>
+        <div class="flow-node-label">LLM<br>Providers</div>
+        <div class="flow-node-sub">Intelligence</div>
+      </div>
+      <div class="flow-arrow">
+        <div style="display:flex;align-items:center">
+          <div class="flow-arrow-line"></div>
+          <div class="flow-arrow-head">▶</div>
+        </div>
+        <div class="flow-arrow-label">API</div>
+      </div>
+      <div class="flow-node" style="border-color:rgba(0,212,255,0.4)">
+        <div class="flow-node-icon">🎙️</div>
+        <div class="flow-node-label">Speech<br>Infra</div>
+        <div class="flow-node-sub">ASR · TTS</div>
+      </div>
+      <div class="flow-arrow">
+        <div style="display:flex;align-items:center">
+          <div class="flow-arrow-line"></div>
+          <div class="flow-arrow-head">▶</div>
+        </div>
+        <div class="flow-arrow-label">Pipeline</div>
+      </div>
+      <div class="flow-node" style="border-color:rgba(255,214,10,0.5); background:rgba(255,214,10,0.05)">
+        <div class="flow-node-icon">📞</div>
+        <div class="flow-node-label">Vapi /<br>Synthflow</div>
+        <div class="flow-node-sub">Platform</div>
+      </div>
+      <div class="flow-arrow">
+        <div style="display:flex;align-items:center">
+          <div class="flow-arrow-line" style="background:linear-gradient(to right, var(--accent3), var(--accent3))"></div>
+          <div class="flow-arrow-head" style="color:var(--accent3)">▶</div>
+        </div>
+        <div class="flow-arrow-label">White-label</div>
+      </div>
+      <div class="flow-node highlight">
+        <div class="flow-node-icon">🏷️</div>
+        <div class="flow-node-label">Agency<br>Reseller</div>
+        <div class="flow-node-sub">AAA · Channel</div>
+      </div>
+      <div class="flow-arrow">
+        <div style="display:flex;align-items:center">
+          <div class="flow-arrow-line" style="background:linear-gradient(to right, var(--accent4), var(--accent4))"></div>
+          <div class="flow-arrow-head" style="color:var(--accent4)">▶</div>
+        </div>
+        <div class="flow-arrow-label">Deploy</div>
+      </div>
+      <div class="flow-node" style="border-color:rgba(0,229,160,0.4)">
+        <div class="flow-node-icon">🏥</div>
+        <div class="flow-node-label">SMB<br>Client</div>
+        <div class="flow-node-sub">End Buyer</div>
+      </div>
+      <div class="flow-arrow">
+        <div style="display:flex;align-items:center">
+          <div class="flow-arrow-line" style="background:linear-gradient(to right, var(--accent4), var(--accent4))"></div>
+          <div class="flow-arrow-head" style="color:var(--accent4)">▶</div>
+        </div>
+        <div class="flow-arrow-label">Serves</div>
+      </div>
+      <div class="flow-node" style="border-color:rgba(0,229,160,0.4)">
+        <div class="flow-node-icon">👤</div>
+        <div class="flow-node-label">End<br>User</div>
+        <div class="flow-node-sub">Caller</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market Share Bar -->
+  <div class="market-bar-section">
+    <div class="market-bar-title">2024 Ecosystem Share Breakdown · $13.50B Total</div>
+    <div class="market-bar">
+      <div class="market-bar-segment" style="width:22%;background:#00d4ff" title="General AI Assistants 22%"><span>22% AI Asst.</span></div>
+      <div class="market-bar-segment" style="width:20%;background:#ffd60a" title="Voice Agents 20%"><span>20% Voice</span></div>
+      <div class="market-bar-segment" style="width:13%;background:#7b4fff" title="Contact Center 13%"><span>13% CC</span></div>
+      <div class="market-bar-segment" style="width:10%;background:#9b6fff" title="LLM Chatbots 10%"><span>10% Chat</span></div>
+      <div class="market-bar-segment" style="width:9.6%;background:#ff6b35" title="Agency Channel 9.6%"><span>9.6% Agency</span></div>
+      <div class="market-bar-segment" style="width:7%;background:#b04fff" title="Conv. IVR 7%"><span>7% IVR</span></div>
+      <div class="market-bar-segment" style="width:6%;background:#5b8aff" title="Copilots 6%"><span>6%</span></div>
+      <div class="market-bar-segment" style="width:12.4%;background:#334466" title="Other Segments 12.4%"><span>12.4% Other</span></div>
+    </div>
+    <div class="market-bar-labels">
+      <div class="bar-label"><div class="bar-label-dot" style="background:#00d4ff"></div>General AI Assistants 22%</div>
+      <div class="bar-label"><div class="bar-label-dot" style="background:#ffd60a"></div>Voice Agents 20%</div>
+      <div class="bar-label"><div class="bar-label-dot" style="background:#7b4fff"></div>Enterprise CC 13%</div>
+      <div class="bar-label"><div class="bar-label-dot" style="background:#9b6fff"></div>LLM Chatbots 10%</div>
+      <div class="bar-label"><div class="bar-label-dot" style="background:#ff6b35"></div>Agency Channel 9.6%</div>
+      <div class="bar-label"><div class="bar-label-dot" style="background:#b04fff"></div>Conv. IVR 7%</div>
+      <div class="bar-label"><div class="bar-label-dot" style="background:#5b8aff"></div>Copilots 6%</div>
+      <div class="bar-label"><div class="bar-label-dot" style="background:#334466"></div>Other 12.4%</div>
+    </div>
+  </div>
+
+  <!-- Key Stats -->
+  <div class="stats-row">
+    <div class="stat-card s1">
+      <div class="stat-value">$13.5B</div>
+      <div class="stat-label">Full Conversational AI<br>Ecosystem · 2024</div>
+      <div class="stat-sub">→ $111.44B by 2034 · 23.5% CAGR</div>
+    </div>
+    <div class="stat-card s2">
+      <div class="stat-value">$1.30B</div>
+      <div class="stat-label">Agency / Distribution<br>Channel · 2024</div>
+      <div class="stat-sub">→ $26.13B by 2034 · 35% CAGR</div>
+    </div>
+    <div class="stat-card s3">
+      <div class="stat-value">$2.70B</div>
+      <div class="stat-label">Autonomous Voice<br>Agents · Segment 8 · 2024</div>
+      <div class="stat-sub">→ $56.29B by 2034 · 35.5% CAGR</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const tooltip = document.getElementById('tooltip');
+  const ttTitle = document.getElementById('tt-title');
+  const ttBody = document.getElementById('tt-body');
+
+  document.querySelectorAll('[data-tip]').forEach(el => {
+    el.addEventListener('mouseenter', (e) => {
+      ttTitle.textContent = el.dataset.tip;
+      ttBody.textContent = el.dataset.body;
+      tooltip.classList.add('visible');
+    });
+    el.addEventListener('mousemove', (e) => {
+      let x = e.clientX + 16;
+      let y = e.clientY - 10;
+      if (x + 260 > window.innerWidth) x = e.clientX - 260;
+      tooltip.style.left = x + 'px';
+      tooltip.style.top = y + 'px';
+    });
+    el.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible');
+    });
+  });
+</script>
+</body>
+</html>
