@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Channel Player Positioning Map</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #f5f0e8;
+  --surface: #fffdf7;
+  --surface2: #f0ebe0;
+  --ink: #1a1408;
+  --ink2: #4a4030;
+  --ink3: #8a7a60;
+  --rule: #d8cfc0;
+
+  --aaa:    #e8380d;
+  --vert:   #1a6b3c;
+  --masp:   #1450a8;
+  --niche:  #7a1fa2;
+  --ccaas:  #c47200;
+  --bpo:    #8a0030;
+
+  --aaa-bg:   #fff0ed;
+  --vert-bg:  #edf7f1;
+  --masp-bg:  #edf3ff;
+  --niche-bg: #f5edfb;
+  --ccaas-bg: #fff8ed;
+  --bpo-bg:   #ffedf2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.5;
+}
+
+/* Noise texture overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+}
+
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 60px 40px 100px;
+}
+
+/* ── HEADER ── */
+header {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 32px;
+  margin-bottom: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: end;
+  animation: riseIn 0.6s ease both;
+}
+
+.header-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+header h1 {
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -2px;
+  color: var(--ink);
+}
+
+header h1 em {
+  font-style: normal;
+  color: var(--aaa);
+  border-bottom: 4px solid var(--aaa);
+}
+
+.header-meta {
+  text-align: right;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  line-height: 1.8;
+}
+
+/* ── PLAYER LEGEND ROW ── */
+.player-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 48px;
+  animation: riseIn 0.6s 0.1s ease both;
+}
+
+.player-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1.5px solid;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-weight: 700;
+}
+
+.player-chip:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+
+.chip-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.chip-aaa   { color: var(--aaa);   border-color: var(--aaa);   background: var(--aaa-bg); }
+.chip-vert  { color: var(--vert);  border-color: var(--vert);  background: var(--vert-bg); }
+.chip-masp  { color: var(--masp);  border-color: var(--masp);  background: var(--masp-bg); }
+.chip-niche { color: var(--niche); border-color: var(--niche); background: var(--niche-bg); }
+.chip-ccaas { color: var(--ccaas); border-color: var(--ccaas); background: var(--ccaas-bg); }
+.chip-bpo   { color: var(--bpo);   border-color: var(--bpo);   background: var(--bpo-bg); }
+
+/* ── VALUE CHAIN STACK ── */
+.chain-section {
+  margin-bottom: 64px;
+  animation: riseIn 0.6s 0.2s ease both;
+}
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 10px;
+  margin-bottom: 24px;
+}
+
+/* Each row in the chain */
+.chain-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  border: 1.5px solid var(--rule);
+  border-bottom: none;
+  position: relative;
+}
+
+.chain-row:first-of-type { border-radius: 8px 8px 0 0; }
+.chain-row:last-of-type  { border-bottom: 1.5px solid var(--rule); border-radius: 0 0 8px 8px; }
+
+.chain-layer-label {
+  background: var(--surface2);
+  border-right: 1.5px solid var(--rule);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.layer-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 2px;
+}
+
+.layer-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.layer-size {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  margin-top: 4px;
+}
+
+.chain-content {
+  padding: 16px 20px;
+  background: var(--surface);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Player presence tags */
+.presence-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  border-left: 3px solid;
+}
+
+.presence-tag.primary   { opacity: 1; }
+.presence-tag.secondary { opacity: 0.65; }
+.presence-tag.minor     { opacity: 0.35; }
+
+.tag-aaa   { background: var(--aaa-bg);   color: var(--aaa);   border-color: var(--aaa); }
+.tag-vert  { background: var(--vert-bg);  color: var(--vert);  border-color: var(--vert); }
+.tag-masp  { background: var(--masp-bg);  color: var(--masp);  border-color: var(--masp); }
+.tag-niche { background: var(--niche-bg); color: var(--niche); border-color: var(--niche); }
+.tag-ccaas { background: var(--ccaas-bg); color: var(--ccaas); border-color: var(--ccaas); }
+.tag-bpo   { background: var(--bpo-bg);   color: var(--bpo);   border-color: var(--bpo); }
+
+.chain-note {
+  width: 100%;
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 4px;
+  font-style: italic;
+  border-top: 1px dashed var(--rule);
+  padding-top: 8px;
+}
+
+/* ── COMPARISON GRID ── */
+.compare-section {
+  margin-bottom: 64px;
+  animation: riseIn 0.6s 0.3s ease both;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .compare-grid { grid-template-columns: repeat(3, 1fr); }
+  .chain-row { grid-template-columns: 140px 1fr; }
+}
+
+@media (max-width: 600px) {
+  .compare-grid { grid-template-columns: repeat(2, 1fr); }
+  .chain-row { grid-template-columns: 1fr; }
+  .chain-layer-label { border-right: none; border-bottom: 1.5px solid var(--rule); }
+}
+
+.compare-card {
+  border-right: 1.5px solid var(--rule);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.compare-card:last-child { border-right: none; }
+
+.compare-header {
+  padding: 20px 16px 16px;
+  border-bottom: 2px solid;
+  position: relative;
+}
+
+.compare-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+.compare-name { font-size: 14px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; }
+.compare-type { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1px; opacity: 0.7; }
+
+.compare-header.aaa   { background: var(--aaa-bg);   border-color: var(--aaa);   color: var(--aaa); }
+.compare-header.vert  { background: var(--vert-bg);  border-color: var(--vert);  color: var(--vert); }
+.compare-header.masp  { background: var(--masp-bg);  border-color: var(--masp);  color: var(--masp); }
+.compare-header.niche { background: var(--niche-bg); border-color: var(--niche); color: var(--niche); }
+.compare-header.ccaas { background: var(--ccaas-bg); border-color: var(--ccaas); color: var(--ccaas); }
+.compare-header.bpo   { background: var(--bpo-bg);   border-color: var(--bpo);   color: var(--bpo); }
+
+.compare-body {
+  padding: 16px;
+  background: var(--surface);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.compare-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.compare-row-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+
+.compare-row-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.compare-row-value.highlight {
+  font-weight: 700;
+}
+
+/* Score bars */
+.score-bar {
+  height: 6px;
+  background: var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.score-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+
+/* ── 2x2 POSITIONING MATRIX ── */
+.matrix-section {
+  margin-bottom: 64px;
+  animation: riseIn 0.6s 0.4s ease both;
+}
+
+.matrix-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: min(70%, 600px);
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.matrix-inner {
+  position: absolute;
+  inset: 0;
+}
+
+/* Quadrant backgrounds */
+.quadrant {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 16px;
+  pointer-events: none;
+}
+
+.quadrant-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  line-height: 1.5;
+  opacity: 0.6;
+}
+
+.q-tl { top: 0;   left: 0;   background: rgba(26,107,60,0.04); }
+.q-tr { top: 0;   right: 0;  background: rgba(232,56,13,0.04); }
+.q-bl { bottom: 0; left: 0;  background: rgba(138,0,48,0.04); }
+.q-br { bottom: 0; right: 0; background: rgba(196,114,0,0.04); }
+
+/* Axis lines */
+.axis-h, .axis-v {
+  position: absolute;
+  background: var(--ink);
+  opacity: 0.15;
+}
+
+.axis-h { top: 50%; left: 5%; right: 5%; height: 1px; }
+.axis-v { left: 50%; top: 5%; bottom: 5%; width: 1px; }
+
+/* Axis labels */
+.axis-label {
+  position: absolute;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+
+.axis-top    { top: 12px;   left: 50%; transform: translateX(-50%); }
+.axis-bottom { bottom: 12px; left: 50%; transform: translateX(-50%); }
+.axis-left   { left: 12px;  top: 50%;  transform: translateY(-50%) rotate(-90deg); }
+.axis-right  { right: 12px; top: 50%;  transform: translateY(-50%) rotate(90deg); }
+
+/* Player dots on matrix */
+.matrix-player {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 10;
+}
+
+.matrix-player:hover { transform: translate(-50%, -50%) scale(1.1); z-index: 20; }
+
+.matrix-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 2.5px solid;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  background: var(--surface);
+}
+
+.matrix-dot.aaa   { border-color: var(--aaa);   box-shadow: 0 4px 16px rgba(232,56,13,0.25); }
+.matrix-dot.vert  { border-color: var(--vert);   box-shadow: 0 4px 16px rgba(26,107,60,0.25); }
+.matrix-dot.masp  { border-color: var(--masp);   box-shadow: 0 4px 16px rgba(20,80,168,0.25); }
+.matrix-dot.niche { border-color: var(--niche);  box-shadow: 0 4px 16px rgba(122,31,162,0.25); }
+.matrix-dot.ccaas { border-color: var(--ccaas);  box-shadow: 0 4px 16px rgba(196,114,0,0.25); }
+.matrix-dot.bpo   { border-color: var(--bpo);    box-shadow: 0 4px 16px rgba(138,0,48,0.25); }
+
+.matrix-player-label {
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid;
+  background: white;
+}
+
+.matrix-player-label.aaa   { color: var(--aaa);   border-color: var(--aaa);   }
+.matrix-player-label.vert  { color: var(--vert);  border-color: var(--vert);  }
+.matrix-player-label.masp  { color: var(--masp);  border-color: var(--masp);  }
+.matrix-player-label.niche { color: var(--niche); border-color: var(--niche); }
+.matrix-player-label.ccaas { color: var(--ccaas); border-color: var(--ccaas); }
+.matrix-player-label.bpo   { color: var(--bpo);   border-color: var(--bpo);   }
+
+/* ── DEEP DIVE CARDS ── */
+.deepdive-section {
+  margin-bottom: 64px;
+  animation: riseIn 0.6s 0.5s ease both;
+}
+
+.deepdive-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) { .deepdive-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .deepdive-grid { grid-template-columns: 1fr; } }
+
+.deepdive-card {
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.deepdive-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.deepdive-card.featured {
+  border-width: 2px;
+  grid-column: span 1;
+}
+
+.deepdive-top {
+  padding: 20px;
+  border-bottom: 1.5px solid;
+}
+
+.deepdive-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+.deepdive-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.deepdive-tagline { font-size: 11px; opacity: 0.75; line-height: 1.4; }
+
+.deepdive-top.aaa   { background: var(--aaa-bg);   border-color: var(--aaa);   color: var(--aaa); }
+.deepdive-top.vert  { background: var(--vert-bg);  border-color: var(--vert);  color: var(--vert); }
+.deepdive-top.masp  { background: var(--masp-bg);  border-color: var(--masp);  color: var(--masp); }
+.deepdive-top.niche { background: var(--niche-bg); border-color: var(--niche); color: var(--niche); }
+.deepdive-top.ccaas { background: var(--ccaas-bg); border-color: var(--ccaas); color: var(--ccaas); }
+.deepdive-top.bpo   { background: var(--bpo-bg);   border-color: var(--bpo);   color: var(--bpo); }
+
+.deepdive-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+.dd-section-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.dd-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dd-list li {
+  font-size: 12px;
+  color: var(--ink2);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.4;
+}
+
+.dd-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--ink3);
+  font-size: 10px;
+}
+
+.dd-vs-aaa {
+  padding: 12px;
+  border-radius: 4px;
+  background: var(--surface2);
+  border-left: 3px solid var(--aaa);
+}
+
+.dd-vs-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: var(--aaa);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.dd-vs-text {
+  font-size: 11px;
+  color: var(--ink2);
+  line-height: 1.5;
+}
+
+/* Threat badge */
+.threat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.threat-high    { background: #fff0ed; color: #c0200d; border: 1px solid #c0200d; }
+.threat-med     { background: #fff8ed; color: #c47200; border: 1px solid #c47200; }
+.threat-low     { background: #edf7f1; color: #1a6b3c; border: 1px solid #1a6b3c; }
+.threat-partner { background: #edf3ff; color: #1450a8; border: 1px solid #1450a8; }
+
+/* ── OPPORTUNITY TABLE ── */
+.opp-section {
+  animation: riseIn 0.6s 0.6s ease both;
+}
+
+.opp-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.opp-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 400;
+}
+
+.opp-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  vertical-align: top;
+  color: var(--ink2);
+}
+
+.opp-table td:last-child { border-right: none; }
+.opp-table tr:last-child td { border-bottom: none; }
+
+.opp-table tr:nth-child(even) td { background: var(--surface2); }
+
+.player-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.name-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Animations */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+hr.divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 48px 0;
+}
+
+.footnote {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 1px;
+  text-align: center;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── HEADER ── -->
+<header>
+  <div>
+    <div class="header-eyebrow">Conversational AI · Channel Player Analysis · 2024–2026</div>
+    <h1>Where Every<br>Channel Player Lives<br>vs <em>Agency Resellers</em></h1>
+  </div>
+  <div class="header-meta">
+    6 PLAYER TYPES MAPPED<br>
+    ACROSS VALUE CHAIN<br>
+    ──────────────────<br>
+    LAYER · SEGMENT · BUYER<br>
+    THREAT · OPPORTUNITY
+  </div>
+</header>
+
+<!-- ── LEGEND ── -->
+<div class="player-legend">
+  <div class="player-chip chip-aaa">  <div class="chip-dot" style="background:var(--aaa)"></div>  AAA / Voice AI Agency Resellers</div>
+  <div class="player-chip chip-vert"> <div class="chip-dot" style="background:var(--vert)"></div> Vertical AI Consultants</div>
+  <div class="player-chip chip-masp"> <div class="chip-dot" style="background:var(--masp)"></div> Managed AI Service Providers</div>
+  <div class="player-chip chip-niche"><div class="chip-dot" style="background:var(--niche)"></div> Niche Automation Firms</div>
+  <div class="player-chip chip-ccaas"><div class="chip-dot" style="background:var(--ccaas)"></div> CCaaS Integrators</div>
+  <div class="player-chip chip-bpo">  <div class="chip-dot" style="background:var(--bpo)"></div>  Offshore BPO / AI Upgrade</div>
+</div>
+
+<!-- ── VALUE CHAIN PRESENCE ── -->
+<div class="chain-section">
+  <div class="section-label">01 · Value Chain Layer Presence — Where Each Player Operates</div>
+
+  <div class="chain-row">
+    <div class="chain-layer-label">
+      <div class="layer-num">LAYER 01</div>
+      <div class="layer-name">Foundational LLMs</div>
+      <div class="layer-size">Anthropic · OpenAI · Google</div>
+    </div>
+    <div class="chain-content">
+      <span class="presence-tag minor tag-masp">MASP — API Consumers</span>
+      <span class="presence-tag minor tag-vert">Vertical AI — Fine-tuning</span>
+      <span class="presence-tag minor tag-niche">Niche — Prompt Engineering</span>
+      <div class="chain-note">No channel player operates at this layer. All are downstream consumers of LLM APIs. MASPs and Vertical AI firms engage most deeply via custom fine-tuning and enterprise API agreements.</div>
+    </div>
+  </div>
+
+  <div class="chain-row">
+    <div class="chain-layer-label">
+      <div class="layer-num">LAYER 02</div>
+      <div class="layer-name">Speech & Voice Infra</div>
+      <div class="layer-size">Deepgram · ElevenLabs · LiveKit</div>
+    </div>
+    <div class="chain-content">
+      <span class="presence-tag minor tag-aaa">AAA — Indirect via Vapi</span>
+      <span class="presence-tag minor tag-ccaas">CCaaS — Direct integration</span>
+      <span class="presence-tag minor tag-masp">MASP — Direct API usage</span>
+      <div class="chain-note">AAAs access speech infra indirectly through Vapi/Synthflow. CCaaS integrators and MASPs often connect directly to Deepgram/ElevenLabs APIs for custom pipelines.</div>
+    </div>
+  </div>
+
+  <div class="chain-row">
+    <div class="chain-layer-label">
+      <div class="layer-num">LAYER 03A</div>
+      <div class="layer-name">Voice Agent Platforms</div>
+      <div class="layer-size">Vapi · Synthflow · Retell · Bland</div>
+    </div>
+    <div class="chain-content">
+      <span class="presence-tag primary tag-aaa">🎯 AAA — Primary reseller</span>
+      <span class="presence-tag primary tag-niche">Niche — Core build tool</span>
+      <span class="presence-tag secondary tag-masp">MASP — One tool of many</span>
+      <span class="presence-tag minor tag-vert">Vertical AI — Occasionally</span>
+      <div class="chain-note">AAAs and Niche Automation firms are the dominant resellers of Vapi/Synthflow. MASPs may include it as one component of a broader stack. CCaaS integrators and BPOs rarely touch these platforms.</div>
+    </div>
+  </div>
+
+  <div class="chain-row">
+    <div class="chain-layer-label">
+      <div class="layer-num">LAYER 03B</div>
+      <div class="layer-name">Enterprise CC Platforms</div>
+      <div class="layer-size">Genesys · NICE · Five9 · Talkdesk</div>
+    </div>
+    <div class="chain-content">
+      <span class="presence-tag primary tag-ccaas">🎯 CCaaS — Core domain</span>
+      <span class="presence-tag secondary tag-masp">MASP — Integration work</span>
+      <span class="presence-tag secondary tag-bpo">BPO — Platform clients</span>
+      <span class="presence-tag minor tag-vert">Vertical AI — Overlay</span>
+      <div class="chain-note">CCaaS Integrators are the dominant channel here. BPOs are often buyers/operators of these platforms. AAAs almost never touch enterprise CC platforms — different buyer, different deal size.</div>
+    </div>
+  </div>
+
+  <div class="chain-row">
+    <div class="chain-layer-label">
+      <div class="layer-num">LAYER 03C</div>
+      <div class="layer-name">LLM Chatbots / AI Assistants</div>
+      <div class="layer-size">Intercom · Zendesk · ChatGPT</div>
+    </div>
+    <div class="chain-content">
+      <span class="presence-tag secondary tag-niche">Niche — Chat automation builds</span>
+      <span class="presence-tag secondary tag-masp">MASP — Deployment & config</span>
+      <span class="presence-tag secondary tag-vert">Vertical AI — Domain chatbots</span>
+      <span class="presence-tag minor tag-aaa">AAA — Some bundle chat</span>
+      <div class="chain-note">MASPs, Niche firms, and Vertical AI consultants are the primary implementers here. AAAs occasionally bundle chat alongside voice but voice remains their primary focus.</div>
+    </div>
+  </div>
+
+  <div class="chain-row">
+    <div class="chain-layer-label">
+      <div class="layer-num">LAYER 04</div>
+      <div class="layer-name">Distribution & Channel</div>
+      <div class="layer-size">$1.30B · 2024 · 35% CAGR</div>
+    </div>
+    <div class="chain-content">
+      <span class="presence-tag primary tag-aaa">🎯 AAA — THIS IS LAYER 4</span>
+      <span class="presence-tag primary tag-vert">🎯 Vertical AI — THIS IS LAYER 4</span>
+      <span class="presence-tag primary tag-masp">🎯 MASP — THIS IS LAYER 4</span>
+      <span class="presence-tag primary tag-niche">🎯 Niche — THIS IS LAYER 4</span>
+      <span class="presence-tag primary tag-ccaas">🎯 CCaaS — THIS IS LAYER 4</span>
+      <span class="presence-tag primary tag-bpo">🎯 BPO — THIS IS LAYER 4</span>
+      <div class="chain-note">⚡ ALL SIX PLAYER TYPES live at Layer 4 — the Distribution & Implementation Channel. They are not technology vendors; they are the go-to-market and delivery mechanism sitting between platforms and end buyers. The key differences are WHO they serve, HOW they deliver, and WHICH platforms they touch.</div>
+    </div>
+  </div>
+
+  <div class="chain-row">
+    <div class="chain-layer-label">
+      <div class="layer-num">LAYER 05</div>
+      <div class="layer-name">End Markets / Buyers</div>
+      <div class="layer-size">SMB · Mid-Market · Enterprise</div>
+    </div>
+    <div class="chain-content">
+      <span class="presence-tag primary tag-aaa">AAA → SMB / Local Business</span>
+      <span class="presence-tag primary tag-vert">Vertical AI → Industry Professionals</span>
+      <span class="presence-tag primary tag-masp">MASP → Mid-Market / Enterprise</span>
+      <span class="presence-tag primary tag-niche">Niche → SMB / Specific Vertical</span>
+      <span class="presence-tag primary tag-ccaas">CCaaS → Enterprise / Large CC</span>
+      <span class="presence-tag primary tag-bpo">BPO → Enterprise / Cost-Cutters</span>
+      <div class="chain-note">Market segmentation diverges sharply at this layer. AAAs own the SMB long tail. CCaaS integrators and MASPs own enterprise. Vertical AI and Niche firms own specific industry pockets. BPOs target enterprise cost reduction buyers.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── 2x2 MATRIX ── -->
+<div class="matrix-section">
+  <div class="section-label">02 · Strategic Positioning Matrix — Market Reach vs. AI Depth</div>
+  <div class="matrix-wrapper">
+    <div class="matrix-inner">
+
+      <!-- Quadrants -->
+      <div class="quadrant q-tl">
+        <div class="quadrant-label">HIGH DEPTH<br>NARROW REACH<br>────────<br>Specialists</div>
+      </div>
+      <div class="quadrant q-tr">
+        <div class="quadrant-label">HIGH DEPTH<br>BROAD REACH<br>────────<br>Leaders</div>
+      </div>
+      <div class="quadrant q-bl">
+        <div class="quadrant-label">LOW DEPTH<br>NARROW REACH<br>────────<br>Laggards</div>
+      </div>
+      <div class="quadrant q-br">
+        <div class="quadrant-label">LOW DEPTH<br>BROAD REACH<br>────────<br>Scalers</div>
+      </div>
+
+      <!-- Axes -->
+      <div class="axis-h"></div>
+      <div class="axis-v"></div>
+      <div class="axis-label axis-top">BROAD MARKET REACH →</div>
+      <div class="axis-label axis-bottom">← NARROW / NICHE REACH</div>
+      <div class="axis-label axis-left">← LOW AI DEPTH</div>
+      <div class="axis-label axis-right">HIGH AI DEPTH →</div>
+
+      <!-- Player dots — (left% = x-axis reach, top% = inverted y-axis depth) -->
+
+      <!-- AAA: Medium-high reach, Medium depth → right-center, upper-right area -->
+      <div class="matrix-player" style="left:68%;top:38%">
+        <div class="matrix-dot aaa">🏷️</div>
+        <div class="matrix-player-label aaa">Agency Resellers</div>
+      </div>
+
+      <!-- Vertical AI: Narrow reach, Very high depth → left area, top -->
+      <div class="matrix-player" style="left:22%;top:18%">
+        <div class="matrix-dot vert">🔬</div>
+        <div class="matrix-player-label vert">Vertical AI Consultants</div>
+      </div>
+
+      <!-- MASP: Medium reach, Very high depth → center-left, top -->
+      <div class="matrix-player" style="left:42%;top:14%">
+        <div class="matrix-dot masp">⚙️</div>
+        <div class="matrix-player-label masp">Managed AI SPs</div>
+      </div>
+
+      <!-- Niche: Narrow reach, High depth → left, upper-center -->
+      <div class="matrix-player" style="left:28%;top:42%">
+        <div class="matrix-dot niche">🎯</div>
+        <div class="matrix-player-label niche">Niche Automation</div>
+      </div>
+
+      <!-- CCaaS: Broad reach, High depth → right, top -->
+      <div class="matrix-player" style="left:75%;top:22%">
+        <div class="matrix-dot ccaas">📞</div>
+        <div class="matrix-player-label ccaas">CCaaS Integrators</div>
+      </div>
+
+      <!-- BPO: Broad reach, Low depth → right, bottom -->
+      <div class="matrix-player" style="left:72%;top:72%">
+        <div class="matrix-dot bpo">🌍</div>
+        <div class="matrix-player-label bpo">Offshore BPO</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── DEEP DIVE CARDS ── -->
+<div class="deepdive-section">
+  <div class="section-label">03 · Player Deep Dives — Ecosystem Position, Buyers, Threat to AAAs</div>
+  <div class="deepdive-grid">
+
+    <!-- AAA — Reference card -->
+    <div class="deepdive-card featured">
+      <div class="deepdive-top aaa">
+        <span class="deepdive-icon">🏷️</span>
+        <div class="deepdive-name">Voice AI Agency Resellers (AAAs)</div>
+        <div class="deepdive-tagline">The reference player. SMB-focused, voice-first, platform-agnostic white-labelers.</div>
+      </div>
+      <div class="deepdive-body">
+        <div class="compare-row">
+          <div class="dd-section-title">Ecosystem Layer</div>
+          <div class="compare-row-value">Layer 4 · Distribution & Implementation Channel</div>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Platforms Used</div>
+          <ul class="dd-list">
+            <li>Vapi, Synthflow, Retell AI, Bland AI</li>
+            <li>GoHighLevel (CRM bundling)</li>
+            <li>Make / Zapier (workflow automation)</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Buyers</div>
+          <ul class="dd-list">
+            <li>SMB local businesses (1–50 employees)</li>
+            <li>Real estate, healthcare, home services, legal</li>
+            <li>Anyone with high call volume + small staff</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Revenue Model</div>
+          <ul class="dd-list">
+            <li>$500–$5,000 setup fees</li>
+            <li>$300–$2,000/month retainer or SaaS</li>
+            <li>Usage markup on platform costs</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Competitive Moat</div>
+          <ul class="dd-list">
+            <li>Speed of deployment (days not months)</li>
+            <li>SMB relationships + vertical knowledge</li>
+            <li>Low price point accessible to long tail</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vertical AI Consultants -->
+    <div class="deepdive-card">
+      <div class="deepdive-top vert">
+        <span class="deepdive-icon">🔬</span>
+        <div class="deepdive-name">Vertical AI Consultants</div>
+        <div class="deepdive-tagline">Deep domain experts who build bespoke AI for one industry. Think "AI for Healthcare" or "AI for Legal."</div>
+      </div>
+      <div class="deepdive-body">
+        <div class="compare-row">
+          <div class="dd-section-title">Ecosystem Layer</div>
+          <div class="compare-row-value">Layer 4 · Specialist Implementation · sits above platforms, below end market</div>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Platforms Used</div>
+          <ul class="dd-list">
+            <li>Custom LLM fine-tuning (OpenAI, Anthropic)</li>
+            <li>Nuance DAX, Suki, Hyro (healthcare)</li>
+            <li>Harvey AI, Clio (legal)</li>
+            <li>Rarely use Vapi/Synthflow</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Buyers</div>
+          <ul class="dd-list">
+            <li>Hospital systems, large clinics</li>
+            <li>Am Law 200 law firms</li>
+            <li>Financial institutions</li>
+            <li>Mid-market to enterprise only</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Revenue Model</div>
+          <ul class="dd-list">
+            <li>$50K–$500K+ project engagements</li>
+            <li>Ongoing retainer for maintenance</li>
+            <li>Per-seat or outcome-based licensing</li>
+          </ul>
+        </div>
+        <div class="dd-vs-aaa">
+          <div class="dd-vs-label">vs Agency Resellers</div>
+          <div class="dd-vs-text">Vertical AI consultants play a completely different game — 10–100x the deal size, 10x longer sales cycle, completely different buyer. They rarely compete with AAAs. Potential <strong>partnership</strong>: AAAs could white-label vertical AI outputs for SMB versions of the same use case.</div>
+        </div>
+        <div><span class="threat-badge threat-partner">PARTNER POTENTIAL</span></div>
+      </div>
+    </div>
+
+    <!-- Managed AI Service Providers -->
+    <div class="deepdive-card">
+      <div class="deepdive-top masp">
+        <span class="deepdive-icon">⚙️</span>
+        <div class="deepdive-name">Managed AI Service Providers</div>
+        <div class="deepdive-tagline">Full-stack AI operations partners who own the entire AI infrastructure for mid-market and enterprise clients.</div>
+      </div>
+      <div class="deepdive-body">
+        <div class="compare-row">
+          <div class="dd-section-title">Ecosystem Layer</div>
+          <div class="compare-row-value">Layer 4 · Full-stack managed services · touches Layers 1–5</div>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Platforms Used</div>
+          <ul class="dd-list">
+            <li>Full LLM API stack (all providers)</li>
+            <li>Voiceflow, Botpress, Rasa for orchestration</li>
+            <li>Deepgram, ElevenLabs direct</li>
+            <li>Azure AI, AWS AI, GCP AI services</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Buyers</div>
+          <ul class="dd-list">
+            <li>Mid-market companies ($10M–$500M revenue)</li>
+            <li>Enterprise ops and IT leadership</li>
+            <li>Companies wanting "AI without hiring"</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Revenue Model</div>
+          <ul class="dd-list">
+            <li>$5,000–$50,000/month managed retainer</li>
+            <li>Implementation projects $25K–$250K</li>
+            <li>Outcome-based pricing emerging</li>
+          </ul>
+        </div>
+        <div class="dd-vs-aaa">
+          <div class="dd-vs-label">vs Agency Resellers</div>
+          <div class="dd-vs-text">MASPs target a buyer 10–50x larger than AAAs and deliver 10x more complex solutions. Low direct competition today, but MASPs are beginning to offer packaged SMB tiers — which could encroach on AAA territory by 2026–27.</div>
+        </div>
+        <div><span class="threat-badge threat-low">LOW THREAT NOW</span> <span class="threat-badge threat-med">WATCH 2026+</span></div>
+      </div>
+    </div>
+
+    <!-- Niche Automation Firms -->
+    <div class="deepdive-card">
+      <div class="deepdive-top niche">
+        <span class="deepdive-icon">🎯</span>
+        <div class="deepdive-name">Niche Automation Firms</div>
+        <div class="deepdive-tagline">Hyper-focused automation specialists who own one workflow in one vertical extremely well.</div>
+      </div>
+      <div class="deepdive-body">
+        <div class="compare-row">
+          <div class="dd-section-title">Ecosystem Layer</div>
+          <div class="compare-row-value">Layer 4 · Specialized implementation · often productizing into SaaS</div>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Platforms Used</div>
+          <ul class="dd-list">
+            <li>Vapi or Retell for voice components</li>
+            <li>Make / Zapier / n8n for workflow</li>
+            <li>Airtable, Notion for data layer</li>
+            <li>GoHighLevel for CRM in some cases</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Buyers</div>
+          <ul class="dd-list">
+            <li>One specific vertical (e.g. HVAC only)</li>
+            <li>SMB to small mid-market</li>
+            <li>Often sold via industry associations</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Revenue Model</div>
+          <ul class="dd-list">
+            <li>$500–$3,000/month SaaS pricing</li>
+            <li>Moving toward productized services</li>
+            <li>Often bootstrapped, high-margin</li>
+          </ul>
+        </div>
+        <div class="dd-vs-aaa">
+          <div class="dd-vs-label">vs Agency Resellers</div>
+          <div class="dd-vs-text">Closest competitor to AAAs in the ecosystem. Both use the same platforms (Vapi, Synthflow), target similar buyer sizes, and charge comparable prices. Key difference: Niche firms go <strong>deep in one vertical</strong> vs AAAs going <strong>broad across many</strong>. Direct competitors for the same client in overlapping verticals.</div>
+        </div>
+        <div><span class="threat-badge threat-high">HIGHEST DIRECT THREAT</span></div>
+      </div>
+    </div>
+
+    <!-- CCaaS Integrators -->
+    <div class="deepdive-card">
+      <div class="deepdive-top ccaas">
+        <span class="deepdive-icon">📞</span>
+        <div class="deepdive-name">CCaaS Integrators</div>
+        <div class="deepdive-tagline">Certified partners of Genesys, NICE, Five9, and Talkdesk who implement and customize enterprise contact center platforms.</div>
+      </div>
+      <div class="deepdive-body">
+        <div class="compare-row">
+          <div class="dd-section-title">Ecosystem Layer</div>
+          <div class="compare-row-value">Layer 4 · Enterprise implementation channel · bridges Layers 3B and 5</div>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Platforms Used</div>
+          <ul class="dd-list">
+            <li>Genesys Cloud, NICE CXone, Five9</li>
+            <li>Talkdesk, 8x8, Amazon Connect</li>
+            <li>Salesforce Service Cloud (CRM layer)</li>
+            <li>Never use Vapi/Synthflow</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Buyers</div>
+          <ul class="dd-list">
+            <li>Enterprise (500+ seat contact centers)</li>
+            <li>VP/Director of Customer Experience</li>
+            <li>IT and Telephony leadership</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Revenue Model</div>
+          <ul class="dd-list">
+            <li>$100K–$2M+ implementation projects</li>
+            <li>Ongoing managed support contracts</li>
+            <li>Revenue share on platform licensing</li>
+          </ul>
+        </div>
+        <div class="dd-vs-aaa">
+          <div class="dd-vs-label">vs Agency Resellers</div>
+          <div class="dd-vs-text">Zero direct competition today — completely different buyer, platform, price point, and sales cycle. However, as enterprise CCaaS platforms add AI voice agent capabilities, CCaaS integrators may start competing for the same enterprise voice AI budget that sophisticated AAAs are beginning to target.</div>
+        </div>
+        <div><span class="threat-badge threat-low">NO OVERLAP TODAY</span> <span class="threat-badge threat-med">CONVERGING 2027+</span></div>
+      </div>
+    </div>
+
+    <!-- Offshore BPO -->
+    <div class="deepdive-card">
+      <div class="deepdive-top bpo">
+        <span class="deepdive-icon">🌍</span>
+        <div class="deepdive-name">Offshore BPO / "AI Upgrade" Shops</div>
+        <div class="deepdive-tagline">Traditional BPO providers (Philippines, India, Eastern Europe) pitching AI transformation to their existing enterprise clients.</div>
+      </div>
+      <div class="deepdive-body">
+        <div class="compare-row">
+          <div class="dd-section-title">Ecosystem Layer</div>
+          <div class="compare-row-value">Layer 4 · Legacy services transitioning to AI delivery · primarily operates at Layer 5 as buyer/operator</div>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Platforms Used</div>
+          <ul class="dd-list">
+            <li>Existing CC platforms (Genesys, NICE)</li>
+            <li>Bolting on Google CCAI or AWS Connect</li>
+            <li>PolyAI or Replicant for voice AI</li>
+            <li>Rarely building custom; mostly integrating</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Primary Buyers</div>
+          <ul class="dd-list">
+            <li>Existing BPO enterprise clients</li>
+            <li>Companies seeking labor cost arbitrage</li>
+            <li>F500 and large mid-market</li>
+          </ul>
+        </div>
+        <div class="compare-row">
+          <div class="dd-section-title">Revenue Model</div>
+          <ul class="dd-list">
+            <li>Per-seat or per-hour BPO contracts</li>
+            <li>Transitioning to per-resolution pricing</li>
+            <li>Massive existing revenue at risk from AI</li>
+          </ul>
+        </div>
+        <div class="dd-vs-aaa">
+          <div class="dd-vs-label">vs Agency Resellers</div>
+          <div class="dd-vs-text">BPOs are actually being <strong>disrupted by</strong> the same voice AI that AAAs sell. Their "AI upgrade" pitch is defensive positioning to retain enterprise clients. No overlap with AAA SMB buyers. BPOs are more threat to Segment 8 platforms' enterprise direct sales than to AAAs themselves.</div>
+        </div>
+        <div><span class="threat-badge threat-low">NO THREAT TO AAAs</span> <span class="threat-badge threat-partner">POTENTIAL CLIENT</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── COMPARISON TABLE ── -->
+<div class="opp-section">
+  <div class="section-label">04 · Side-by-Side Comparison — All 6 Players</div>
+  <div style="overflow-x:auto">
+  <table class="opp-table">
+    <thead>
+      <tr>
+        <th>Player Type</th>
+        <th>Ecosystem Layer</th>
+        <th>Target Buyer</th>
+        <th>Deal Size</th>
+        <th>Sales Cycle</th>
+        <th>Platforms Used</th>
+        <th>vs AAA Threat</th>
+        <th>vs AAA Opportunity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="player-name-cell"><div class="name-dot" style="background:var(--aaa)"></div>AAA / Voice AI Agency</div></td>
+        <td>Layer 4 · Channel</td>
+        <td>SMB · Local Business</td>
+        <td>$300–$2K/mo</td>
+        <td>Days–Weeks</td>
+        <td>Vapi · Synthflow · Retell</td>
+        <td>— Reference</td>
+        <td>— Reference</td>
+      </tr>
+      <tr>
+        <td><div class="player-name-cell"><div class="name-dot" style="background:var(--vert)"></div>Vertical AI Consultants</div></td>
+        <td>Layer 4 · Specialist</td>
+        <td>Enterprise · Industry</td>
+        <td>$50K–$500K</td>
+        <td>3–9 months</td>
+        <td>Custom LLMs · Domain tools</td>
+        <td style="color:var(--vert); font-weight:600">None · Different market</td>
+        <td>White-label their vertical IP for SMB</td>
+      </tr>
+      <tr>
+        <td><div class="player-name-cell"><div class="name-dot" style="background:var(--masp)"></div>Managed AI SPs</div></td>
+        <td>Layer 4 · Full-stack</td>
+        <td>Mid-Market · Enterprise</td>
+        <td>$5K–$50K/mo</td>
+        <td>1–3 months</td>
+        <td>Full stack · All providers</td>
+        <td style="color:var(--ccaas); font-weight:600">Low now · Watch 2026</td>
+        <td>Refer SMB overflow to AAAs</td>
+      </tr>
+      <tr>
+        <td><div class="player-name-cell"><div class="name-dot" style="background:var(--niche)"></div>Niche Automation Firms</div></td>
+        <td>Layer 4 · Productized</td>
+        <td>SMB · One vertical</td>
+        <td>$500–$3K/mo</td>
+        <td>Days–Weeks</td>
+        <td>Vapi · Make · GHL</td>
+        <td style="color:var(--aaa); font-weight:700">⚠ HIGHEST — Same buyer</td>
+        <td>Acquire or partner for vertical depth</td>
+      </tr>
+      <tr>
+        <td><div class="player-name-cell"><div class="name-dot" style="background:var(--ccaas)"></div>CCaaS Integrators</div></td>
+        <td>Layer 4 · Enterprise CC</td>
+        <td>Enterprise 500+ seats</td>
+        <td>$100K–$2M</td>
+        <td>6–18 months</td>
+        <td>Genesys · NICE · Five9</td>
+        <td style="color:var(--vert); font-weight:600">None today · 2027 risk</td>
+        <td>Subcontract SMB deployments to AAAs</td>
+      </tr>
+      <tr>
+        <td><div class="player-name-cell"><div class="name-dot" style="background:var(--bpo)"></div>Offshore BPO / AI Upgrade</div></td>
+        <td>Layer 4 → being disrupted</td>
+        <td>Enterprise · F500</td>
+        <td>Per-seat / Per-hour</td>
+        <td>3–12 months</td>
+        <td>Genesys · PolyAI overlay</td>
+        <td style="color:var(--vert); font-weight:600">No overlap with SMB</td>
+        <td>BPOs may need AAA-style SMB tools</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="footnote">
+  CONVERSATIONAL AI ECOSYSTEM · CHANNEL PLAYER ANALYSIS · 2024–2026 · ALL FIGURES ESTIMATED FROM MARKET RESEARCH SYNTHESIS
+</div>
+
+</div>
+</body>
+</html>
