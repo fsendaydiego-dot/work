@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14 Conversational AI Segments</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --cream:   #faf7f2;
+  --warm:    #f2ece0;
+  --paper:   #ede7d8;
+  --rule:    #c8bfaa;
+  --rule2:   #ddd5c4;
+  --ink:     #1c1710;
+  --ink2:    #3d3526;
+  --ink3:    #7a6e5a;
+  --ink4:    #a89e8a;
+
+  /* Cluster colors — rich editorial tones */
+  --c1: #b8360a;   /* Cluster 1 — Conversational Interfaces — deep burnt orange */
+  --c2: #1a5276;   /* Cluster 2 — Intelligence & Analytics  — deep navy        */
+  --c3: #1e6b3c;   /* Cluster 3 — Infrastructure & Building — deep forest      */
+  --c4: #6b2d7a;   /* Cluster 4 — Consumer & Embedded       — deep plum        */
+
+  --c1-bg: #fff4ef;
+  --c2-bg: #eff5fb;
+  --c3-bg: #eef7f1;
+  --c4-bg: #f6eef9;
+
+  --seg8: #c0390c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Lato', sans-serif;
+  min-height: 100vh;
+}
+
+/* Subtle paper texture via repeating lines */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 27px,
+    rgba(180,160,130,0.07) 27px,
+    rgba(180,160,130,0.07) 28px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 64px 48px 100px;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  border-bottom: 3px double var(--ink);
+  padding-bottom: 28px;
+  margin-bottom: 40px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  animation: settle .6s ease both;
+}
+
+.masthead-left {}
+
+.dateline {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.masthead h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 4vw, 58px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  color: var(--ink);
+}
+
+.masthead h1 em {
+  font-style: italic;
+  color: var(--c1);
+}
+
+.masthead-right {
+  text-align: right;
+}
+
+.masthead-stats {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+  line-height: 2.0;
+}
+
+.masthead-stats strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.deck {
+  font-size: 15px;
+  color: var(--ink2);
+  line-height: 1.65;
+  max-width: 780px;
+  margin-top: 16px;
+  font-weight: 300;
+}
+
+.deck strong { font-weight: 700; color: var(--ink); }
+
+/* ── CLUSTER TABS ── */
+.cluster-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--ink);
+  animation: settle .6s .1s ease both;
+  flex-wrap: wrap;
+}
+
+.ctab {
+  padding: 10px 22px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 2px solid transparent;
+  border-bottom: none;
+  cursor: pointer;
+  transition: all .2s;
+  color: var(--ink3);
+  background: transparent;
+  margin-bottom: -2px;
+  position: relative;
+  top: 0;
+}
+
+.ctab:hover { color: var(--ink); background: var(--warm); }
+
+.ctab.active {
+  border-color: var(--ink);
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.ctab-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 7px;
+  vertical-align: middle;
+}
+
+/* ── MAIN TABLE ── */
+.table-wrap {
+  animation: settle .6s .2s ease both;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid var(--ink);
+  background: var(--cream);
+  font-size: 13px;
+}
+
+/* Column widths */
+col.c-cluster  { width: 170px; }
+col.c-seg      { width: 52px; }
+col.c-name     { width: 160px; }
+col.c-modality { width: 100px; }
+col.c-user     { width: 120px; }
+col.c-job      { width: 140px; }
+col.c-desc     { width: auto; }
+col.c-examples { width: 210px; }
+col.c-size     { width: 90px; }
+col.c-cagr     { width: 68px; }
+
+/* Header row */
+thead tr {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+thead th {
+  padding: 12px 14px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 400;
+  text-align: left;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  white-space: nowrap;
+}
+
+thead th:last-child { border-right: none; }
+
+/* Cluster header rows */
+tr.cluster-hdr td {
+  padding: 10px 14px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid;
+  vertical-align: middle;
+}
+
+tr.cluster-hdr.cl1 td { background: var(--c1); color: #fff; border-color: var(--c1); }
+tr.cluster-hdr.cl2 td { background: var(--c2); color: #fff; border-color: var(--c2); }
+tr.cluster-hdr.cl3 td { background: var(--c3); color: #fff; border-color: var(--c3); }
+tr.cluster-hdr.cl4 td { background: var(--c4); color: #fff; border-color: var(--c4); }
+
+.cluster-count {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 9px;
+  background: rgba(255,255,255,0.2);
+  letter-spacing: 1px;
+}
+
+/* Segment rows */
+tr.seg-row {
+  border-bottom: 1px solid var(--rule2);
+  transition: background .15s;
+}
+
+tr.seg-row:hover { background: var(--warm); }
+
+tr.seg-row.hero {
+  background: #fff8f5;
+}
+
+tr.seg-row.hero:hover { background: #fff0e8; }
+
+td {
+  padding: 13px 14px;
+  vertical-align: top;
+  border-right: 1px solid var(--rule2);
+  line-height: 1.5;
+}
+
+td:last-child { border-right: none; }
+
+/* Segment number cell */
+.seg-num {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.seg-num-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+/* Hero badge */
+.hero-badge {
+  font-family: 'Courier Prime', monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: var(--seg8);
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* Segment name cell */
+.seg-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+tr.seg-row.hero .seg-name { color: var(--seg8); }
+
+.seg-name-sub {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  color: var(--ink4);
+  letter-spacing: 1px;
+  margin-top: 3px;
+  font-style: italic;
+}
+
+/* Modality pill */
+.modality {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 3px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.mod-voice   { color: #8B0000; background: #fff5f5; border-color: #f0b8b8; }
+.mod-text    { color: #004080; background: #f0f5ff; border-color: #b8d0f0; }
+.mod-multi   { color: #4a0080; background: #f8f0ff; border-color: #d8b8f0; }
+.mod-analytics { color: #004d26; background: #f0faf4; border-color: #b8e8cc; }
+.mod-infra   { color: #5a4000; background: #fdfaf0; border-color: #e8dba0; }
+
+/* End user cell */
+.end-user {
+  font-size: 11.5px;
+  color: var(--ink2);
+  font-weight: 400;
+}
+
+/* Job to be done */
+.job {
+  font-size: 11.5px;
+  color: var(--ink2);
+  font-style: italic;
+}
+
+/* Description */
+.desc {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+tr.seg-row.hero .desc { color: var(--ink); font-weight: 400; }
+
+/* Examples */
+.examples {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  line-height: 1.7;
+}
+
+.ex-item {
+  display: inline;
+}
+
+.ex-item::after { content: ' · '; color: var(--rule); }
+.ex-item:last-child::after { content: ''; }
+
+/* Size / CAGR */
+.size-val {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.cagr-val {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cagr-high   { color: #b8360a; }
+.cagr-med    { color: #1a5276; }
+.cagr-low    { color: var(--ink3); }
+.cagr-hero   { color: var(--seg8); font-size: 12px; }
+
+/* Growth bar under CAGR */
+.cagr-bar {
+  height: 3px;
+  border-radius: 2px;
+  margin-top: 5px;
+  background: var(--rule2);
+  overflow: hidden;
+}
+
+.cagr-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+/* ── FOOTER SUMMARY ── */
+.summary {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  animation: settle .6s .3s ease both;
+}
+
+@media (max-width: 800px) { .summary { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .summary { grid-template-columns: 1fr; } }
+
+.sum-card {
+  border: 1.5px solid var(--rule);
+  border-top: 3px solid;
+  border-radius: 4px;
+  padding: 18px;
+  background: var(--cream);
+  transition: transform .2s;
+}
+
+.sum-card:hover { transform: translateY(-3px); }
+
+.sum-card.cl1 { border-top-color: var(--c1); }
+.sum-card.cl2 { border-top-color: var(--c2); }
+.sum-card.cl3 { border-top-color: var(--c3); }
+.sum-card.cl4 { border-top-color: var(--c4); }
+
+.sum-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 6px;
+}
+
+.sum-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.sum-card.cl1 .sum-name { color: var(--c1); }
+.sum-card.cl2 .sum-name { color: var(--c2); }
+.sum-card.cl3 .sum-name { color: var(--c3); }
+.sum-card.cl4 .sum-name { color: var(--c4); }
+
+.sum-desc {
+  font-size: 11px;
+  color: var(--ink3);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+
+.sum-segs {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--ink4);
+}
+
+/* Annotations */
+.annot {
+  margin-top: 28px;
+  padding: 18px 22px;
+  background: var(--warm);
+  border-left: 4px solid var(--seg8);
+  border-radius: 0 4px 4px 0;
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.65;
+  animation: settle .6s .4s ease both;
+}
+
+.annot strong { color: var(--seg8); font-weight: 700; }
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  animation: settle .6s .15s ease both;
+}
+
+.filter-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.fbtn {
+  padding: 5px 14px;
+  border: 1.5px solid var(--rule);
+  border-radius: 3px;
+  background: var(--cream);
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--ink3);
+  cursor: pointer;
+  transition: all .15s;
+  text-transform: uppercase;
+}
+
+.fbtn:hover, .fbtn.on { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-left">
+    <div class="dateline">Conversational AI · Market Intelligence · 2024 Edition</div>
+    <h1>How the <em>14 Segments</em><br>Are Organized</h1>
+    <p class="deck">
+      The complete taxonomy of Conversational AI — every distinct product category mapped across
+      <strong>4 clusters</strong>, <strong>3 dimensions</strong>, and <strong>$13.5B</strong> in 2024 market value.
+      Each segment is a unique combination of modality, end user, and job to be done.
+    </p>
+  </div>
+  <div class="masthead-right">
+    <div class="masthead-stats">
+      Total Ecosystem <strong>$13.5B</strong><br>
+      Segments Mapped <strong>14</strong><br>
+      Clusters <strong>4</strong><br>
+      Blended CAGR <strong>23.5%</strong><br>
+      2034 Projection <strong>$111.4B</strong>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <button class="fbtn on" onclick="filterRows('all',this)">All 14</button>
+  <button class="fbtn" onclick="filterRows('cl1',this)" style="border-color:var(--c1);color:var(--c1)">Cluster 1 · Interfaces</button>
+  <button class="fbtn" onclick="filterRows('cl2',this)" style="border-color:var(--c2);color:var(--c2)">Cluster 2 · Intelligence</button>
+  <button class="fbtn" onclick="filterRows('cl3',this)" style="border-color:var(--c3);color:var(--c3)">Cluster 3 · Infrastructure</button>
+  <button class="fbtn" onclick="filterRows('cl4',this)" style="border-color:var(--c4);color:var(--c4)">Cluster 4 · Consumer</button>
+  <button class="fbtn" onclick="filterRows('hero',this)" style="border-color:var(--seg8);color:var(--seg8)">Segment 8 Only</button>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+<table id="main-table">
+<colgroup>
+  <col class="c-seg">
+  <col class="c-name">
+  <col class="c-modality">
+  <col class="c-user">
+  <col class="c-job">
+  <col class="c-desc">
+  <col class="c-examples">
+  <col class="c-size">
+  <col class="c-cagr">
+</colgroup>
+<thead>
+  <tr>
+    <th>#</th>
+    <th>Segment Name</th>
+    <th>Modality</th>
+    <th>End User</th>
+    <th>Job To Be Done</th>
+    <th>Description</th>
+    <th>Key Products</th>
+    <th>2024 Size</th>
+    <th>CAGR</th>
+  </tr>
+</thead>
+<tbody id="tbody">
+</tbody>
+</table>
+</div>
+
+<!-- CLUSTER SUMMARY CARDS -->
+<div class="summary">
+  <div class="sum-card cl1">
+    <div class="sum-label">Cluster 1 · 9 Segments</div>
+    <div class="sum-name">Conversational Interfaces</div>
+    <div class="sum-desc">Customer-facing products that users actually talk to. The front-end of the entire ecosystem. Where revenue is most visible and brand recognition is highest.</div>
+    <div class="sum-segs">S1 · S2 · S3 · S4 · S5 · S6 · S11 · S12 · S14</div>
+  </div>
+  <div class="sum-card cl2">
+    <div class="sum-label">Cluster 2 · 3 Segments</div>
+    <div class="sum-name">Intelligence & Analytics</div>
+    <div class="sum-desc">Products that learn from conversations rather than conduct them. The analytical and agentic layer — mining past interactions and executing autonomous future actions.</div>
+    <div class="sum-segs">S7 · S8 · S10</div>
+  </div>
+  <div class="sum-card cl3">
+    <div class="sum-label">Cluster 3 · 2 Segments</div>
+    <div class="sum-name">Infrastructure & Building</div>
+    <div class="sum-desc">The enabling layer — tools that power all other segments. Without these, most of the 12 segments above would not exist. Invisible to end users, essential to developers.</div>
+    <div class="sum-segs">S9 · S13</div>
+  </div>
+  <div class="sum-card cl4">
+    <div class="sum-label">Cluster 4 · Noted</div>
+    <div class="sum-name">Consumer & Embedded</div>
+    <div class="sum-desc">Smart speakers and automotive voice AI — excluded from the $13.5B baseline because revenue is captured under Consumer Electronics and Automotive Software taxonomies.</div>
+    <div class="sum-segs">Smart Speakers · Automotive</div>
+  </div>
+</div>
+
+<!-- SEGMENT 8 ANNOTATION -->
+<div class="annot">
+  <strong>Why Segment 8 is the Most Important Row:</strong> Of the 14 segments, Autonomous Voice Agents (S2) is the only one that is simultaneously the second-largest by current revenue ($2.70B), the fastest-growing by CAGR (35.5%), and the primary product category delivered by the agency reseller channel (Layer 4). It sits in Cluster 1 as a conversational interface, but uniquely within that cluster it requires <em>no human agent on the delivery side</em> — making it the most economically scalable segment in the entire ecosystem. By 2034 it is projected to represent ~50% of total ecosystem value.
+</div>
+
+</div><!-- /page -->
+
+<script>
+const CLUSTERS = [
+  {
+    id: 'cl1',
+    name: 'Cluster 1 — Conversational Interfaces',
+    sub: 'Products users directly talk to · Front-end of the ecosystem',
+    color: '#b8360a',
+    bg: '#fff4ef',
+  },
+  {
+    id: 'cl2',
+    name: 'Cluster 2 — Intelligence & Analytics',
+    sub: 'Products that learn from conversations · Analytical & agentic layer',
+    color: '#1a5276',
+    bg: '#eff5fb',
+  },
+  {
+    id: 'cl3',
+    name: 'Cluster 3 — Infrastructure & Building Tools',
+    sub: 'Products that enable all other segments · Invisible to end users',
+    color: '#1e6b3c',
+    bg: '#eef7f1',
+  },
+  {
+    id: 'cl4',
+    name: 'Cluster 4 — Consumer & Embedded',
+    sub: 'Hardware-integrated voice AI · Excluded from $13.5B baseline',
+    color: '#6b2d7a',
+    bg: '#f6eef9',
+  },
+];
+
+const SEGS = [
+  // Cluster 1
+  {
+    cluster:'cl1', num:'S1', hero:false,
+    name:'General AI Assistants',
+    sub:'Open-ended · No guardrails',
+    modality:'text', modalLabel:'Text / Multi',
+    user:'Consumers · Knowledge Workers',
+    job:'Handle any task, any topic',
+    desc:'Broad, open-ended AI chat interfaces. No topic restrictions. Users ask anything — writing, research, coding, analysis, creative work. The most publicly visible products in AI.',
+    examples:['Claude','ChatGPT','Gemini','Perplexity','Grok','Copilot'],
+    size:'$2.97B', cagr:35, cagrClass:'cagr-high',
+  },
+  {
+    cluster:'cl1', num:'S2', hero:true,
+    name:'Autonomous Voice Agents',
+    sub:'Phone AI · No human needed',
+    modality:'voice', modalLabel:'Voice · Phone',
+    user:'SMB Clients via Agency Channel',
+    job:'Complete full phone calls end-to-end',
+    desc:'AI systems that conduct complete inbound and outbound phone conversations without any human involvement. Lead qualification, appointment booking, collections, support — all handled autonomously at scale.',
+    examples:['Vapi','Bland AI','Retell AI','Synthflow','Air AI','PolyAI'],
+    size:'$2.70B', cagr:35.5, cagrClass:'cagr-hero',
+  },
+  {
+    cluster:'cl1', num:'S3', hero:false,
+    name:'Enterprise Contact Center AI',
+    sub:'Omnichannel · High volume',
+    modality:'multi', modalLabel:'Omnichannel',
+    user:'Enterprise CX Teams',
+    job:'Manage customer interactions at enterprise scale',
+    desc:'AI embedded within large-scale contact center operations. Handles voice, chat, and digital channels simultaneously. Deep CRM and telephony integration, compliance, workforce management, and real-time analytics.',
+    examples:['Genesys','NICE CXone','Five9','Talkdesk','Avaya','Amazon Connect'],
+    size:'$1.76B', cagr:18, cagrClass:'cagr-med',
+  },
+  {
+    cluster:'cl1', num:'S4', hero:false,
+    name:'LLM-Powered Chatbots',
+    sub:'Scoped · Guardrailed',
+    modality:'text', modalLabel:'Text · Web',
+    user:'Website Visitors · Support Seekers',
+    job:'Resolve bounded customer service queries',
+    desc:'AI chatbots powered by large language models, deployed within a specific business context — customer support, sales, HR. Dynamic and contextual but scoped to defined topics, unlike general assistants.',
+    examples:['Intercom Fin','Zendesk AI','Drift','Freshdesk Freddy','Ada','Gorgias'],
+    size:'$1.35B', cagr:28, cagrClass:'cagr-high',
+  },
+  {
+    cluster:'cl1', num:'S5', hero:false,
+    name:'Conversational IVR',
+    sub:'Replaces press-1 systems',
+    modality:'voice', modalLabel:'Voice · Phone',
+    user:'Callers to Large Enterprises',
+    job:'Route and self-serve phone callers naturally',
+    desc:'Next-generation phone systems replacing legacy "press 1 for billing" IVR. Callers speak naturally in plain language and are routed or served without pressing a single button. Measured in call containment rates.',
+    examples:['PolyAI','Replicant','SmartAction','Google CCAI','Nuance','Tenyx'],
+    size:'$0.94B', cagr:20, cagrClass:'cagr-med',
+  },
+  {
+    cluster:'cl1', num:'S6', hero:false,
+    name:'AI Copilots / Agent Assist',
+    sub:'Human-in-the-loop · Augmentation',
+    modality:'multi', modalLabel:'Multi · Assist',
+    user:'Knowledge Workers · Agents · Developers',
+    job:'Augment humans with real-time AI suggestions',
+    desc:'AI that works alongside a human rather than replacing them. Surfaces information, suggests responses, auto-completes tasks, and coaches performance in real time. The human stays in control but moves dramatically faster.',
+    examples:['M365 Copilot','Salesforce Einstein','GitHub Copilot','Balto','Cresta','Observe.AI'],
+    size:'$0.81B', cagr:32, cagrClass:'cagr-high',
+  },
+  {
+    cluster:'cl1', num:'S11', hero:false,
+    name:'Messaging & SMS AI',
+    sub:'Native messaging channels',
+    modality:'text', modalLabel:'SMS · Messaging',
+    user:'Mobile Consumers · SMB Customers',
+    job:'Engage customers on channels they already use',
+    desc:'AI agents operating inside native messaging channels — SMS, WhatsApp, iMessage, RCS. The channel the user already owns drives dramatically higher engagement than website widgets or apps. Two-way conversation in the palm of the hand.',
+    examples:['Twilio','Clerk Chat','Podium','Attentive','Postscript','Bird'],
+    size:'$0.27B', cagr:25, cagrClass:'cagr-high',
+  },
+  {
+    cluster:'cl1', num:'S12', hero:false,
+    name:'Avatar & Video AI',
+    sub:'Digital humans · Lip-sync',
+    modality:'multi', modalLabel:'Video · Avatar',
+    user:'Sales Targets · Learners · Viewers',
+    job:'Create human-like video conversational presence',
+    desc:'AI agents given visible human faces, synchronized lip movements, and expressive gestures. Creating a video-based conversational interface — AI sales reps, virtual trainers, personalized video outreach. Rapidly crossing the uncanny valley.',
+    examples:['HeyGen','Synthesia','D-ID','Tavus','Soul Machines','Uneeq'],
+    size:'$0.20B', cagr:38, cagrClass:'cagr-high',
+  },
+  {
+    cluster:'cl1', num:'S14', hero:false,
+    name:'Real-Time Translation AI',
+    sub:'Cross-language · Live interpretation',
+    modality:'multi', modalLabel:'Voice · Text',
+    user:'International Business · Healthcare',
+    job:'Break language barriers in live conversation',
+    desc:'AI that listens in one language and responds or translates in another in real time. Goes beyond word-for-word translation to true interpretation — capturing meaning, tone, and cultural context without delay.',
+    examples:['DeepL','KUDO','Wordly','Google Translate Live','Pocketalk','Interprefy'],
+    size:'$0.14B', cagr:24, cagrClass:'cagr-med',
+  },
+  // Cluster 2
+  {
+    cluster:'cl2', num:'S7', hero:false,
+    name:'Conversation Intelligence',
+    sub:'Analytics from recordings',
+    modality:'analytics', modalLabel:'Analytics',
+    user:'Sales VPs · QA Managers · CX Leaders',
+    job:'Extract business intelligence from past conversations',
+    desc:'AI that mines recorded or live conversations for business insight. Does not conduct conversations — analyzes them. Revenue intelligence, call scoring, coaching opportunities, competitor tracking, and sentiment measurement at scale.',
+    examples:['Gong','Chorus','Observe.AI','Invoca','Marchex','Verint'],
+    size:'$0.74B', cagr:22, cagrClass:'cagr-med',
+  },
+  {
+    cluster:'cl2', num:'S8', hero:false,
+    name:'Domain / Vertical AI',
+    sub:'Industry-specific · Fine-tuned',
+    modality:'multi', modalLabel:'Text · Voice',
+    user:'Industry Professionals',
+    job:'Provide expert-level AI in a specific domain',
+    desc:'AI assistants trained or fine-tuned for a specific industry — legal, healthcare, financial services, HR. Combines LLM fluency with deep domain knowledge, compliance requirements, and professional workflow integration. Highest value per interaction.',
+    examples:['Harvey AI','Nuance DAX','Suki AI','Kasisto','Abridge','Bloomberg GPT'],
+    size:'$0.68B', cagr:30, cagrClass:'cagr-high',
+  },
+  {
+    cluster:'cl2', num:'S10', hero:false,
+    name:'Autonomous Task Agents',
+    sub:'Agentic AI · Takes actions',
+    modality:'multi', modalLabel:'Agentic · Multi',
+    user:'Enterprise Teams · Developers · Operations',
+    job:'Autonomously execute multi-step tasks across systems',
+    desc:'The frontier of conversational AI. Goes beyond conversation to independently execute complex workflows — browsing the web, writing code, sending emails, updating databases. The conversation is the control interface; the real value is autonomous action.',
+    examples:['Claude (tools)','ChatGPT Operator','CrewAI','LangGraph','AutoGen','Devin'],
+    size:'$0.41B', cagr:45, cagrClass:'cagr-high',
+  },
+  // Cluster 3
+  {
+    cluster:'cl3', num:'S9', hero:false,
+    name:'Dev Platforms & Infrastructure',
+    sub:'Builder tools · Frameworks',
+    modality:'infra', modalLabel:'Infrastructure',
+    user:'Developers · AI Engineers · Conversation Designers',
+    job:'Enable builders to create conversational AI products',
+    desc:'The tools, frameworks, and infrastructure developers use to build all other segments. Visual conversation designers, NLU engines, bot frameworks, testing tools, and deployment pipelines. Invisible to end users — essential to everyone who builds.',
+    examples:['Dialogflow CX','Amazon Lex','Voiceflow','Botpress','Rasa','LangChain'],
+    size:'$0.54B', cagr:29, cagrClass:'cagr-high',
+  },
+  {
+    cluster:'cl3', num:'S13', hero:false,
+    name:'Rule-Based Chatbots',
+    sub:'Scripted · Decision trees',
+    modality:'text', modalLabel:'Text · Script',
+    user:'Website Visitors · Basic Support',
+    job:'Handle simple, predictable scripted interactions',
+    desc:'The original generation of conversational AI — pre-defined decision trees, keyword triggers, no true natural language understanding. Cheap, predictable, and auditable. Still widely deployed for simple FAQ flows but declining rapidly as LLM chatbots take over.',
+    examples:['ManyChat','Chatfuel','Tidio','Landbot','Tars','Flow XO'],
+    size:'$0.14B', cagr:2, cagrClass:'cagr-low',
+  },
+  // Cluster 4
+  {
+    cluster:'cl4', num:'—', hero:false,
+    name:'Consumer & Embedded Voice',
+    sub:'Smart speakers · Automotive · Wearables',
+    modality:'voice', modalLabel:'Voice · Hardware',
+    user:'General Consumers · Drivers',
+    job:'Provide hands-free AI in everyday physical environments',
+    desc:'Smart speakers (Alexa, Google Home), automotive assistants (Cerence, SoundHound), and wearable AI. Excluded from the $13.5B Conversational AI baseline because revenue is classified under Consumer Electronics and Automotive Software market categories, not pure AI software.',
+    examples:['Amazon Alexa','Google Assistant','Apple Siri','Cerence','SoundHound','Samsung Bixby'],
+    size:'Excl.*', cagr:null, cagrClass:'',
+  },
+];
+
+const tbody = document.getElementById('tbody');
+let currentCluster = 'cl1';
+let prevCluster = null;
+
+const CMAP = { cl1:'#b8360a', cl2:'#1a5276', cl3:'#1e6b3c', cl4:'#6b2d7a' };
+const MODMAP = {
+  voice:     { cls:'mod-voice',     icon:'🎙' },
+  text:      { cls:'mod-text',      icon:'💬' },
+  multi:     { cls:'mod-multi',     icon:'⚡' },
+  analytics: { cls:'mod-analytics', icon:'📊' },
+  infra:     { cls:'mod-infra',     icon:'🔧' },
+};
+
+function renderTable(filter) {
+  tbody.innerHTML = '';
+  let prevCl = null;
+
+  SEGS.forEach(s => {
+    if (filter !== 'all' && filter !== 'hero' && s.cluster !== filter) return;
+    if (filter === 'hero' && !s.hero) return;
+
+    // Cluster header
+    if (s.cluster !== prevCl && filter === 'all') {
+      prevCl = s.cluster;
+      const cl = CLUSTERS.find(c => c.id === s.cluster);
+      const tr = document.createElement('tr');
+      tr.className = `cluster-hdr ${s.cluster}`;
+      tr.style.background = cl.color;
+      tr.innerHTML = `<td colspan="9" style="color:#fff">
+        ${cl.name}
+        <span class="cluster-count">${SEGS.filter(x=>x.cluster===s.cluster).length} segments</span>
+        <span style="font-size:9px;letter-spacing:1px;opacity:.75;margin-left:12px;font-weight:300">${cl.sub}</span>
+      </td>`;
+      tbody.appendChild(tr);
+    }
+
+    const clColor = CMAP[s.cluster];
+    const mod = MODMAP[s.modality];
+    const maxCagr = 45;
+    const cagrPct = s.cagr ? Math.round((s.cagr / maxCagr) * 100) : 0;
+
+    const tr = document.createElement('tr');
+    tr.className = 'seg-row' + (s.hero ? ' hero' : '') + ' ' + s.cluster;
+    tr.innerHTML = `
+      <td style="text-align:center">
+        <div class="seg-num">
+          <div class="seg-num-circle" style="background:${s.num==='—'?'#aaa':clColor}">${s.num}</div>
+          ${s.hero ? '<div class="hero-badge">SEG 8 ★</div>' : ''}
+        </div>
+      </td>
+      <td>
+        <div class="seg-name">${s.name}</div>
+        <div class="seg-name-sub">${s.sub}</div>
+      </td>
+      <td>
+        <span class="modality ${mod.cls}">${mod.icon} ${s.modalLabel}</span>
+      </td>
+      <td><div class="end-user">${s.user}</div></td>
+      <td><div class="job">${s.job}</div></td>
+      <td><div class="desc">${s.desc}</div></td>
+      <td>
+        <div class="examples">
+          ${s.examples.map(e=>`<span class="ex-item">${e}</span>`).join('')}
+        </div>
+      </td>
+      <td><div class="size-val">${s.size}</div></td>
+      <td>
+        <div class="cagr-val ${s.cagrClass}">${s.cagr ? s.cagr+'%' : 'N/A'}</div>
+        <div class="cagr-bar">
+          <div class="cagr-fill" style="width:${cagrPct}%; background:${s.hero?'#c0390c':clColor}"></div>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterRows(filter, btn) {
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTable(filter);
+}
+
+renderTable('all');
+</script>
+</body>
+</html>
