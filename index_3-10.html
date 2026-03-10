@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fe’s Workbench</title>
+
+  <!-- Styling -->
+  <style>
+    :root{
+      --bg:#0b1324;--card:#151c2f;--text:#e7edf5;--subtle:#a9b4c4;
+      --accent:#3ea6ff;--ring:rgba(62,166,255,.45)
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 800px at 10% 10%,#101833 0%,var(--bg) 40%),
+        radial-gradient(900px 600px at 90% 30%,#0f1b3a 0%,var(--bg) 40%),
+        var(--bg);
+      color:var(--text);min-height:100svh;display:grid;place-items:center;padding:24px
+    }
+    main{
+      width:100%;max-width:720px;background:color-mix(in srgb,var(--card),#fff 2%);
+      border:1px solid rgba(255,255,255,.07);border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+      padding:28px
+    }
+    /* Banner */
+    .banner{
+      background:linear-gradient(135deg,#1e2a47,#3a4f7a);
+      padding:40px 20px;text-align:center;border-radius:12px;margin-bottom:20px;
+      border:1px solid rgba(255,255,255,.1)
+    }
+    .banner h1{margin:0;font-size:clamp(1.75rem,1.2rem + 2vw,2.5rem)}
+    .banner .lead{margin-top:8px;font-size:1rem;color:#bfc9d9}
+
+    /* Cards grid */
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+    @media (max-width:720px){.grid{grid-template-columns:1fr}}
+
+    a.card{
+      display:block;text-decoration:none;color:inherit;
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px;position:relative;
+      transition:transform 120ms ease,border-color 120ms ease,box-shadow 120ms ease;outline:none
+    }
+    a.card:hover, a.card:focus-visible{
+      transform:translateY(-2px);
+      border-color:color-mix(in srgb,var(--accent),white 35%);
+      box-shadow:0 10px 25px rgba(0,0,0,.35),0 0 0 4px var(--ring)
+    }
+    .title{font-weight:600;margin-bottom:6px}
+    .desc{color:var(--subtle);font-size:.92rem;line-height:1.35}
+    .ext{position:absolute;top:12px;right:12px;font-size:.85rem;color:var(--accent)}
+
+    footer{margin-top:18px;color:var(--subtle);font-size:.85rem}
+    .kbd{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      font-size:.8em;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+      border-bottom-width:2px;border-radius:6px;padding:.15em .35em
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="banner">
+      <h1>Fe’s • Workspace</h1>
+      <p class="lead">Dashboards • Reports • Ecosystem Visuals</p>
+    </header>
+
+    <section class="grid" aria-label="Page options">
+      <!-- Option 1 -->
+      <a class="card"
+         href="./channel-player-positioning.html"
+         target="_blank" rel="noopener noreferrer"
+         aria-describedby="desc-cpp">
+        <div class="ext" aria-hidden="true">↗</div>
+        <div class="title">Channel Player Positioning</div>
+        <div id="desc-cpp" class="desc">
+          Opens <code>channel-player-positioning.html</code> in a separate browser tab.
+        </div>
+      </a>
+
+      <!-- Option 2 -->
+      <a class="card"
+         href="./conversational-ai-ecosystem.html"
+         target="_blank" rel="noopener noreferrer"
+         aria-describedby="desc-cae">
+        <div class="ext" aria-hidden="true">↗</div>
+        <div class="title">Conversational AI Ecosystem</div>
+        <div id="desc-cae" class="desc">
+          Opens <code>conversational-ai-ecosystem.html</code> in a separate browser tab.
+        </div>
+      </a>
+
+      <!-- Option 3 -->
+      <a class="card"
+         href="./ecosystem-dual-axis.html"
+         target="_blank" rel="noopener noreferrer"
+         aria-describedby="desc-eda">
+        <div class="ext" aria-hidden="true">↗</div>
+        <div class="title">Ecosystem (Dual Axis)</div>
+        <div id="desc-eda" class="desc">
+          Opens <code>ecosystem-dual-axis.html</code> in a separate browser tab.
+        </div>
+      </a>
+
+      <!-- Option 4 (YOU EDIT THIS) -->
+      <a class="card"
+         href="./14-segments-table.html"
+         target="_blank" rel="noopener noreferrer"
+         aria-describedby="desc-opt4">
+        <div class="ext" aria-hidden="true">↗</div>
+        <div class="title">Your 4th Option Title</div>
+        <div id="desc-opt4" class="desc">
+          Opens <code>14-segments-table.html</code> in a separate browser tab.
+        </div>
+      </a>
+    </section>
+
+    <footer>
+      Tip: hold <span class="kbd">Ctrl</span>/<span class="kbd">⌘</span> while clicking to force a new tab—even if you remove <code>target="_blank"</code>.
+    </footer>
+  </main>
+</body>
+</html>
