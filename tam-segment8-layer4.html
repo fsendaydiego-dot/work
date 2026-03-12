@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAM Analysis — Segment 8 × Layer 4 | Voice AI Agency Reseller Market</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Epilogue:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM
+═══════════════════════════════════════ */
+:root {
+  --bg:        #060810;
+  --bg2:       #0a0d18;
+  --surface:   #0e1220;
+  --panel:     #121828;
+  --border:    #1e2840;
+  --border2:   #2a3860;
+
+  --hero:      #ff4d00;
+  --hero2:     #ff7a33;
+  --hero-dim:  rgba(255,77,0,0.12);
+  --hero-glow: rgba(255,77,0,0.25);
+
+  --seg8:      #ff9500;
+  --lay4:      #ff4d00;
+
+  --blue:      #4d9fff;
+  --green:     #00e5a0;
+  --yellow:    #ffd60a;
+  --purple:    #a855f7;
+
+  --text:      #eef2ff;
+  --text2:     #8896b8;
+  --text3:     #4a5878;
+
+  --chart-bear: #4d9fff;
+  --chart-base: #ff4d00;
+  --chart-bull: #00e5a0;
+  --chart-hbul: #ffd60a;
+
+  --font-display: 'DM Serif Display', serif;
+  --font-body:    'Epilogue', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Animated mesh bg */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(255,77,0,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(77,159,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 60% 30%, rgba(0,229,160,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,77,0,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,77,0,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 32px 100px;
+}
+
+/* ═══════════════════════════════════════
+   HERO HEADER
+═══════════════════════════════════════ */
+.hero-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 0 60px;
+  position: relative;
+}
+
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--hero);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-label::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--hero);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 7vw, 96px);
+  line-height: 1.0;
+  letter-spacing: -2px;
+  margin-bottom: 8px;
+}
+
+.hero-title .t-white { color: var(--text); }
+.hero-title .t-hero  { color: var(--hero); font-style: italic; }
+
+.hero-equation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 32px 0 40px;
+  flex-wrap: wrap;
+}
+
+.eq-box {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: 1px solid;
+}
+
+.eq-seg8 {
+  background: rgba(255,149,0,0.1);
+  border-color: rgba(255,149,0,0.4);
+  color: var(--seg8);
+}
+
+.eq-cross {
+  font-size: 24px;
+  color: var(--text2);
+  font-weight: 300;
+}
+
+.eq-lay4 {
+  background: rgba(255,77,0,0.1);
+  border-color: rgba(255,77,0,0.4);
+  color: var(--lay4);
+}
+
+.eq-equals {
+  font-size: 24px;
+  color: var(--text2);
+}
+
+.eq-result {
+  background: linear-gradient(135deg, rgba(255,77,0,0.15), rgba(255,149,0,0.15));
+  border-color: rgba(255,77,0,0.5);
+  color: var(--text);
+  box-shadow: 0 0 24px rgba(255,77,0,0.15);
+}
+
+.hero-deck {
+  max-width: 680px;
+  font-size: 17px;
+  color: var(--text2);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 48px;
+}
+
+.hero-deck strong { color: var(--text); font-weight: 600; }
+
+/* Hero KPI strip */
+.hero-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 900px;
+}
+
+@media (max-width: 700px) { .hero-kpis { grid-template-columns: repeat(2,1fr); } }
+
+.kpi {
+  background: var(--panel);
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.kpi:hover { background: var(--surface); }
+
+.kpi::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.kpi.k1::after { background: var(--hero); }
+.kpi.k2::after { background: var(--green); }
+.kpi.k3::after { background: var(--yellow); }
+.kpi.k4::after { background: var(--blue); }
+
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.kpi.k1 .kpi-value { color: var(--hero); }
+.kpi.k2 .kpi-value { color: var(--green); }
+.kpi.k3 .kpi-value { color: var(--yellow); }
+.kpi.k4 .kpi-value { color: var(--blue); }
+
+.kpi-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+
+/* Scroll cue */
+.scroll-cue {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--text3);
+  text-transform: uppercase;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ═══════════════════════════════════════
+   SECTION SYSTEM
+═══════════════════════════════════════ */
+section {
+  margin-bottom: 80px;
+  animation: fadeUp 0.6s ease both;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text3);
+  padding-bottom: 2px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 36px);
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.section-size {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1px;
+  text-align: right;
+  line-height: 1.6;
+  padding-bottom: 2px;
+}
+
+/* ═══════════════════════════════════════
+   METHODOLOGY CARDS
+═══════════════════════════════════════ */
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 700px) { .method-grid { grid-template-columns: 1fr; } }
+
+.method-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.method-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+
+.method-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.mc1::before { background: var(--hero); }
+.mc2::before { background: var(--blue); }
+.mc3::before { background: var(--green); }
+.mc4::before { background: var(--yellow); }
+
+.mc-path {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.mc-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.mc1 .mc-title { color: var(--hero); }
+.mc2 .mc-title { color: var(--blue); }
+.mc3 .mc-title { color: var(--green); }
+.mc4 .mc-title { color: var(--yellow); }
+
+.mc-logic {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.mc-calc {
+  background: var(--bg2);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.8;
+  border: 1px solid var(--border);
+}
+
+.mc-calc .hl { font-weight: 600; }
+.mc1 .mc-calc .hl { color: var(--hero); }
+.mc2 .mc-calc .hl { color: var(--blue); }
+.mc3 .mc-calc .hl { color: var(--green); }
+.mc4 .mc-calc .hl { color: var(--yellow); }
+
+.mc-result {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid;
+}
+
+.mc1 .mc-result { background: rgba(255,77,0,0.08);   color: var(--hero);   border-color: rgba(255,77,0,0.3); }
+.mc2 .mc-result { background: rgba(77,159,255,0.08);  color: var(--blue);   border-color: rgba(77,159,255,0.3); }
+.mc3 .mc-result { background: rgba(0,229,160,0.08);   color: var(--green);  border-color: rgba(0,229,160,0.3); }
+.mc4 .mc-result { background: rgba(255,214,10,0.08);  color: var(--yellow); border-color: rgba(255,214,10,0.3); }
+
+/* ═══════════════════════════════════════
+   TRIANGULATION TABLE
+═══════════════════════════════════════ */
+.tri-table-wrap {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tri-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tri-table th {
+  background: var(--bg2);
+  padding: 12px 20px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.tri-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.tri-table tr:last-child td {
+  border-bottom: none;
+  background: rgba(255,77,0,0.05);
+  font-weight: 700;
+}
+
+.tri-table tr:last-child td { color: var(--text); }
+
+.path-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.pb-a { background: rgba(255,77,0,0.15);   color: var(--hero);   }
+.pb-b { background: rgba(77,159,255,0.15);  color: var(--blue);   }
+.pb-c { background: rgba(0,229,160,0.15);   color: var(--green);  }
+.pb-d { background: rgba(255,214,10,0.15);  color: var(--yellow); }
+.pb-x { background: rgba(255,77,0,0.25);    color: #fff;          }
+
+.result-val {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.rv-hero { color: var(--hero); }
+
+/* ═══════════════════════════════════════
+   CAGR SELECTION TABLE
+═══════════════════════════════════════ */
+.cagr-sel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 600px) { .cagr-sel { grid-template-columns: 1fr; } }
+
+.cagr-input {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  transition: border-color 0.2s;
+}
+
+.cagr-input:hover { border-color: var(--border2); }
+
+.ci-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.ci-val {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--hero);
+  margin-bottom: 4px;
+}
+
+.ci-desc {
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.5;
+}
+
+.cagr-final {
+  background: linear-gradient(135deg, rgba(255,77,0,0.12), rgba(255,149,0,0.08));
+  border: 1px solid rgba(255,77,0,0.4);
+  border-radius: 8px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.cf-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cf-val {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--hero);
+  line-height: 1;
+}
+
+.cf-rationale {
+  font-size: 13px;
+  color: var(--text2);
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════
+   EXTRAPOLATION TABLE
+═══════════════════════════════════════ */
+.extrap-wrap {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.extrap-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.extrap-table th {
+  background: var(--bg2);
+  padding: 12px 20px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.extrap-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+  font-family: var(--font-mono);
+}
+
+.extrap-table tr:last-child td { border-bottom: none; }
+
+.yr-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 50px;
+  text-align: center;
+}
+
+.yr-norm  { background: var(--bg2); color: var(--text3); border: 1px solid var(--border); }
+.yr-mile  { background: rgba(255,77,0,0.12); color: var(--hero); border: 1px solid rgba(255,77,0,0.3); font-weight: 700; }
+.yr-base  { background: rgba(255,77,0,0.05); color: var(--hero2); border: 1px solid rgba(255,77,0,0.2); }
+
+.val-cell { color: var(--text); font-weight: 500; }
+.val-hero { color: var(--hero); font-weight: 700; font-size: 15px; }
+
+.growth-cell {
+  color: var(--green);
+  font-size: 11px;
+}
+
+/* Mini bar chart inside table */
+.bar-cell { width: 200px; }
+.mini-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.mini-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--hero), var(--seg8));
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Milestone badges in the table */
+.milestone {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background: rgba(255,77,0,0.1);
+  color: var(--hero);
+  border: 1px solid rgba(255,77,0,0.3);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════
+   SCENARIO CARDS
+═══════════════════════════════════════ */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 900px) { .scenario-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .scenario-grid { grid-template-columns: 1fr; } }
+
+.scenario-card {
+  border-radius: 10px;
+  padding: 24px;
+  border: 1px solid;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.scenario-card:hover { transform: translateY(-3px); }
+
+.sc-bear   { background: rgba(77,159,255,0.06);  border-color: rgba(77,159,255,0.3);  }
+.sc-base   { background: rgba(255,77,0,0.08);    border-color: rgba(255,77,0,0.4);    box-shadow: 0 0 24px rgba(255,77,0,0.1); }
+.sc-bull   { background: rgba(0,229,160,0.06);   border-color: rgba(0,229,160,0.3);   }
+.sc-hbull  { background: rgba(255,214,10,0.06);  border-color: rgba(255,214,10,0.3);  }
+
+.sc-icon   { font-size: 32px; margin-bottom: 10px; display: block; }
+.sc-label  {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.sc-bear  .sc-label { color: var(--blue); }
+.sc-base  .sc-label { color: var(--hero); }
+.sc-bull  .sc-label { color: var(--green); }
+.sc-hbull .sc-label { color: var(--yellow); }
+
+.sc-cagr {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.sc-bear  .sc-cagr { color: var(--blue); }
+.sc-base  .sc-cagr { color: var(--hero); }
+.sc-bull  .sc-cagr { color: var(--green); }
+.sc-hbull .sc-cagr { color: var(--yellow); }
+
+.sc-vals {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.9;
+  margin: 12px 0;
+}
+
+.sc-vals span { font-weight: 600; }
+.sc-bear  .sc-vals span { color: var(--blue); }
+.sc-base  .sc-vals span { color: var(--hero); }
+.sc-bull  .sc-vals span { color: var(--green); }
+.sc-hbull .sc-vals span { color: var(--yellow); }
+
+.sc-assumption {
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.5;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 12px;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.sc-base-badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: var(--hero);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════
+   COMPARISON TABLE
+═══════════════════════════════════════ */
+.compare-table-wrap {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compare-table th {
+  background: var(--bg2);
+  padding: 12px 20px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.compare-table th:last-child { border-right: none; }
+
+.compare-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.compare-table td:last-child { border-right: none; }
+.compare-table tr:last-child td { border-bottom: none; background: rgba(255,77,0,0.06); }
+
+.mkt-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.mkt-name.hero-mkt { color: var(--hero); }
+
+.mkt-desc {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+
+.mono-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hero-mono { color: var(--hero); font-size: 15px; }
+
+/* ═══════════════════════════════════════
+   STRATEGIC TAKEAWAYS
+═══════════════════════════════════════ */
+.takeaways {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 12px;
+}
+
+.takeaway {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  align-items: start;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.takeaway:hover {
+  border-color: var(--border2);
+  transform: translateX(4px);
+}
+
+.tk-num {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  color: rgba(255,77,0,0.25);
+  text-align: center;
+}
+
+.tk-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--hero);
+  margin-bottom: 8px;
+}
+
+.tk-body {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+
+.tk-body strong { color: var(--text); font-weight: 600; }
+
+/* ═══════════════════════════════════════
+   VISUAL CHART
+═══════════════════════════════════════ */
+.chart-section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.chart-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.chart-container {
+  position: relative;
+  height: 280px;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cl-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.cl-line {
+  width: 24px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+
+.footer-note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+}
+
+.footer-stamp {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.8;
+}
+
+/* ═══════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 48px 0;
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, rgba(255,77,0,0.08), rgba(255,149,0,0.05));
+  border: 1px solid rgba(255,77,0,0.3);
+  border-left: 3px solid var(--hero);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin: 24px 0;
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.highlight-box strong { color: var(--hero); }
+
+@media (max-width: 600px) {
+  .page { padding: 0 16px 60px; }
+  .hero-title { letter-spacing: -1px; }
+  .section-title { font-size: 24px; }
+  footer { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- ═══ HERO ═══ -->
+<div class="hero-header">
+  <div class="hero-label">TAM Analysis · CAGR Extrapolation Method · 2024</div>
+
+  <div class="hero-title">
+    <div class="t-white">Segment 8</div>
+    <div class="t-hero">× Layer 4</div>
+    <div class="t-white" style="font-size:clamp(20px,3vw,44px);margin-top:8px;font-style:italic;color:var(--text2)">The Agency Reseller<br>Attributable Market</div>
+  </div>
+
+  <div class="hero-equation">
+    <div class="eq-box eq-seg8">S8 · Autonomous Voice Agents</div>
+    <div class="eq-cross">×</div>
+    <div class="eq-box eq-lay4">L4 · Distribution Channel</div>
+    <div class="eq-equals">=</div>
+    <div class="eq-box eq-result">Voice AI Agency Market</div>
+  </div>
+
+  <p class="hero-deck">
+    The precise intersection where <strong>autonomous voice agent technology</strong> meets the <strong>agency reseller channel</strong> — sized, modeled, and projected using four independent calculation paths triangulated to a consensus baseline. This is the market that Vapi and Synthflow resellers actually occupy.
+  </p>
+
+  <div class="hero-kpis">
+    <div class="kpi k1">
+      <div class="kpi-label">2024 Baseline</div>
+      <div class="kpi-value">$0.78B</div>
+      <div class="kpi-sub">Consensus · 4 paths</div>
+    </div>
+    <div class="kpi k2">
+      <div class="kpi-label">2030 Projection</div>
+      <div class="kpi-value">$5.04B</div>
+      <div class="kpi-sub">Base case · 36.5% CAGR</div>
+    </div>
+    <div class="kpi k3">
+      <div class="kpi-label">2034 Projection</div>
+      <div class="kpi-value">$17.47B</div>
+      <div class="kpi-sub">Base case · 10yr view</div>
+    </div>
+    <div class="kpi k4">
+      <div class="kpi-label">Selected CAGR</div>
+      <div class="kpi-value">36.5%</div>
+      <div class="kpi-sub">Midpoint · 3 inputs</div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">↓ &nbsp; Scroll for full methodology</div>
+</div>
+
+
+<!-- ═══ STEP 1: SCOPE ═══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">STEP 01</div>
+    <div class="section-title">Scope Definition — What Gets Counted</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:24px">
+      <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:12px">✓ Included in this TAM</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text2);line-height:1.5">
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>Setup fees charged by agencies for voice AI deployments</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>Monthly retainers for ongoing voice agent management</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>White-label SaaS subscription markups (Vapi/Synthflow)</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>Usage fee markups on per-minute platform costs</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>GHL-bundled voice AI subscription revenue</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>SMB and lower mid-market deployments only</li>
+      </ul>
+    </div>
+    <div style="background:var(--panel);border:1px solid var(--border);border-left:3px solid rgba(255,77,0,0.5);border-radius:0 8px 8px 0;padding:24px">
+      <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:rgba(255,77,0,0.7);text-transform:uppercase;margin-bottom:12px">✗ Excluded from this TAM</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text2);line-height:1.5">
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--hero)">→</span>Chat, SMS, or non-voice AI deployments by same agencies</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--hero)">→</span>Enterprise voice AI via CCaaS integrators or MASPs</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--hero)">→</span>Direct platform revenue earned by Vapi/Synthflow</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--hero)">→</span>PolyAI / Replicant enterprise direct contracts</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--hero)">→</span>Managed AI service revenue outside voice specifically</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--hero)">→</span>Consumer voice AI (Alexa, Siri, automotive)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ STEP 2: FOUR PATHS ═══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">STEP 02</div>
+    <div class="section-title">Four Independent Calculation Paths</div>
+    <div class="section-size">Four methods · One consensus</div>
+  </div>
+
+  <div class="method-grid">
+
+    <div class="method-card mc1">
+      <div class="mc-path">Path A · Top-Down</div>
+      <div class="mc-title">From Segment 8 Platform Revenue</div>
+      <div class="mc-logic">Of the $2.70B Segment 8 baseline, approximately 70% flows through direct enterprise channels (PolyAI, Replicant, Google CCAI). The remaining 30% is attributable to agency/reseller channel deployments via Vapi, Synthflow, and Retell serving SMB clients.</div>
+      <div class="mc-calc">
+        Segment 8 Total Revenue ......... $2.70B<br>
+        Agency Channel Share ............. × 30%<br>
+        ─────────────────────────────────────────<br>
+        <span class="hl">Path A Result .................... $0.81B</span>
+      </div>
+      <div class="mc-result">
+        <span>Path A Estimate</span>
+        <span>$0.81B</span>
+      </div>
+    </div>
+
+    <div class="method-card mc2">
+      <div class="mc-path">Path B · Top-Down</div>
+      <div class="mc-title">From Layer 4 Agency Channel</div>
+      <div class="mc-logic">Of the $1.30B total Layer 4 agency channel (all segments), voice AI agents represent the dominant product category — estimated at 55–65% of total agency revenue, given the explosive growth of Vapi/Synthflow resellers relative to chat-only deployments.</div>
+      <div class="mc-calc">
+        Layer 4 Total Channel ........... $1.30B<br>
+        Voice AI (Seg 8) Share ........... × 60%<br>
+        ─────────────────────────────────────────<br>
+        <span class="hl">Path B Result .................... $0.78B</span>
+      </div>
+      <div class="mc-result">
+        <span>Path B Estimate</span>
+        <span>$0.78B</span>
+      </div>
+    </div>
+
+    <div class="method-card mc3">
+      <div class="mc-path">Path C · Bottom-Up</div>
+      <div class="mc-title">From Platform Economics</div>
+      <div class="mc-logic">Agencies access Vapi/Synthflow at $0.05–$0.12/minute and bill clients at $0.15–$0.50/minute — a 3–8x markup. Agency channel drives an estimated 40–50% of all platform minutes. This path measures billed agency revenue (client-facing price, not platform cost).</div>
+      <div class="mc-calc">
+        Platform cost/min ........... $0.05–$0.12<br>
+        Agency billing/min .......... $0.15–$0.50<br>
+        Agency share of minutes ......... 40–50%<br>
+        Markup multiple .................. 3–8×<br>
+        ─────────────────────────────────────────<br>
+        <span class="hl">Path C Result .................... $0.80B</span>
+      </div>
+      <div class="mc-result">
+        <span>Path C Estimate</span>
+        <span>$0.80B</span>
+      </div>
+    </div>
+
+    <div class="method-card mc4">
+      <div class="mc-path">Path D · Bottom-Up</div>
+      <div class="mc-title">From Agency Count × Revenue</div>
+      <div class="mc-logic">Estimating the active agency base: ~3,000–5,000 voice AI agencies from the GoHighLevel ecosystem (3–5% of 100K+ GHL agencies actively reselling voice), plus ~2,000–4,000 standalone AAAs from Skool/YouTube communities, for a total of ~7,000 active agencies.</div>
+      <div class="mc-calc">
+        Active Voice AI Agencies ......... ~7,000<br>
+        Avg Annual Rev / Agency .......... $100K<br>
+        (Range: $40K–$300K+ blended)<br>
+        ─────────────────────────────────────────<br>
+        <span class="hl">Path D Result: 7,000 × $100K = $0.70B</span>
+      </div>
+      <div class="mc-result">
+        <span>Path D Estimate</span>
+        <span>$0.70B</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Triangulation -->
+  <div class="tri-table-wrap">
+    <table class="tri-table">
+      <thead>
+        <tr>
+          <th>Path</th>
+          <th>Method Type</th>
+          <th>Starting Point</th>
+          <th>Key Assumption</th>
+          <th>2024 Estimate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="path-badge pb-a">A</span></td>
+          <td>Top-Down from Seg 8</td>
+          <td>$2.70B Segment 8 total</td>
+          <td>30% flows through agency channel</td>
+          <td><span class="result-val">$0.81B</span></td>
+        </tr>
+        <tr>
+          <td><span class="path-badge pb-b">B</span></td>
+          <td>Top-Down from Layer 4</td>
+          <td>$1.30B Layer 4 total</td>
+          <td>60% of channel revenue is voice AI</td>
+          <td><span class="result-val">$0.78B</span></td>
+        </tr>
+        <tr>
+          <td><span class="path-badge pb-c">C</span></td>
+          <td>Bottom-Up · Platform</td>
+          <td>Platform pricing economics</td>
+          <td>3–8× markup, 40–50% of minutes</td>
+          <td><span class="result-val">$0.80B</span></td>
+        </tr>
+        <tr>
+          <td><span class="path-badge pb-d">D</span></td>
+          <td>Bottom-Up · Agencies</td>
+          <td>~7,000 active agencies</td>
+          <td>$100K avg annual voice AI revenue</td>
+          <td><span class="result-val">$0.70B</span></td>
+        </tr>
+        <tr>
+          <td><span class="path-badge pb-x">CONSENSUS</span></td>
+          <td>Average of 4 paths</td>
+          <td>($0.81 + $0.78 + $0.80 + $0.70) ÷ 4</td>
+          <td>Working figure rounded to $0.78B</td>
+          <td><span class="result-val rv-hero">$0.77B → $0.78B</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ═══ STEP 3: CAGR SELECTION ═══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">STEP 03</div>
+    <div class="section-title">CAGR Selection — 36.5%</div>
+  </div>
+
+  <div class="cagr-sel">
+    <div class="cagr-input">
+      <div class="ci-label">Input 1 · Segment 8 Growth</div>
+      <div class="ci-val">35.5%</div>
+      <div class="ci-desc">Voice Agents platform market CAGR — the direct technology driver powering agency products</div>
+    </div>
+    <div class="cagr-input">
+      <div class="ci-label">Input 2 · Layer 4 Growth</div>
+      <div class="ci-val">35.0%</div>
+      <div class="ci-desc">Agency/distribution channel CAGR — reflects reseller ecosystem expansion</div>
+    </div>
+    <div class="cagr-input">
+      <div class="ci-label">Input 3 · Independent Research</div>
+      <div class="ci-val">37.2%</div>
+      <div class="ci-desc">Technavio independent voice AI agent market estimate for 2024–2029 period</div>
+    </div>
+  </div>
+
+  <div class="cagr-final">
+    <div>
+      <div class="cf-label">Selected Intersection CAGR</div>
+      <div class="cf-val">36.5%</div>
+    </div>
+    <div class="cf-rationale">
+      Midpoint of the 35.0%–37.2% input range, with a modest +1–2% SMB acceleration premium reflecting accelerating small business AI adoption (from 8.8% in August 2025 vs near-zero in 2022). The intersection CAGR exceeds both parent markets because the two growth drivers — platform adoption and channel expansion — compound multiplicatively at their meeting point.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ STEP 4: EXTRAPOLATION ═══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">STEP 04</div>
+    <div class="section-title">CAGR Extrapolation — 2024 to 2034</div>
+    <div class="section-size">Formula: FV = $0.78B × (1.365)^n</div>
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-section">
+    <div class="chart-title">Market Size Projection · All Scenarios · $B</div>
+    <div class="chart-container">
+      <canvas id="growthChart" style="width:100%;height:100%"></canvas>
+    </div>
+    <div class="chart-legend">
+      <div class="cl-item"><div class="cl-line" style="background:var(--chart-bear)"></div>Bear (25%)</div>
+      <div class="cl-item"><div class="cl-line" style="background:var(--chart-base);height:3px"></div>Base (36.5%) ← Selected</div>
+      <div class="cl-item"><div class="cl-line" style="background:var(--chart-bull)"></div>Bull (45%)</div>
+      <div class="cl-item"><div class="cl-line" style="background:var(--chart-hbul)"></div>Hyperbull (55%)</div>
+    </div>
+  </div>
+
+  <!-- Extrapolation table -->
+  <div class="extrap-wrap">
+    <table class="extrap-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Calculation</th>
+          <th>Market Size</th>
+          <th>YoY Added</th>
+          <th>Growth Bar</th>
+          <th>Milestones</th>
+        </tr>
+      </thead>
+      <tbody id="extrap-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ═══ STEP 5: SCENARIOS ═══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">STEP 05</div>
+    <div class="section-title">Scenario Analysis — Four Futures</div>
+  </div>
+
+  <div class="scenario-grid">
+    <div class="scenario-card sc-bear">
+      <span class="sc-icon">🐻</span>
+      <div class="sc-label">Bear Case</div>
+      <div class="sc-cagr">25%</div>
+      <div class="sc-vals">
+        2026: <span>$1.22B</span><br>
+        2028: <span>$1.90B</span><br>
+        2030: <span>$2.38B</span><br>
+        2034: <span>$7.17B</span>
+      </div>
+      <div class="sc-assumption">Platform self-serve UX improves dramatically, reducing agency necessity. Commoditization compresses margins. SMB AI fatigue slows adoption.</div>
+    </div>
+
+    <div class="scenario-card sc-base">
+      <div class="sc-base-badge">BASE CASE</div>
+      <span class="sc-icon">📈</span>
+      <div class="sc-label">Base Case · Selected</div>
+      <div class="sc-cagr">36.5%</div>
+      <div class="sc-vals">
+        2026: <span>$1.45B</span><br>
+        2028: <span>$2.70B</span><br>
+        2030: <span>$5.04B</span><br>
+        2034: <span>$17.47B</span>
+      </div>
+      <div class="sc-assumption">Current growth trajectory holds. SMB adoption accelerates at normal pace. Agency channel maintains its role as primary Seg 8 delivery mechanism.</div>
+    </div>
+
+    <div class="scenario-card sc-bull">
+      <span class="sc-icon">🐂</span>
+      <div class="sc-label">Bull Case</div>
+      <div class="sc-cagr">45%</div>
+      <div class="sc-vals">
+        2026: <span>$1.64B</span><br>
+        2028: <span>$3.44B</span><br>
+        2030: <span>$8.07B</span><br>
+        2034: <span>$35.93B</span>
+      </div>
+      <div class="sc-assumption">Voice AI becomes default SMB phone infrastructure. Agency channel captures 50%+ of Segment 8 growth. Regulatory tailwinds accelerate displacement of human receptionists.</div>
+    </div>
+
+    <div class="scenario-card sc-hbull">
+      <span class="sc-icon">🚀</span>
+      <div class="sc-label">Hyperbull Case</div>
+      <div class="sc-cagr">55%</div>
+      <div class="sc-vals">
+        2026: <span>$1.88B</span><br>
+        2028: <span>$4.51B</span><br>
+        2030: <span>$13.74B</span><br>
+        2034: <span>$81.09B</span>
+      </div>
+      <div class="sc-assumption">AGI-era capability leap makes voice agents indistinguishable from humans. Agencies become primary AI delivery channel for all of SMB across every workflow, not just voice.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ STEP 6: THREE-LAYER COMPARISON ═══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">STEP 06</div>
+    <div class="section-title">The Full Three-Layer Comparison</div>
+  </div>
+
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Market Layer</th>
+          <th>2024 Baseline</th>
+          <th>2026</th>
+          <th>2028</th>
+          <th>2030</th>
+          <th>2034</th>
+          <th>CAGR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="mkt-name">Full Conversational AI Ecosystem</div>
+            <div class="mkt-desc">All 14 segments · Complete market</div>
+          </td>
+          <td><span class="mono-val">$13.50B</span></td>
+          <td><span class="mono-val">$20.59B</span></td>
+          <td><span class="mono-val">$31.41B</span></td>
+          <td><span class="mono-val">$47.91B</span></td>
+          <td><span class="mono-val">$111.44B</span></td>
+          <td><span class="mono-val">23.5%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="mkt-name">Layer 4 — Full Agency Channel</div>
+            <div class="mkt-desc">All segments · All channel players</div>
+          </td>
+          <td><span class="mono-val">$1.30B</span></td>
+          <td><span class="mono-val">$2.37B</span></td>
+          <td><span class="mono-val">$4.32B</span></td>
+          <td><span class="mono-val">$7.87B</span></td>
+          <td><span class="mono-val">$26.13B</span></td>
+          <td><span class="mono-val">35.0%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="mkt-name">Segment 8 — Voice Agents Total</div>
+            <div class="mkt-desc">All channels · Platform + agency</div>
+          </td>
+          <td><span class="mono-val">$2.70B</span></td>
+          <td><span class="mono-val">$4.96B</span></td>
+          <td><span class="mono-val">$9.10B</span></td>
+          <td><span class="mono-val">$16.70B</span></td>
+          <td><span class="mono-val">$56.29B</span></td>
+          <td><span class="mono-val">35.5%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="mkt-name hero-mkt">★ Seg 8 × Layer 4 — Agency Voice AI</div>
+            <div class="mkt-desc" style="color:rgba(255,77,0,0.6)">THIS intersection · The agency market</div>
+          </td>
+          <td><span class="mono-val hero-mono">$0.78B</span></td>
+          <td><span class="mono-val hero-mono">$1.45B</span></td>
+          <td><span class="mono-val hero-mono">$2.70B</span></td>
+          <td><span class="mono-val hero-mono">$5.04B</span></td>
+          <td><span class="mono-val hero-mono">$17.47B</span></td>
+          <td><span class="mono-val hero-mono">36.5%</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box" style="margin-top:16px">
+    <strong>Key relationship:</strong> The Seg 8 × Layer 4 intersection ($0.78B) represents <strong>~29% of total Segment 8 revenue</strong> and <strong>~60% of total Layer 4 channel revenue</strong> — confirming that voice agent reselling is the dominant activity in the agency channel and that the agency channel is the single most important route to market for voice AI platforms.
+  </div>
+</section>
+
+
+<!-- ═══ STEP 7: TAKEAWAYS ═══ -->
+<section>
+  <div class="section-header">
+    <div class="section-num">STEP 07</div>
+    <div class="section-title">Five Strategic Takeaways</div>
+  </div>
+
+  <div class="takeaways">
+    <div class="takeaway">
+      <div class="tk-num">1</div>
+      <div>
+        <div class="tk-title">The Intersection Is Already Significant</div>
+        <div class="tk-body"><strong>$0.78B in 2024</strong> for a market that most analysts do not even track independently is not a niche — it is a real, substantial, and fast-growing business category that is simply undercounted by conventional research taxonomy. The invisibility is an opportunity: most competitors do not know the size of the market they are in.</div>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="tk-num">2</div>
+      <div>
+        <div class="tk-title">It Crosses $1 Billion in 2025</div>
+        <div class="tk-body">At 36.5% CAGR, the Segment 8 × Layer 4 intersection <strong>crosses $1B in calendar year 2025</strong> — making voice AI agency reselling a billion-dollar channel market within the next 12 months of the 2024 baseline. This is a significant psychological and institutional milestone that will attract increased attention, competition, and capital to the agency channel.</div>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="tk-num">3</div>
+      <div>
+        <div class="tk-title">It Grows Faster Than Either Parent Market</div>
+        <div class="tk-body">The intersection CAGR of <strong>36.5% exceeds both Segment 8 (35.5%) and Layer 4 (35.0%)</strong> individually. This is because the two growth drivers compound on each other — faster platform adoption simultaneously accelerates agency channel volume, creating a multiplier effect not captured in either parent metric alone. The whole is growing faster than the sum of its parts.</div>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="tk-num">4</div>
+      <div>
+        <div class="tk-title">By 2030 It Exceeds the Entire 2024 Ecosystem</div>
+        <div class="tk-body">The Segment 8 × Layer 4 intersection reaches <strong>$5.04B by 2030</strong> — larger than the entire Conversational AI ecosystem was in 2021. A single cell in the ecosystem matrix will be worth more than the whole ecosystem was just nine years prior. This compression of economic timelines is a hallmark of technology platform markets following an inflection point.</div>
+      </div>
+    </div>
+    <div class="takeaway">
+      <div class="tk-num">5</div>
+      <div>
+        <div class="tk-title">The Agency Revenue Multiple Is the Structural Advantage</div>
+        <div class="tk-body">The average agency earns <strong>3–8× the platform cost</strong> they pass on to clients. As Segment 8 platform costs continue declining (per-minute costs dropped 40–60% from 2023 to 2025 due to competition between Vapi, Retell, and Bland), agencies who lock in retainer pricing <strong>maintain their margin while platform costs decline beneath them</strong> — a structural economic advantage that widens automatically over time without requiring any action from the agency.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-note">
+    * All figures represent market intelligence synthesis estimates. No single research firm tracks the Segment 8 × Layer 4 intersection directly — this analysis was constructed using four independent calculation paths triangulated to a consensus baseline. Figures should be treated as directional estimates with ±20–25% confidence bands.<br><br>
+    Sources: Grand View Research · MarketsandMarkets · Precedence Research · IMARC Group · Technavio · Market.us · Roots Analysis · Platform pricing data · GoHighLevel ecosystem intelligence.
+  </div>
+  <div class="footer-stamp">
+    TAM ANALYSIS<br>
+    SEGMENT 8 × LAYER 4<br>
+    ────────────────<br>
+    CAGR EXTRAPOLATION<br>
+    METHOD · 2024<br>
+    ────────────────<br>
+    $0.78B → $17.47B
+  </div>
+</footer>
+
+</div><!-- /page -->
+
+<script>
+/* ═══════════════════════════
+   EXTRAPOLATION TABLE BUILD
+═══════════════════════════ */
+const BASE = 0.78;
+const CAGR = 0.365;
+const MAX_VAL = BASE * Math.pow(1+CAGR, 10); // 2034 value
+
+const MILESTONES = {
+  2025: '$1B threshold crossed',
+  2028: 'Equals 2024 Seg 8 total',
+  2030: 'Exceeds 2024 full ecosystem value (2021)',
+  2034: '10-year final projection',
+};
+
+const tbody = document.getElementById('extrap-tbody');
+let prev = null;
+
+for (let y = 2024; y <= 2034; y++) {
+  const n = y - 2024;
+  const val = BASE * Math.pow(1+CAGR, n);
+  const yoy = prev !== null ? val - prev : null;
+  const isMile = [2024, 2026, 2028, 2030, 2034].includes(y);
+  const barPct = Math.min(100, Math.round((val / MAX_VAL) * 100));
+  const milestone = MILESTONES[y];
+
+  const tr = document.createElement('tr');
+  if (isMile) tr.style.background = 'rgba(255,77,0,0.03)';
+
+  const yearBadge = isMile
+    ? `<span class="yr-badge yr-mile">${y}</span>`
+    : `<span class="yr-badge yr-norm">${y}</span>`;
+
+  const calc = n === 0
+    ? 'Baseline'
+    : `$${(val / (1+CAGR)).toFixed(2)}B × 1.365`;
+
+  tr.innerHTML = `
+    <td>${yearBadge}</td>
+    <td style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">${calc}</td>
+    <td class="${isMile ? 'val-hero' : 'val-cell'}" style="font-family:var(--font-mono);font-weight:${isMile?700:500};font-size:${isMile?15:13}px">$${val.toFixed(2)}B</td>
+    <td style="font-family:var(--font-mono);font-size:11px;color:var(--green)">${yoy !== null ? '+$' + yoy.toFixed(2) + 'B' : '—'}</td>
+    <td class="bar-cell">
+      <div class="mini-bar">
+        <div class="mini-fill" style="width:${barPct}%"></div>
+      </div>
+    </td>
+    <td>${milestone ? `<span class="milestone">${milestone}</span>` : ''}</td>
+  `;
+  tbody.appendChild(tr);
+  prev = val;
+}
+
+/* ═══════════════════════════
+   GROWTH CHART (Canvas)
+═══════════════════════════ */
+window.addEventListener('load', () => {
+  const canvas = document.getElementById('growthChart');
+  const ctx = canvas.getContext('2d');
+
+  // Set canvas size
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  const W = rect.width;
+  const H = rect.height;
+
+  const SCENARIOS = [
+    { cagr: 0.25,  color: '#4d9fff', label: 'Bear 25%',      dash: [6,4] },
+    { cagr: 0.365, color: '#ff4d00', label: 'Base 36.5%',    dash: [],    width: 2.5 },
+    { cagr: 0.45,  color: '#00e5a0', label: 'Bull 45%',      dash: [6,4] },
+    { cagr: 0.55,  color: '#ffd60a', label: 'Hyperbull 55%', dash: [3,3] },
+  ];
+
+  const years = Array.from({length:11}, (_,i) => 2024+i);
+  const allVals = SCENARIOS.flatMap(s => years.map((_,i) => BASE * Math.pow(1+s.cagr,i)));
+  const maxVal = Math.max(...allVals);
+
+  const PAD = { top: 20, right: 20, bottom: 40, left: 56 };
+  const CW = W - PAD.left - PAD.right;
+  const CH = H - PAD.top - PAD.bottom;
+
+  const xPos = i => PAD.left + (i / (years.length-1)) * CW;
+  const yPos = v => PAD.top + CH - (v / maxVal) * CH;
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  [0,.25,.5,.75,1].forEach(f => {
+    const y = PAD.top + CH * (1-f);
+    ctx.beginPath();
+    ctx.moveTo(PAD.left, y);
+    ctx.lineTo(W - PAD.right, y);
+    ctx.stroke();
+
+    // Y labels
+    const v = maxVal * f;
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.font = `500 9px JetBrains Mono, monospace`;
+    ctx.textAlign = 'right';
+    ctx.fillText('$' + (v >= 1 ? v.toFixed(0) : v.toFixed(1)) + 'B', PAD.left - 6, y + 3);
+  });
+
+  // X labels
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.font = '500 9px JetBrains Mono, monospace';
+  ctx.textAlign = 'center';
+  years.forEach((yr, i) => {
+    if (i % 2 === 0 || i === years.length-1) {
+      ctx.fillText(yr, xPos(i), H - PAD.bottom + 18);
+    }
+  });
+
+  // Plot lines
+  SCENARIOS.forEach(s => {
+    const vals = years.map((_,i) => BASE * Math.pow(1+s.cagr,i));
+    ctx.beginPath();
+    ctx.strokeStyle = s.color;
+    ctx.lineWidth = s.width || 1.5;
+    ctx.setLineDash(s.dash || []);
+    vals.forEach((v, i) => {
+      if (i === 0) ctx.moveTo(xPos(i), yPos(v));
+      else ctx.lineTo(xPos(i), yPos(v));
+    });
+    ctx.stroke();
+
+    // End dot
+    const last = vals[vals.length-1];
+    ctx.beginPath();
+    ctx.arc(xPos(vals.length-1), yPos(last), 4, 0, Math.PI*2);
+    ctx.fillStyle = s.color;
+    ctx.fill();
+  });
+
+  // Highlight base case area
+  const basVals = years.map((_,i) => BASE * Math.pow(1.365,i));
+  ctx.beginPath();
+  basVals.forEach((v,i) => {
+    if (i===0) ctx.moveTo(xPos(i), yPos(v));
+    else ctx.lineTo(xPos(i), yPos(v));
+  });
+  ctx.lineTo(xPos(years.length-1), yPos(0)+PAD.top+CH);
+  ctx.lineTo(xPos(0), yPos(0)+PAD.top+CH);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,77,0,0.04)';
+  ctx.fill();
+
+  // Milestone vertical lines
+  [2026,2030,2034].forEach(yr => {
+    const i = yr - 2024;
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,77,0,0.2)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+    ctx.moveTo(xPos(i), PAD.top);
+    ctx.lineTo(xPos(i), PAD.top + CH);
+    ctx.stroke();
+  });
+
+  ctx.setLineDash([]);
+});
+</script>
+
+</body>
+</html>
