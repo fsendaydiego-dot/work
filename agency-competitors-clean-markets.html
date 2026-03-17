@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agency Competitor Landscape — Unregulated SMB Verticals Only</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inconsolata:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg:    #f7f3ec;
+  --warm:  #ede5d4;
+  --warm2: #e0d5c0;
+  --ink:   #17120a;
+  --ink2:  #302618;
+  --ink3:  #685840;
+  --ink4:  #9e8e74;
+  --rule:  #c8b898;
+
+  /* Agency archetype colors */
+  --gen:   #1a3a7a;
+  --ghl:   #6b1a1a;
+  --vert:  #1a5a2a;
+  --niche: #5a1a6b;
+  --mgd:   #7a4a00;
+  --emrg:  #1a5a5a;
+
+  --hero:  #bf2008;
+  --pos:   #1a6b38;
+  --neg:   #8b1800;
+
+  /* Clean vertical accent colors */
+  --re:    #1a3a7a;
+  --hs:    #c07000;
+  --auto:  #5a1a6b;
+  --gym:   #1a5a2a;
+  --rest:  #bf2008;
+  --hosp:  #1a5a5a;
+  --pet:   #6b3a00;
+  --edu:   #00446b;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Source Sans 3', sans-serif;
+  line-height: 1.6;
+}
+
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: repeating-linear-gradient(
+    transparent, transparent 31px,
+    rgba(180,160,130,0.13) 31px, rgba(180,160,130,0.13) 32px
+  );
+  pointer-events:none;
+  z-index:0;
+}
+
+.page { position:relative; z-index:1; max-width:1380px; margin:0 auto; padding:0 36px 100px; }
+
+/* ── MASTHEAD ── */
+.masthead {
+  padding: 60px 0 40px;
+  border-bottom: 4px solid var(--ink);
+  margin-bottom: 44px;
+}
+
+.kicker {
+  font-family:'Inconsolata',monospace;
+  font-size:10px;
+  letter-spacing:4px;
+  color: var(--hero);
+  text-transform:uppercase;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.kicker::before { content:''; width:28px; height:2px; background:var(--hero); }
+
+h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(48px,7.5vw,108px);
+  line-height: 0.9;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+h1 .red { color:var(--hero); }
+
+.mast-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 36px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+@media(max-width:760px){ .mast-grid{ grid-template-columns:1fr; } }
+
+.mast-intro {
+  font-family:'Libre Baskerville',serif;
+  font-size:15px;
+  color:var(--ink2);
+  line-height:1.8;
+}
+
+.mast-intro strong { color:var(--hero); }
+
+/* Removed markets panel */
+.removed-panel {
+  background: var(--ink);
+  color:#fff;
+  padding: 20px;
+  border-radius: 2px;
+}
+
+.rp-title {
+  font-family:'Inconsolata',monospace;
+  font-size:9px;
+  letter-spacing:3px;
+  color:rgba(255,255,255,.45);
+  text-transform:uppercase;
+  margin-bottom:12px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.rp-removed {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:14px;
+}
+
+.rp-item {
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  font-size:11.5px;
+  color:rgba(255,255,255,.7);
+  line-height:1.4;
+}
+
+.rp-x { color:#ff6b6b; font-weight:700; flex-shrink:0; font-size:12px; }
+.rp-check { color:#69f0ae; font-weight:700; flex-shrink:0; font-size:12px; }
+
+.rp-divider {
+  height:1px;
+  background:rgba(255,255,255,.1);
+  margin: 10px 0;
+}
+
+/* ── VERTICAL BADGES ── */
+.vert-strip {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:32px;
+  padding:14px 16px;
+  background:var(--warm);
+  border:1px solid var(--rule);
+  border-radius:2px;
+}
+
+.vs-label {
+  font-family:'Inconsolata',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--ink3);
+  text-transform:uppercase;
+  align-self:center;
+  margin-right:4px;
+}
+
+.vbadge {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 14px;
+  border:1.5px solid;
+  border-radius:2px;
+  font-family:'Inconsolata',monospace;
+  font-size:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.vdot { width:7px; height:7px; border-radius:50%; }
+
+/* ── SECTION HEADER ── */
+.section-hdr {
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  border-bottom:2px solid var(--ink);
+  padding-bottom:11px;
+  margin-bottom:24px;
+}
+
+.sec-num {
+  font-family:'Inconsolata',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--ink4);
+}
+
+.sec-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(22px,3vw,40px);
+  letter-spacing:1px;
+  line-height:1;
+}
+
+/* ── TYPE LEGEND ── */
+.type-legend {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:28px;
+}
+
+.tpill {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:5px 13px;
+  border:1.5px solid;
+  border-radius:2px;
+  font-family:'Inconsolata',monospace;
+  font-size:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.tpip { width:7px; height:7px; border-radius:50%; }
+
+/* ── FILTER ── */
+.filter-row {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:32px;
+  padding:10px 14px;
+  background:var(--warm);
+  border:1px solid var(--rule);
+  border-radius:2px;
+}
+
+.fl { font-family:'Inconsolata',monospace; font-size:9px; letter-spacing:2px; color:var(--ink3); text-transform:uppercase; margin-right:4px; }
+
+.fbtn {
+  padding:4px 12px;
+  border:1.5px solid var(--rule);
+  border-radius:2px;
+  background:var(--bg);
+  font-family:'Inconsolata',monospace;
+  font-size:10px;
+  letter-spacing:1px;
+  color:var(--ink3);
+  cursor:pointer;
+  transition:all .15s;
+  text-transform:uppercase;
+}
+
+.fbtn:hover, .fbtn.on { background:var(--ink); color:var(--bg); border-color:var(--ink); }
+
+/* ── CARD GRID ── */
+.comp-section { margin-bottom:60px; }
+
+.card-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(355px,1fr));
+  gap:16px;
+}
+
+@media(max-width:560px){ .card-grid{ grid-template-columns:1fr; } }
+
+.comp-card {
+  background:#fff;
+  border:1.5px solid var(--rule);
+  border-radius:3px;
+  overflow:hidden;
+  transition:box-shadow .2s, transform .2s;
+}
+
+.comp-card:hover {
+  box-shadow:0 6px 26px rgba(23,18,10,.1);
+  transform:translateY(-2px);
+}
+
+.cc-hdr {
+  padding:16px 18px 13px;
+  border-bottom:1.5px solid var(--rule);
+  position:relative;
+}
+
+.cc-top-bar { height:3px; margin-bottom:9px; border-radius:1px; }
+
+.cc-rank {
+  position:absolute;
+  top:14px; right:16px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:44px;
+  color:rgba(23,18,10,.05);
+  line-height:1;
+}
+
+.cc-type-tag {
+  display:inline-block;
+  padding:2px 9px;
+  font-family:'Inconsolata',monospace;
+  font-size:8.5px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:600;
+  color:#fff;
+  border-radius:1px;
+  margin-bottom:6px;
+}
+
+.cc-name {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:25px;
+  letter-spacing:1px;
+  line-height:1.1;
+  margin-bottom:3px;
+}
+
+.cc-tagline {
+  font-family:'Libre Baskerville',serif;
+  font-size:11px;
+  color:var(--ink3);
+  font-style:italic;
+  line-height:1.4;
+}
+
+.cc-body {
+  padding:14px 18px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.cc-label {
+  font-family:'Inconsolata',monospace;
+  font-size:8.5px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--ink4);
+  margin-bottom:3px;
+}
+
+.cc-text { font-size:12px; color:var(--ink2); line-height:1.6; }
+
+/* SW */
+.sw-row { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+
+.sw-box {
+  padding:8px 10px;
+  border-radius:2px;
+  border:1px solid;
+}
+
+.sw-s { background:#f2fbf5; border-color:#b8dccc; }
+.sw-w { background:#fdf4f2; border-color:#e8c0b8; }
+
+.sw-hdr {
+  font-family:'Inconsolata',monospace;
+  font-size:8px;
+  letter-spacing:2px;
+  font-weight:700;
+  margin-bottom:4px;
+  text-transform:uppercase;
+}
+
+.sw-s .sw-hdr { color:var(--pos); }
+.sw-w .sw-hdr { color:var(--neg); }
+
+.sw-ul { list-style:none; display:flex; flex-direction:column; gap:3px; }
+
+.sw-ul li {
+  font-size:10.5px;
+  color:var(--ink2);
+  padding-left:11px;
+  position:relative;
+  line-height:1.4;
+}
+
+.sw-s .sw-ul li::before { content:'+'; position:absolute; left:0; color:var(--pos); font-weight:700; font-size:10px; }
+.sw-w .sw-ul li::before { content:'−'; position:absolute; left:0; color:var(--neg); font-weight:700; font-size:10px; }
+
+/* Client badges */
+.badge-row { display:flex; flex-wrap:wrap; gap:5px; }
+
+.badge {
+  padding:2px 8px;
+  font-family:'Inconsolata',monospace;
+  font-size:9px;
+  letter-spacing:1px;
+  border-radius:1px;
+  background:var(--warm);
+  color:var(--ink3);
+  border:1px solid var(--rule);
+  text-transform:uppercase;
+}
+
+.badge.primary { background:var(--ink); color:var(--bg); border-color:var(--ink); }
+
+/* Share */
+.share-grid { display:flex; flex-direction:column; gap:3px; }
+.share-row { display:flex; align-items:center; gap:7px; }
+.share-lbl { font-family:'Inconsolata',monospace; font-size:9px; color:var(--ink4); min-width:110px; }
+.share-track { flex:1; height:5px; background:var(--warm2); border-radius:2px; overflow:hidden; }
+.share-fill { height:100%; border-radius:2px; transition:width 1s ease; }
+.share-pct { font-family:'Inconsolata',monospace; font-size:9px; color:var(--ink3); min-width:28px; text-align:right; }
+
+/* Threat */
+.threat-row { display:flex; align-items:center; gap:10px; }
+.tdots { display:flex; gap:3px; }
+
+.tdot {
+  width:10px; height:10px;
+  border-radius:50%;
+  border:1.5px solid var(--rule);
+  background:transparent;
+}
+
+.t5.lit { background:var(--hero); border-color:var(--hero); }
+.t4.lit { background:#c07000; border-color:#c07000; }
+.t3.lit { background:#886600; border-color:#886600; }
+.t2.lit { background:var(--gen); border-color:var(--gen); }
+.t1.lit { background:var(--pos); border-color:var(--pos); }
+
+.threat-txt { font-family:'Inconsolata',monospace; font-size:9px; font-weight:600; letter-spacing:.5px; }
+.price-chip { display:inline-flex; align-items:center; gap:6px; padding:3px 10px; background:var(--warm); border:1px solid var(--rule); border-radius:2px; font-family:'Inconsolata',monospace; font-size:10px; color:var(--ink2); }
+
+/* ── VERTICAL FOCUS TABLE ── */
+.focus-section { margin-bottom:60px; }
+
+.focus-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+@media(max-width:900px){ .focus-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:500px){ .focus-grid{ grid-template-columns:1fr; } }
+
+.focus-card {
+  background:#fff;
+  border:1.5px solid var(--rule);
+  border-top:3px solid;
+  border-radius:2px;
+  padding:18px;
+  transition:transform .2s;
+}
+
+.focus-card:hover { transform:translateY(-2px); }
+
+.fc-icon { font-size:28px; margin-bottom:8px; display:block; }
+.fc-name { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:.5px; margin-bottom:4px; }
+.fc-reg-status { font-family:'Inconsolata',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:2px 8px; border-radius:2px; display:inline-block; margin-bottom:8px; }
+.fc-clean { background:#edf9f2; color:var(--pos); border:1px solid #b8e0cc; }
+.fc-body { font-size:12px; color:var(--ink2); line-height:1.6; margin-bottom:10px; }
+.fc-use { font-family:'Inconsolata',monospace; font-size:10px; color:var(--ink3); line-height:1.7; }
+.fc-use strong { color:var(--ink); font-weight:600; }
+
+/* ── SHARE MATRIX ── */
+.matrix-section { margin-bottom:60px; }
+
+.share-tbl-wrap { overflow-x:auto; border:2px solid var(--ink); border-radius:3px; }
+
+.share-tbl {
+  width:100%;
+  border-collapse:collapse;
+  min-width:800px;
+}
+
+.share-tbl th {
+  background:var(--ink);
+  color:var(--bg);
+  padding:10px 13px;
+  font-family:'Inconsolata',monospace;
+  font-size:8.5px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  text-align:left;
+  border-right:1px solid rgba(255,255,255,.1);
+  font-weight:400;
+}
+
+.share-tbl th:last-child { border-right:none; }
+
+.share-tbl td {
+  padding:10px 13px;
+  border-bottom:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+  font-size:12px;
+}
+
+.share-tbl td:last-child { border-right:none; }
+.share-tbl tr:last-child td { border-bottom:none; }
+.share-tbl tr:hover td { background:var(--warm); }
+
+.sh-name { font-weight:700; font-size:13px; color:var(--ink); }
+.sh-type { font-family:'Inconsolata',monospace; font-size:8px; letter-spacing:1px; color:var(--ink4); text-transform:uppercase; margin-top:2px; }
+
+.sh-cell { display:flex; flex-direction:column; gap:3px; }
+.sh-num { font-family:'Inconsolata',monospace; font-size:11px; font-weight:600; color:var(--ink); }
+.sh-bar { height:4px; background:var(--warm2); border-radius:2px; overflow:hidden; }
+.sh-fill { height:100%; border-radius:2px; }
+
+/* ── UNMET NEEDS ── */
+.unmet-section { margin-bottom:60px; }
+
+.unmet-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+@media(max-width:880px){ .unmet-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:500px){ .unmet-grid{ grid-template-columns:1fr; } }
+
+.unmet-card {
+  border:1.5px solid var(--rule);
+  border-top:3px solid;
+  border-radius:2px;
+  padding:17px;
+  background:#fff;
+  transition:transform .2s;
+}
+
+.unmet-card:hover { transform:translateY(-2px); }
+
+.uc-pri { font-family:'Inconsolata',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+.uc-title { font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:.5px; margin-bottom:6px; line-height:1.1; }
+.uc-body { font-size:12px; color:var(--ink2); line-height:1.6; margin-bottom:10px; }
+
+.uc-opp {
+  padding:8px 11px;
+  background:var(--warm);
+  border-left:3px solid;
+  font-size:11px;
+  color:var(--ink2);
+  font-style:italic;
+  line-height:1.5;
+  border-radius:0 2px 2px 0;
+}
+
+/* ── INTEL SECTION ── */
+.intel-section { margin-bottom:60px; }
+
+.intel-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+@media(max-width:880px){ .intel-grid{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:500px){ .intel-grid{ grid-template-columns:1fr; } }
+
+.intel-card {
+  border:1.5px solid var(--rule);
+  border-radius:2px;
+  overflow:hidden;
+  background:#fff;
+}
+
+.ic-hdr {
+  padding:12px 16px;
+  background:var(--ink2);
+  color:#fff;
+}
+
+.ic-sub { font-family:'Inconsolata',monospace; font-size:8.5px; letter-spacing:2px; color:rgba(255,255,255,.45); text-transform:uppercase; margin-bottom:3px; }
+.ic-title { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:.5px; line-height:1.1; }
+
+.ic-body { padding:14px 16px; }
+
+.ic-list { list-style:none; display:flex; flex-direction:column; gap:6px; }
+
+.ic-list li {
+  font-size:11.5px;
+  color:var(--ink2);
+  padding-left:14px;
+  position:relative;
+  line-height:1.5;
+}
+
+.ic-list li::before { content:'→'; position:absolute; left:0; color:var(--ink4); font-size:10px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top:1px solid var(--rule);
+  padding-top:26px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+}
+
+.fnote { font-family:'Inconsolata',monospace; font-size:9px; color:var(--ink4); line-height:1.9; letter-spacing:.5px; }
+.fstamp { font-family:'Inconsolata',monospace; font-size:9px; color:var(--ink4); text-align:right; line-height:1.9; }
+
+@media(max-width:600px){ .page{ padding:0 14px 60px; } footer{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="kicker">Competitive Intelligence · Unregulated SMB Verticals Only · 2025</div>
+  <h1>
+    <span class="red">Clean Market</span><br>
+    Agency Competitor<br>Landscape
+  </h1>
+
+  <div class="mast-grid">
+    <div class="mast-intro">
+      Rebuilt to <strong>exclude all HIPAA-regulated, legally complex, and highly regulated market segments</strong> — including healthcare, medical practices, dental, legal/law firms, insurance, and financial services. What remains is a <strong>clean, fast-moving, compliance-light SMB opportunity</strong> across eight unregulated verticals where Synthflow-based agency resellers can sell faster, close easier, and operate with minimal legal overhead.
+    </div>
+    <div class="removed-panel">
+      <div class="rp-title">Markets Removed From Scope</div>
+      <div class="rp-removed">
+        <div class="rp-item"><span class="rp-x">✗</span><span>Healthcare / Medical Practices — HIPAA</span></div>
+        <div class="rp-item"><span class="rp-x">✗</span><span>Dental Offices — HIPAA + PHI</span></div>
+        <div class="rp-item"><span class="rp-x">✗</span><span>Med Spas / Clinics — HIPAA adjacent</span></div>
+        <div class="rp-item"><span class="rp-x">✗</span><span>Legal / Law Firms — Bar compliance</span></div>
+        <div class="rp-item"><span class="rp-x">✗</span><span>Insurance Agencies — TCPA + state regs</span></div>
+        <div class="rp-item"><span class="rp-x">✗</span><span>Financial Services — CFPB + SOX</span></div>
+      </div>
+      <div class="rp-divider"></div>
+      <div class="rp-title" style="margin-top:4px">Clean Verticals In Scope</div>
+      <div class="rp-removed">
+        <div class="rp-item"><span class="rp-check">✓</span><span>Real Estate</span></div>
+        <div class="rp-item"><span class="rp-check">✓</span><span>Home Services (HVAC, plumbing, roofing)</span></div>
+        <div class="rp-item"><span class="rp-check">✓</span><span>Automotive Dealerships</span></div>
+        <div class="rp-item"><span class="rp-check">✓</span><span>Gyms, Fitness Studios &amp; Wellness</span></div>
+        <div class="rp-item"><span class="rp-check">✓</span><span>Restaurants &amp; Hospitality</span></div>
+        <div class="rp-item"><span class="rp-check">✓</span><span>Hotels &amp; Short-Term Rentals</span></div>
+        <div class="rp-item"><span class="rp-check">✓</span><span>Pet Services (grooming, boarding)</span></div>
+        <div class="rp-item"><span class="rp-check">✓</span><span>Education &amp; Tutoring Centers</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLEAN VERTICAL BADGES -->
+<div class="vert-strip">
+  <span class="vs-label">Clean Verticals:</span>
+  <div class="vbadge" style="color:var(--re);border-color:var(--re)"><div class="vdot" style="background:var(--re)"></div>Real Estate</div>
+  <div class="vbadge" style="color:var(--hs);border-color:var(--hs)"><div class="vdot" style="background:var(--hs)"></div>Home Services</div>
+  <div class="vbadge" style="color:var(--auto);border-color:var(--auto)"><div class="vdot" style="background:var(--auto)"></div>Automotive</div>
+  <div class="vbadge" style="color:var(--gym);border-color:var(--gym)"><div class="vdot" style="background:var(--gym)"></div>Gyms / Fitness</div>
+  <div class="vbadge" style="color:var(--rest);border-color:var(--rest)"><div class="vdot" style="background:var(--rest)"></div>Restaurants</div>
+  <div class="vbadge" style="color:var(--hosp);border-color:var(--hosp)"><div class="vdot" style="background:var(--hosp)"></div>Hotels / STR</div>
+  <div class="vbadge" style="color:var(--pet);border-color:var(--pet)"><div class="vdot" style="background:var(--pet)"></div>Pet Services</div>
+  <div class="vbadge" style="color:var(--edu);border-color:var(--edu)"><div class="vdot" style="background:var(--edu)"></div>Education</div>
+</div>
+
+<!-- SECTION 01: VERTICAL PROFILES -->
+<div class="focus-section">
+  <div class="section-hdr">
+    <div class="sec-num">01</div>
+    <div class="sec-title">Clean Vertical Profiles — Opportunity Sizing</div>
+  </div>
+  <div class="focus-grid" id="focus-grid"></div>
+</div>
+
+<!-- TYPE LEGEND -->
+<div class="type-legend">
+  <div class="tpill" style="color:var(--gen);border-color:var(--gen)"><div class="tpip" style="background:var(--gen)"></div>Generalist AAA</div>
+  <div class="tpill" style="color:var(--ghl);border-color:var(--ghl)"><div class="tpip" style="background:var(--ghl)"></div>GHL Bundler</div>
+  <div class="tpill" style="color:var(--vert);border-color:var(--vert)"><div class="tpip" style="background:var(--vert)"></div>Vertical Specialist</div>
+  <div class="tpill" style="color:var(--niche);border-color:var(--niche)"><div class="tpip" style="background:var(--niche)"></div>Niche Automation</div>
+  <div class="tpill" style="color:var(--mgd);border-color:var(--mgd)"><div class="tpip" style="background:var(--mgd)"></div>Managed AI SP</div>
+  <div class="tpill" style="color:var(--emrg);border-color:var(--emrg)"><div class="tpip" style="background:var(--emrg)"></div>YouTube-Born</div>
+</div>
+
+<!-- FILTER -->
+<div class="filter-row">
+  <span class="fl">Filter:</span>
+  <button class="fbtn on" onclick="filterCards('all',this)">All 20</button>
+  <button class="fbtn" onclick="filterCards('gen',this)">Generalist</button>
+  <button class="fbtn" onclick="filterCards('ghl',this)">GHL Bundler</button>
+  <button class="fbtn" onclick="filterCards('vert',this)">Vertical</button>
+  <button class="fbtn" onclick="filterCards('niche',this)">Niche</button>
+  <button class="fbtn" onclick="filterCards('mgd',this)">Managed</button>
+  <button class="fbtn" onclick="filterCards('emrg',this)">YouTube-Born</button>
+  <button class="fbtn" onclick="filterCards('hi',this)" style="border-color:var(--hero);color:var(--hero)">High Threat</button>
+</div>
+
+<!-- SECTION 02: COMPETITORS -->
+<div class="comp-section">
+  <div class="section-hdr">
+    <div class="sec-num">02</div>
+    <div class="sec-title">20 Agency Competitor Archetypes — Clean Markets Only</div>
+  </div>
+  <div class="card-grid" id="card-grid"></div>
+</div>
+
+<!-- SECTION 03: SHARE MATRIX -->
+<div class="matrix-section">
+  <div class="section-hdr">
+    <div class="sec-num">03</div>
+    <div class="sec-title">Estimated Channel Share by Clean Vertical</div>
+  </div>
+  <div class="share-tbl-wrap">
+    <table class="share-tbl">
+      <thead>
+        <tr>
+          <th>Competitor Archetype</th>
+          <th>Real Estate</th>
+          <th>Home Services</th>
+          <th>Automotive</th>
+          <th>Gyms / Fitness</th>
+          <th>Restaurants</th>
+          <th>Hotels / STR</th>
+          <th>Pet Services</th>
+          <th>Education</th>
+          <th>Overall Share</th>
+        </tr>
+      </thead>
+      <tbody id="share-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 04: UNMET NEEDS -->
+<div class="unmet-section">
+  <div class="section-hdr">
+    <div class="sec-num">04</div>
+    <div class="sec-title">Unmet Needs — White Space in Clean Markets</div>
+  </div>
+  <div class="unmet-grid" id="unmet-grid"></div>
+</div>
+
+<!-- SECTION 05: MARKETING INTEL -->
+<div class="intel-section">
+  <div class="section-hdr">
+    <div class="sec-num">05</div>
+    <div class="sec-title">Marketing Plan Intelligence</div>
+  </div>
+  <div class="intel-grid" id="intel-grid"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fnote">
+    * All regulated verticals (healthcare, dental, medical, legal, insurance, financial services) have been excluded from this analysis. Clean verticals are defined as markets with no HIPAA, no state bar compliance, no TCPA outbound restrictions specific to the vertical, and no federal financial regulation (CFPB/SOX) requirements. Standard TCPA rules for general business outbound calling still apply across all verticals. Market share figures are directional estimates based on agency ecosystem intelligence, not audited data.
+  </div>
+  <div class="fstamp">
+    CLEAN MARKET EDITION<br>
+    SEGMENT 8 × LAYER 4<br>
+    ─────────────────────<br>
+    UNREGULATED SMB ONLY<br>
+    2025 EDITION
+  </div>
+</footer>
+
+</div>
+
+<script>
+/* ══════════════════════════════
+   VERTICAL PROFILES
+══════════════════════════════ */
+const VERTICALS = [
+  { icon:'🏠', name:'Real Estate', color:'#1a3a7a', reg:'Zero HIPAA / No licensing reqs on AI', body:'Highest call volume of any SMB vertical. Lead follow-up, showing scheduling, buyer qualification. Deep CRM ecosystem (KvCORE, FUB, Sierra). Outcome-based pricing resonates strongly.', use:'Lead follow-up calls · Showing scheduling · Buyer/seller qualification · Expired listing reactivation', size:'$600–$1,800/mo', cagr:'Strong' },
+  { icon:'🔧', name:'Home Services', color:'#c07000', reg:'Zero regulation — clean', body:'HVAC, plumbing, roofing, electrical, landscaping. Owners are on job sites — cannot answer phones. Simple use case: answer the call, book the estimate. ServiceTitan and Housecall Pro integrations.', use:'Estimate booking · Job scheduling · Overflow answering · After-hours emergency intake', size:'$400–$1,200/mo', cagr:'Very Strong' },
+  { icon:'🚗', name:'Automotive', color:'#5a1a6b', reg:'Minimal — no federal AI regulation', body:'40%+ of dealer calls go unanswered (Marchex). Service reminders, unsold lead follow-up, appointment scheduling. DMS integration (CDK, Reynolds) is the moat. High ROI per appointment.', use:'Service reminders · Unsold showroom follow-up · Internet lead qualification · Test drive scheduling', size:'$800–$2,000/mo', cagr:'Strong' },
+  { icon:'💪', name:'Gyms / Fitness', color:'#1a5a2a', reg:'Zero regulation — clean', body:'High churn vertical. Trial offer follow-up, membership re-engagement, class booking. Mindbody and Zen Planner integrations. Retention campaigns have immediate measurable ROI.', use:'Trial offer follow-up · Membership retention calls · Class booking · Lapsed member reactivation', size:'$400–$1,000/mo', cagr:'Strong' },
+  { icon:'🍽️', name:'Restaurants', color:'#bf2008', reg:'Zero regulation — clean', body:'Reservation management, takeout inquiries, catering booking, event inquiries. Phone lines overwhelmed during peak hours. Simple, high-frequency use case with immediate call volume relief.', use:'Reservation booking · Catering inquiries · Menu questions · Event inquiry intake', size:'$300–$800/mo', cagr:'Moderate' },
+  { icon:'🏨', name:'Hotels / Short-Term Rentals', color:'#1a5a5a', reg:'Minimal — standard data privacy only', body:'Booking inquiries, amenity questions, check-in/check-out support. Airbnb and VRBO hosts with multiple properties have identical overflow call problems. Massive volume with limited staff.', use:'Booking inquiries · Amenity questions · Check-in instructions · Guest support overflow', size:'$400–$1,200/mo', cagr:'Strong' },
+  { icon:'🐾', name:'Pet Services', color:'#6b3a00', reg:'Zero regulation — completely clean', body:'Groomers, boarding facilities, doggy daycares, veterinary-adjacent wellness. Appointment scheduling is near 100% of call volume. Underserved by voice AI agencies — significant first-mover opportunity.', use:'Grooming appointments · Boarding inquiries · Daycare scheduling · Service pricing questions', size:'$300–$700/mo', cagr:'Emerging' },
+  { icon:'📚', name:'Education / Tutoring', color:'#00446b', reg:'FERPA applies to student records — AI call booking is exempt', body:'Tutoring centers, test prep, after-school programs, adult education. Enrollment inquiries, trial class scheduling, program information calls. High parent call volume with small admin staff.', use:'Enrollment inquiries · Trial class scheduling · Program information · Re-enrollment outreach', size:'$400–$1,000/mo', cagr:'Strong' },
+];
+
+/* ══════════════════════════════
+   COMPETITOR DATA
+══════════════════════════════ */
+const TYPES = {
+  gen:  { label:'Generalist AAA',      color:'#1a3a7a' },
+  ghl:  { label:'GHL Bundler',         color:'#6b1a1a' },
+  vert: { label:'Vertical Specialist', color:'#1a5a2a' },
+  niche:{ label:'Niche Automation',    color:'#5a1a6b' },
+  mgd:  { label:'Managed AI SP',       color:'#7a4a00' },
+  emrg: { label:'YouTube-Born / Solo', color:'#1a5a5a' },
+};
+
+const TL = ['','Minimal','Low','Moderate','High','Critical'];
+const TC = ['','#1a6b38','#1a3a7a','#886600','#c07000','#bf2008'];
+
+const COMPS = [
+  {
+    id:1, type:'gen', threat:5,
+    name:'The Generalist Voice AI Agency',
+    tagline:'Broad-vertical, white-labeled voice AI to any SMB with call volume — no vertical specialization',
+    desc:'Your closest structural competitor. Same platform (often Synthflow), same white-label model, same SMB client profile. They serve any vertical simultaneously — real estate, gyms, restaurants, home services, all at once. Their breadth is both their pitch and their Achilles heel. They cannot speak fluent real estate, HVAC, or fitness. They win on visibility and speed; you win on depth.',
+    clients:['Any High-Call-Volume SMB','Local Service Businesses','Multi-vertical portfolio'],
+    primary:['Any SMB'],
+    pricing:'$500–$1,800/mo retainer + $500–$2,500 setup',
+    str:['Broadest TAM — no client excluded','Fast to close with simple pitch','Well-represented in GHL and Skool communities','Low operational complexity with template library','Established visibility in agency marketplaces'],
+    wk:['No vertical depth — generic scripts underperform','Commodity positioning — easily replaced when better option appears','Cannot charge vertical knowledge premium','High churn when clients feel like a number','No referral network within any specific industry'],
+    share:{ re:22, hs:24, auto:20, gym:22, rest:20, hosp:18, pet:16, edu:18 },
+    overall:22,
+    mkt:'YouTube tutorials, GHL Facebook groups, Skool communities, cold email with generic pitch. Primary retention gap: no vertical ROI story.'
+  },
+  {
+    id:2, type:'gen', threat:4,
+    name:'The Productized Voice AI Agency',
+    tagline:'One SKU, one price, one deliverable — voice AI as a simple fixed product',
+    desc:'These agencies have eliminated scope creep by creating a fixed product: "AI Receptionist — $697/month, live in 5 days." Same configuration deployed to every client. Highly scalable because there is no customization. The threat: their speed and price clarity undercut agencies still doing custom builds. Counter: their inflexibility means they cannot serve complex workflows or prove vertical-specific ROI.',
+    clients:['Fast-decision SMB owners','Referral buyers wanting simplicity','Owners allergic to long sales processes'],
+    primary:['Fast-Decision SMBs'],
+    pricing:'Fixed $297–$997/mo — one price, no negotiation',
+    str:['Fastest time-to-value — minimal onboarding friction','Zero scope creep — defined deliverable','Simple pricing converts well in social media ads','High margin at scale with repeatable operations','Expectations set perfectly from day one'],
+    wk:['Cannot serve complex or multi-step workflows','Lower ceiling per client — no upsell path','No differentiation on quality — competes only on price and speed','Vulnerable when any competitor copies the SKU','Cannot command vertical expertise premiums'],
+    share:{ re:14, hs:16, auto:14, gym:18, rest:16, hosp:12, pet:14, edu:12 },
+    overall:14,
+    mkt:'Short-form video ads (Reels, TikTok) showing the product in action. Clear pricing page drives inbound. Referral motion among SMB peer groups is primary growth.'
+  },
+  {
+    id:3, type:'ghl', threat:5,
+    name:'The GoHighLevel AI Bundle Agency',
+    tagline:'Sells GHL CRM + voice AI as a stacked platform — voice is an included feature, not the lead offer',
+    desc:'The dominant channel model in 2024–2025. These agencies sell GHL sub-accounts at $297–$497/month and layer voice AI (via Assistable or Synthflow) as either included or a $200–$400 add-on. The client is anchored in the CRM — voice AI is almost invisible. The threat: they acquire voice AI clients as a byproduct of CRM sales, creating extreme stickiness. Counter: clients who need voice AI depth are underserved inside a bundled GHL offering.',
+    clients:['GHL-using SMBs across all clean verticals','Local marketing-oriented businesses','Agencies reselling to agencies'],
+    primary:['GHL Ecosystem SMBs'],
+    pricing:'$297–$497/mo GHL + $200–$400/mo voice add-on',
+    str:['Extreme stickiness — GHL CRM lock-in retains clients','Voice AI is an upsell not primary pitch — lower friction to buy','Largest distribution network in SMB AI market','Bundled billing reduces perceived voice AI cost','GoHighLevel marketplace provides passive discoverability'],
+    wk:['Voice AI treated as feature — clients underserved on optimization','GHL dependency — vulnerable to platform changes','Cannot customize beyond GHL automation framework','Client sees GHL as the value, not the voice work','Voice quality and conversation depth often limited'],
+    share:{ re:26, hs:22, auto:22, gym:24, rest:22, hosp:20, pet:18, edu:20 },
+    overall:24,
+    mkt:'Entirely within GHL ecosystem — marketplace, Facebook groups, YouTube targeting GHL agency owners. Zero marketing presence outside GHL world.'
+  },
+  {
+    id:4, type:'ghl', threat:4,
+    name:'The GHL Vertical Snapshot Seller',
+    tagline:'Pre-built GHL snapshots for specific clean verticals with voice AI baked in',
+    desc:'A sub-niche within GHL. These agencies build and sell industry-specific GHL snapshots — a real estate team system, a gym membership system, a home services system — with the voice AI pre-configured inside the workflow. Revenue from snapshot sale plus monthly hosting. The voice AI feels native because it is embedded in an industry workflow rather than bolted on as a separate service.',
+    clients:['GHL real estate agencies','Gym owners using GHL','HVAC companies on GHL'],
+    primary:['GHL Vertical SMBs'],
+    pricing:'$1,000–$4,000 snapshot + $197–$397/mo hosting',
+    str:['Workflow integration makes voice feel native not add-on','One build, unlimited deployments — near-100% margin at scale','Pre-built for industry — faster time to first win','Strong referrals within vertical when snapshot works well','Snapshot library becomes valuable recurring passive income'],
+    wk:['High upfront build investment per vertical snapshot','Support burden when snapshots break post-GHL updates','Requires both GHL and voice AI expertise simultaneously','Clients may copy or resell the snapshot without permission','Less flexible than custom agency builds for unique client needs'],
+    share:{ re:18, hs:14, auto:16, gym:18, rest:12, hosp:10, pet:10, edu:12 },
+    overall:13,
+    mkt:'YouTube tutorial content ("I built a complete AI system for gyms in 3 days"), GHL Facebook groups, Skool. Live Zoom demos and snapshot showcases drive conversions.'
+  },
+  {
+    id:5, type:'vert', threat:4,
+    name:'The Real Estate Specialist Agency',
+    tagline:'All-in on real estate lead follow-up, showing scheduling, and buyer/seller qualification',
+    desc:'Real estate has the highest voice AI adoption rate of any clean SMB vertical. These agencies speak fluent real estate — ISA scripts, lead conversion rates, cost per appointment, KvCORE vs FUB integration. Their competitive moat is the referral network within real estate team and brokerage communities. If you enter real estate, these are your sharpest vertical competitors.',
+    clients:['Real Estate Teams','Solo Agents with high lead volume','Property Management Companies'],
+    primary:['Real Estate SMBs'],
+    pricing:'$600–$1,800/mo — outcome pricing ($X/appointment) emerging',
+    str:['Deep CRM integrations (KvCORE, Follow Up Boss, Sierra)','Understands ISA replacement pitch perfectly','Tight referral network — one happy client refers ten','Outcome-based pricing available — compelling ROI','Real estate has highest monthly call volume of any clean vertical'],
+    wk:['Real estate is cyclical — agency revenue follows housing market','Most saturated clean vertical for voice AI agencies','TCPA still applies to outbound cold calling','High client churn when market softens','Difficult to differentiate without genuine real estate expertise'],
+    share:{ re:32, hs:0, auto:0, gym:0, rest:0, hosp:0, pet:0, edu:0 },
+    overall:8,
+    mkt:'Tom Ferry, EXP Realty communities, KvCORE and Follow Up Boss user groups, real estate Facebook groups. Podcast appearances on team leader shows.'
+  },
+  {
+    id:6, type:'vert', threat:3,
+    name:'The Home Services Specialist Agency',
+    tagline:'Estimate booking and job scheduling AI for HVAC, plumbing, roofing, electrical, landscaping',
+    desc:'Home services has a perfectly simple voice AI use case: answer the call, book the estimate. Owners on job sites physically cannot answer phones. The ROI is instant and obvious. These agencies go deep on ServiceTitan and Housecall Pro integrations and market in home services owner communities. Their weakness: price-sensitive market and a simple use case that generalists can copy easily.',
+    clients:['HVAC Companies','Plumbers','Roofers','Electricians','Landscapers'],
+    primary:['Home Services SMBs'],
+    pricing:'$400–$1,200/mo — simple ROI story: booked estimates',
+    str:['Simplest use case in all clean verticals — book the estimate','ServiceTitan and Housecall Pro integration expertise is a moat','Immediate obvious ROI — clients can count their booked estimates','Seasonal demand patterns are highly predictable','Home services owners are hungry for efficiency tools'],
+    wk:['Price-sensitive owners watch every dollar carefully','Simple use case is easy for generalists to replicate','Seasonal volume variation creates revenue volatility','Trust barrier — home services owners often skeptical of AI','ServiceTitan integration setup requires real expertise to get right'],
+    share:{ re:0, hs:30, auto:0, gym:0, rest:0, hosp:0, pet:0, edu:0 },
+    overall:7,
+    mkt:'ServiceTitan user communities, Housecall Pro user groups, home services Facebook groups, YouTube content showing live estimate bookings. HVAC business associations.'
+  },
+  {
+    id:7, type:'vert', threat:3,
+    name:'The Automotive Specialist Agency',
+    tagline:'Service reminders, lead follow-up, and appointment AI for car dealerships',
+    desc:'Dealerships have massive call volume and terrible phone answering rates. These agencies focus on service department reminders, unsold showroom visitor follow-up, and internet lead qualification. DMS integration knowledge (CDK, Reynolds & Reynolds) is the primary moat. Multi-rooftop dealer groups are the franchise opportunity in this vertical.',
+    clients:['Independent Dealers','Franchise Dealers','Auto Groups (multi-rooftop)'],
+    primary:['Car Dealerships'],
+    pricing:'$800–$2,000/mo per rooftop',
+    str:['Highest ROI per appointment — one car sold = $2,000–$5,000','40% of dealer calls go unanswered — problem is undeniable','DMS integration is difficult competitive moat','Multi-rooftop groups = franchise-level LTV','Strong automotive association conference circuit'],
+    wk:['DMS integration (CDK, Reynolds) is technically complex','Dealer management is skeptical and decision-making is slow','OEM compliance requirements for franchise dealers','Automotive market cyclical with inventory fluctuations','Multiple stakeholders required to close a dealership deal'],
+    share:{ re:0, hs:0, auto:28, gym:0, rest:0, hosp:0, pet:0, edu:0 },
+    overall:5,
+    mkt:'NADA conference, dealer Twenty Groups (peer groups), automotive marketing agencies as referral partners, LinkedIn targeting dealer principals and service directors.'
+  },
+  {
+    id:8, type:'vert', threat:3,
+    name:'The Fitness & Gym Specialist Agency',
+    tagline:'Trial offer follow-up, membership retention, and class booking for fitness businesses',
+    desc:'Fitness has high churn and a simple AI use case: follow up on trials, re-engage lapsed members, book classes. Mindbody and Zen Planner integrations are the tech moat. Retention campaigns have immediate measurable ROI — agencies that can show "we recovered 12 lapsed members this month at $X/member" retain clients indefinitely.',
+    clients:['Independent Gyms','Boutique Fitness Studios','Yoga and Pilates Studios'],
+    primary:['Fitness SMBs'],
+    pricing:'$400–$900/mo — retention ROI is the primary value story',
+    str:['High churn in fitness = recurring need for AI reactivation','Mindbody and Zen Planner integration creates switching costs','Retention ROI is measurable and immediate','Fitness franchise groups (F45, Orange Theory) = franchise LTV','Low regulatory burden — completely clean market'],
+    wk:['Smaller businesses mean lower pricing ceiling','Boutique studios can be cash-constrained','Seasonal dips (January surge, summer drop) affect call volume','Limited integration depth compared to CRM-heavy verticals','Less sophisticated buyers unfamiliar with AI tools'],
+    share:{ re:0, hs:0, auto:0, gym:28, rest:0, hosp:0, pet:0, edu:0 },
+    overall:5,
+    mkt:'Mindbody and Zen Planner user communities, boutique fitness Facebook groups, gym owner podcasts. Content focused on member retention statistics resonates strongly.'
+  },
+  {
+    id:9, type:'niche', threat:5,
+    name:'The Outcome-Based Pricing Agency',
+    tagline:'Charges per booked appointment or qualified lead — zero upfront risk for SMB clients',
+    desc:'The most disruptive pricing model in the agency channel. No monthly retainer — just $20–$50 per appointment booked or $10–$25 per lead qualified. For SMB clients this is irresistible: "I only pay when it works." The threat: this pitch removes the primary objection to buying voice AI (monthly commitment risk) and is not tied to any specific vertical. Any competitor who adopts this model in your target verticals will win on perceived risk removal.',
+    clients:['Risk-averse first-time AI buyers','ROI-focused SMB owners','Any high-volume clean vertical business'],
+    primary:['ROI-First SMBs'],
+    pricing:'$20–$50/booked appointment or $10–$25/qualified lead',
+    str:['Perceived zero risk — the most compelling offer in the channel','Eliminates the primary objection to buying AI services','Works across all clean verticals simultaneously','Creates word-of-mouth: "I only paid when it worked"','Forces agency excellence — skin in the game'],
+    wk:['Cash flow volatility — slow months devastate agency margins','Requires exceptional agent performance to be profitable','Complex to price without historical performance data','Client may not convert qualified leads (not agency fault)','Outbound campaigns face standard TCPA considerations'],
+    share:{ re:14, hs:12, auto:14, gym:10, rest:10, hosp:10, pet:8, edu:8 },
+    overall:9,
+    mkt:'Viral in social media because the pitch is uniquely compelling. Often used as foot-in-the-door to convert to retainer once trust established. Referral-driven.'
+  },
+  {
+    id:10, type:'niche', threat:4,
+    name:'The Dead Lead Reactivation Agency',
+    tagline:'One campaign type: AI outbound calls to reactivate cold leads from existing CRM databases',
+    desc:'Highly productized campaign service. The agency takes a business\'s stale lead list and runs AI outbound calls to reactivate it. The pitch writes itself: "Give us your 1,000 dead leads. We\'ll call all of them in 48 hours. You pay per reactivated conversation." Works powerfully in real estate, automotive, and gyms — all clean verticals with large stale CRM lists.',
+    clients:['Real estate teams with old lead databases','Auto dealers with unsold visitor lists','Gyms with lapsed member lists'],
+    primary:['Businesses with Stale CRM Lists'],
+    pricing:'$500–$1,500 project + $15–$30 per reactivated lead',
+    str:['Fastest ROI demonstration of any agency service type','Client provides the asset — no cold lead acquisition needed','Highly repeatable — every client has more dead leads','Immediate results within 48 hours of campaign launch','Addictive when it works — instant re-bookings'],
+    wk:['Standard TCPA outbound rules apply — consent management needed','One-time project dynamic — not inherently recurring revenue','Dependent on lead list quality (garbage in, garbage out)','Hard to productize perfectly across all verticals','Clients may do one campaign and never return'],
+    share:{ re:16, hs:10, auto:18, gym:10, rest:6, hosp:8, pet:6, edu:6 },
+    overall:8,
+    mkt:'"Watch us call 500 dead leads live" demo content converts extremely well. Strong on LinkedIn for automotive. Real estate Facebook groups. Referral-driven after first campaign.'
+  },
+  {
+    id:11, type:'niche', threat:3,
+    name:'The After-Hours Emergency AI Agency',
+    tagline:'Packages voice AI exclusively as 24/7 after-hours coverage and emergency intake',
+    desc:'An almost completely unclaimed niche with zero serious agency competition. Every home services business, hotel, and restaurant has after-hours call volume. These agencies sell one thing: "Never miss an emergency call again." After-hours HVAC calls, hotel guest emergencies, restaurant private event inquiries after closing. Premium pricing justified by 24/7 positioning. Near-zero competition.',
+    clients:['Home Services (HVAC emergency)','Hotels and short-term rentals','Restaurants with event inquiries','Property managers'],
+    primary:['24/7 Call Volume Businesses'],
+    pricing:'$400–$1,000/mo premium — "24/7 AI coverage"',
+    str:['Virtually no direct competition for this specific positioning','High perceived value — after-hours emergency = revenue at risk','Easy to sell: fear of missing a burst pipe call at 2am','Strong retention once clients see after-hours bookings','Premium pricing justified without pushback'],
+    wk:['Emergency handling errors carry reputation risk','More complex escalation logic than standard inbound','Requires robust call routing and human fallback config','Clients expect near-perfection in emergency contexts','Limited horizontal scale once niche saturates'],
+    share:{ re:0, hs:20, auto:0, gym:0, rest:10, hosp:16, pet:0, edu:0 },
+    overall:4,
+    mkt:'Nearly unclaimed position. Home services owner groups, hotel owner forums, property manager communities. Word-of-mouth driven once first clients see after-hours bookings.'
+  },
+  {
+    id:12, type:'niche', threat:3,
+    name:'The Franchise & Multi-Location Agency',
+    tagline:'Deploys standardized voice AI across franchise networks — one deal, many locations',
+    desc:'The highest LTV opportunity in the clean market. One franchise network deal equals 20–500 identical deployments at the same per-location price. The agency builds one branded AI agent for the concept and deploys it network-wide. A 40-location HVAC franchise at $400/location = $16,000/month from a single client relationship. Works powerfully in home services franchises, fitness franchises, and restaurant groups.',
+    clients:['HVAC / plumbing franchise networks','Fitness franchise groups (F45, Anytime Fitness)','Restaurant chain groups','Auto dealer groups'],
+    primary:['Franchise Brands'],
+    pricing:'$200–$500/location/mo × 20–500 locations',
+    str:['Extraordinary LTV — one relationship funds the agency','Same build deployed unlimited times — near-100% margin at scale','Referrals flow from one franchise to peer franchise brands','Once embedded in a franchise, nearly impossible to displace','Franchise HQ relationship protects against individual location churn'],
+    wk:['Long enterprise sales cycle to win first franchise deal','Franchise approval processes are slow and political','One churn event = catastrophic revenue loss','Requires legal/contract infrastructure','Franchise HQ stakeholder management is demanding'],
+    share:{ re:8, hs:10, auto:12, gym:10, rest:8, hosp:8, pet:4, edu:6 },
+    overall:5,
+    mkt:'Franchise association conferences, franchise broker relationships, direct outreach to franchise development officers. Long cycle but extraordinary LTV.'
+  },
+  {
+    id:13, type:'mgd', threat:3,
+    name:'The SMB Managed AI Service Provider',
+    tagline:'Full AI stack for growth SMBs: voice + chat + SMS + reviews + CRM in one managed service',
+    desc:'These agencies sell a complete AI transformation service — not just voice. Their positioning: "We\'re your outsourced AI department." Voice AI is one of many bundled services alongside chatbots, SMS automation, and review management. Higher ARPU ($1,500–$4,000/mo), longer sales cycle, more complex delivery. They compete by making voice feel like a feature of a broader value proposition.',
+    clients:['Growth-stage SMBs wanting full AI','Businesses with multiple channels to automate','Multi-location owners wanting unified AI'],
+    primary:['Growth SMBs'],
+    pricing:'$1,500–$4,000/mo all-in managed AI service',
+    str:['Highest ARPU of any agency model in clean markets','Multi-service stickiness — very hard to churn from a complete stack','Strategic partner positioning commands premium pricing','Voice AI bundled = lower perceived cost of voice alone','Attracts ambitious clients willing to invest in AI properly'],
+    wk:['Complex delivery requires broader team and skills','Longer sales cycle — 30–90 days typical','Over-promise risk when clients expect AI transformation overnight','Large churn events when one leaves (high monthly dependency)','Harder to systematize than single-product agencies'],
+    share:{ re:12, hs:10, auto:10, gym:12, rest:10, hosp:12, pet:8, edu:14 },
+    overall:9,
+    mkt:'LinkedIn thought leadership, content marketing about AI strategy, referrals from accountants and business consultants. B2B positioning, longer relationship sale.'
+  },
+  {
+    id:14, type:'mgd', threat:2,
+    name:'The MSP Adding AI Voice',
+    tagline:'Traditional IT managed service providers upselling voice AI to existing SMB clients',
+    desc:'Established MSPs who manage phone systems and IT infrastructure for SMBs are adding voice AI as an upsell to existing clients. The competitive advantage is pre-built trust — "your IT company is now handling your AI too." They do not acquire new clients through voice AI; they upsell existing ones. The threat: they are already inside your ideal client\'s business with a monthly invoice and established credibility.',
+    clients:['Existing MSP client base — any clean vertical SMB'],
+    primary:['Existing MSP Clients'],
+    pricing:'$200–$500/mo voice add-on to existing MSP contract',
+    str:['Zero acquisition cost — upsells existing trusted relationships','Already manages the phone system in many cases','Recurring relationship with high baseline retention','Client adds voice as a line item to existing invoice','IT credibility transfers to AI credibility'],
+    wk:['Lack voice AI depth — deploying without true expertise','Slow decision-making processes in IT procurement cycles','Voice AI is afterthought, not a focus — clients underserved','Limited vertical specialization across diverse client base','Cannot demonstrate industry-specific ROI'],
+    share:{ re:8, hs:10, auto:8, gym:6, rest:6, hosp:8, pet:4, edu:8 },
+    overall:6,
+    mkt:'No acquisition marketing needed — sells only to existing clients. Invisible in agency community channels. Threat exists only in competitive accounts where MSP gets there first.'
+  },
+  {
+    id:15, type:'emrg', threat:5,
+    name:'The YouTube-Audience Agency',
+    tagline:'Solo agency owner with a YouTube following who converts viewers directly into paying clients',
+    desc:'The most underestimated competitor. These individuals built audiences teaching voice AI on YouTube (5K–200K subscribers). A percentage converts directly into clients. Customer acquisition cost: near zero. Perceived authority allows 30–50% pricing premiums over generalists. They have watched the prospect\'s concerns answered in 20 hours of content before a sales call even happens. Many also sell courses, creating compounding income.',
+    clients:['SMB owners consuming YouTube AI content','Viewers wanting to hire the teacher','Self-educated local business owners'],
+    primary:['YouTube-Educated SMB Owners'],
+    pricing:'$800–$3,000/mo — authority premium baked in',
+    str:['Near-zero CAC — audience converts organically','Authority positioning commands significant premium pricing','Course income subsidizes agency — lower financial pressure','Compounding audience = compounding inbound client pipeline','Referrals flow naturally from highly engaged audiences'],
+    wk:['Audience building takes 12–24 months before meaningful agency impact','Content creation is a full-time job alongside client delivery','Audience does not always convert to local-market clients','YouTube algorithm changes can devastate reach overnight','Split focus between content creation and delivery quality'],
+    share:{ re:14, hs:12, auto:12, gym:14, rest:12, hosp:10, pet:10, edu:12 },
+    overall:11,
+    mkt:'IS the marketing channel. YouTube is their entire acquisition strategy. Secondary via X/Twitter, LinkedIn, Skool communities, newsletter for email list monetization.'
+  },
+  {
+    id:16, type:'emrg', threat:4,
+    name:'The Course-to-Agency Funnel',
+    tagline:'Sells a voice AI training course, then captures the DFY buyers who prefer to outsource',
+    desc:'These operators teach voice AI agency building — then offer done-for-you services to students who prefer to hire. Course creates pre-educated, pre-qualified clients. The DFY component captures high-intent buyers at the funnel bottom. The economics: course income is often higher than agency income, and the agency captures overflow clients who have already decided voice AI is valuable.',
+    clients:['Course students wanting done-for-you implementation','Pre-educated SMBs who saw course ads','High-income owners who watched the course funnel'],
+    primary:['Course Buyer DFY Clients'],
+    pricing:'$1,500–$4,000 DFY setup + $500–$1,500/mo management',
+    str:['Course creates pre-educated clients with no objection to AI','Students pay to learn, then pay again for implementation','Multiple revenue streams — course + agency + affiliate','High intent buyers with minimal sales friction','Course credibility and brand transfers to agency'],
+    wk:['Course market is saturating — margins declining','Students who learn become competitors in the same market','Reputation risk if course quality is poor','Split focus between course creation and client delivery','Many course buyers never convert to agency clients'],
+    share:{ re:10, hs:8, auto:8, gym:10, rest:8, hosp:8, pet:8, edu:10 },
+    overall:8,
+    mkt:'YouTube and Meta ads targeting business owners about the AI opportunity. Webinar funnel is standard. Facebook groups, Skool, Discord communities. "How I make $20K/mo with AI" style content.'
+  },
+  {
+    id:17, type:'emrg', threat:3,
+    name:'The Offshore Low-Cost AI Agency',
+    tagline:'Delivers voice AI at 40–60% lower prices by arbitraging international labor costs',
+    desc:'Agencies based in or staffed from Philippines, India, or Eastern Europe offering voice AI deployment at dramatically lower prices. Setup fees of $200–$500 vs $1,000–$3,000 for US-based agencies. Monthly retainers of $150–$400 vs $500–$1,500. They compete on price alone and set a floor on what SMBs think voice AI should cost — making it harder for premium agencies to justify higher prices without clear differentiation.',
+    clients:['Extremely price-sensitive SMBs','Owners who found them on Fiverr or Upwork','International or multilingual client businesses'],
+    primary:['Price-Sensitive SMBs'],
+    pricing:'$150–$450/mo — 50–65% below US agency market rate',
+    str:['Price is irresistible for budget-conscious first-time buyers','Fiverr and Upwork marketplace passive discovery','Fast deployment with template libraries','Can serve clients premium agencies turn away','Volume compensates for lower per-client margin'],
+    wk:['Voice quality and US English naturalness issues','Limited US compliance awareness (TCPA general rules)','High churn when quality disappoints expectations','Cannot command any premium — zero differentiation','Minimal post-deployment optimization or client success work'],
+    share:{ re:8, hs:10, auto:8, gym:8, rest:10, hosp:8, pet:10, edu:8 },
+    overall:6,
+    mkt:'Fiverr and Upwork gig pages. Price-based positioning in marketplaces. No brand presence in US agency community channels.'
+  },
+  {
+    id:18, type:'vert', threat:3,
+    name:'The Hospitality / STR Specialist Agency',
+    tagline:'Voice AI for hotels, Airbnb hosts, vacation rentals, and boutique hospitality businesses',
+    desc:'Hotels and short-term rental hosts have very specific voice AI needs: booking inquiries, check-in instructions, amenity questions, guest support overflow. The market is significantly underserved by voice AI agencies. Airbnb and VRBO hosts managing 5–50+ properties cannot personally answer every guest call. This specialist builds channel manager integrations (Guesty, Hostaway, Lodgify) as a competitive moat.',
+    clients:['Boutique Hotels','Airbnb / VRBO Multi-Property Hosts','Vacation Rental Management Companies'],
+    primary:['Hospitality SMBs'],
+    pricing:'$400–$1,200/mo — strong ROI on direct booking recovery',
+    str:['Very underserved vertical — limited direct competition from voice AI agencies','Channel manager integrations (Guesty, Hostaway) are meaningful moats','Direct booking recovery from AI handling inquiry calls has clear ROI','Vacation rental market growing rapidly in 2024–2025','International guests create multilingual opportunity'],
+    wk:['Hospitality tech stack is fragmented — complex integrations','Seasonal call volume is extreme and unpredictable','Smaller boutique hotels are very price-sensitive','Channel manager API integrations require technical expertise','Multi-property hosts can be slow adopters of new tech'],
+    share:{ re:0, hs:0, auto:0, gym:0, rest:0, hosp:28, pet:0, edu:0 },
+    overall:4,
+    mkt:'STR Facebook groups (Vacation Rental Mastermind, Airbnb Superhosts), Hostaway and Guesty user communities, hospitality tech conferences. Very limited competition here.'
+  },
+  {
+    id:19, type:'vert', threat:2,
+    name:'The Pet Services Specialist Agency',
+    tagline:'Appointment scheduling AI exclusively for pet groomers, boarding, doggy daycare, and pet wellness',
+    desc:'Pet services is the most underserved clean vertical in the entire voice AI agency market. Groomers, boarding facilities, and doggy daycares are booked entirely by phone, have near-100% call volume that is appointment-related, and have zero serious voice AI agency competition. The first agency to build a "Pet Services AI Receptionist" product with strong positioning in groomer communities will own this vertical.',
+    clients:['Pet Groomers','Boarding Facilities','Doggy Daycares','Pet Wellness Centers'],
+    primary:['Pet Service SMBs'],
+    pricing:'$300–$700/mo — simple appointment booking ROI',
+    str:['Zero direct competition — completely unclaimed clean vertical','Entire call volume is appointment scheduling — perfect AI use case','Tight word-of-mouth networks among groomers and pet businesses','Simple, demonstrable ROI — count the booked appointments','Low regulatory burden — simplest clean market in the list'],
+    wk:['Lower pricing ceiling than home services or auto verticals','Smaller businesses have limited budgets','Seasonal demand spikes (holidays, summer) require capacity planning','Pet business owners can be resistant to technology adoption','Small TAM compared to home services or real estate'],
+    share:{ re:0, hs:0, auto:0, gym:0, rest:0, hosp:0, pet:28, edu:0 },
+    overall:3,
+    mkt:'Groomers Facebook groups, pet business owner associations, grooming supply trade shows. First-mover can establish dominant position with minimal investment.'
+  },
+  {
+    id:20, type:'gen', threat:3,
+    name:'The Social Proof / Case Study-First Agency',
+    tagline:'Competes entirely on documented evidence — case studies with real numbers build buyer trust',
+    desc:'Some agencies invest heavily in social proof: client video testimonials, detailed case studies showing specific outcomes ("booked 34 appointments in 30 days, $8,400 in recovered revenue"), and review platform profiles. In a market where all agencies claim identical capabilities, documented evidence wins. These agencies may not be technically superior but they appear more trustworthy — and in SMB buying decisions, perceived trust often matters more than actual performance.',
+    clients:['Research-first SMB buyers','Business owners burned by previous AI vendors','Due-diligence-heavy buyers seeking proof'],
+    primary:['Trust-Driven Buyers'],
+    pricing:'$600–$1,800/mo — same range as generalist but wins on conversion not price',
+    str:['Highest inbound conversion rate of any agency type','Social proof compounds — more proof attracts more clients','G2/SaaSHub/Capterra presence captures high-intent searchers','Case studies create permanent SEO-indexed content','Trust moat is genuinely difficult to replicate quickly'],
+    wk:['Evidence accumulation takes 6–12 months to become meaningful','Requires systematic client success and feedback capture processes','Competitors can eventually replicate the strategy','Dependent on client willingness to be featured publicly','Fake or exaggerated case studies are a growing credibility problem in space'],
+    share:{ re:12, hs:10, auto:10, gym:12, rest:10, hosp:10, pet:8, edu:10 },
+    overall:8,
+    mkt:'SEO targeting "voice AI agency + vertical" keywords. G2 and Capterra review management. YouTube client testimonial videos. LinkedIn case study posts. Comparison pages vs known competitors.'
+  },
+];
+
+/* ══════════════════════════════
+   UNMET NEEDS — CLEAN MARKETS
+══════════════════════════════ */
+const UNMET = [
+  { pri:'HIGH', color:'#bf2008',
+    title:'Dollar ROI Reports, Not Usage Minutes',
+    body:'The #1 churn trigger across all clean verticals: clients cannot see what they\'re paying for. "1,847 minutes used this month" means nothing to a gym owner or HVAC company. "34 estimates booked, estimated $18,000 in job revenue recovered" means everything. No agency consistently delivers outcome-denominated reporting as a standard monthly deliverable.',
+    opp:'Build a client-facing Revenue Dashboard showing appointments booked, leads qualified, and estimated revenue generated every month. Make it the first thing shown in your pitch. It becomes your primary retention tool.' },
+  { pri:'HIGH', color:'#bf2008',
+    title:'The First 30-Day Win Protocol',
+    body:'Retention data is clear: clients who see a booked appointment in week one retain at 80%+ through 90 days. Clients who see nothing in the first 30 days churn at 60%+. Most agencies have no structured onboarding protocol designed to guarantee an early visible win. The first appointment booked by AI should be celebrated and documented.',
+    opp:'Create a "First Win in 7 Days" onboarding protocol. Send the client a screenshot or transcript of the AI\'s first booked appointment. Celebrate it. This single moment anchors their belief in the product more than any feature ever will.' },
+  { pri:'HIGH', color:'#bf2008',
+    title:'Spanish-English Bilingual in Clean Markets',
+    body:'The US Hispanic market (19% of population) is dramatically underserved across every clean vertical. Home services in Houston, Los Angeles, Miami, and Phoenix. Real estate in high-Hispanic-density markets. Restaurants with Spanish-speaking staff and customers. Gyms in bilingual communities. Synthflow supports multilingual voice. No agency has built a dedicated bilingual product for clean verticals.',
+    opp:'Build a "Bilingual AI Receptionist" for SMBs in Hispanic-dense markets. Position in home services and real estate first. First-mover advantage is wide open with near-zero competition across all clean verticals.' },
+  { pri:'MED', color:'#c07000',
+    title:'After-Hours Coverage for Home Services',
+    body:'HVAC emergency calls at 2am. Burst pipe calls at midnight. These are the highest-value calls in home services and they go unanswered because owners are asleep. An after-hours emergency intake AI that books the call, collects the address and issue, and texts the owner is an obvious high-value product that almost no agency explicitly packages.',
+    opp:'Package "24/7 Emergency AI Coverage" as a premium $200/month add-on to standard home services deployments. Easy to layer on Synthflow. Framed as business continuity, not AI — the pitch is "never miss an emergency job again."' },
+  { pri:'MED', color:'#c07000',
+    title:'Voice AI + Review Generation Bundle',
+    body:'SMBs care about Google reviews almost as much as booked appointments. Post-call review solicitation (Synthflow webhook → automated review request SMS) is technically trivial but almost no agency packages it. A bundle offer "We handle your calls AND grow your Google reviews" creates clear differentiation with zero meaningful competition.',
+    opp:'Build a Voice AI + Review Engine bundle. After each AI-handled call that results in a booked appointment, trigger an automated review request 24–48 hours post-service. Price as a $150–$200/month premium add-on or include in top-tier plan.' },
+  { pri:'MED', color:'#c07000',
+    title:'Pet Services — Completely Unclaimed Clean Market',
+    body:'Pet groomers, boarding facilities, and doggy daycares book 90%+ of their business by phone. The use case is simple (book the appointment), the market is large (100,000+ pet service businesses in the US), the compliance burden is zero, and there is no voice AI agency currently specializing here. This is the cleanest first-mover opportunity in the entire clean vertical landscape.',
+    opp:'Build a "Pet Services AI Receptionist" product. Simple appointment booking workflow. Market in groomer Facebook groups and pet business associations. Become the authority in the vertical before anyone else realizes it exists.' },
+  { pri:'MED', color:'#c07000',
+    title:'Hospitality / STR Multi-Property Overflow',
+    body:'Airbnb and VRBO hosts managing 5–50+ properties cannot personally answer every guest call for check-in instructions, key access, amenities, and booking inquiries. The market is growing rapidly, the use case is clear, the compliance burden is minimal, and very few voice AI agencies market here specifically.',
+    opp:'Build an "AI Concierge for Short-Term Rentals" product with Guesty or Hostaway integration. Target multi-property STR hosts and boutique hotel operators. Position in STR Facebook communities. Very limited competition today.' },
+  { pri:'LOW', color:'#1a3a7a',
+    title:'Proactive AI Retention Calls',
+    body:'Most voice AI is reactive — it waits for inbound calls. Proactive check-in AI calls existing customers on behalf of the business to confirm satisfaction, offer additional services, and prevent churn before it happens. Gyms calling lapsed members. HVAC companies calling customers after a job. Restaurants following up on private events. Nobody packages this explicitly.',
+    opp:'Package "Proactive AI Customer Success Calls" as a premium service layer. Monthly outbound check-in campaigns to existing clients\' customers, measuring satisfaction and offering upsells. Entirely different positioning from inbound AI — almost zero competition.' },
+  { pri:'LOW', color:'#1a3a7a',
+    title:'Education & Tutoring Centers',
+    body:'Tutoring centers, test prep services, after-school programs, and adult education businesses handle high enrollment inquiry volume with small admin staff. Parents call constantly with repetitive questions about programs, scheduling, and pricing. Zero voice AI agencies currently market specifically to this clean vertical.',
+    opp:'Build an "Enrollment AI" product for education businesses. Enrollment inquiry handling, trial class scheduling, program information. Market in tutoring business Facebook groups and education franchise associations. Clean, uncontested space.' },
+];
+
+/* ══════════════════════════════
+   MARKETING INTEL
+══════════════════════════════ */
+const INTEL = [
+  { sub:'Positioning — Clean Market Advantage', title:'Lead With Compliance Freedom', items:[
+    '"No HIPAA, no bar compliance, no TCPA complexity" is a positioning statement that resonates with agencies tired of regulated market overhead',
+    'Clean verticals allow faster sales cycles — SMB owners in home services, gyms, and restaurants make decisions in days not months',
+    'Lead with outcomes in the vertical language: "34 estimates booked" (HVAC), "12 memberships reactivated" (gym), "28 reservations handled" (restaurant)',
+    '"Never miss a call" framing works across all clean verticals — especially home services where owners are on job sites',
+    'Outcome-based pricing option ("pay per appointment") removes the #1 SMB purchase objection and is unused by most competitors',
+    'Compliance-free positioning is itself a differentiator vs agencies that also serve healthcare and legal — "we stay in our lane" signals focus',
+  ]},
+  { sub:'Acquisition — Where Clean Vertical Clients Are', title:'Channel Intelligence', items:[
+    'Home services: ServiceTitan and Housecall Pro Facebook groups, YouTube content showing live estimate bookings, HVAC association newsletters',
+    'Real estate: KvCORE and Follow Up Boss communities, Tom Ferry and EXP Realty groups, real estate team leader podcasts',
+    'Automotive: NADA conference, dealer Twenty Groups, automotive digital marketing agencies as referral partners',
+    'Gyms and fitness: Mindbody user community, boutique fitness Facebook groups, gym owner podcasts like "Gym World" and "Two-Brain Business"',
+    'Restaurants: Toast POS user community, National Restaurant Association events, restaurant owner Facebook groups',
+    'Pet services: groomer Facebook groups, pet business associations — completely uncontested acquisition channel today',
+    'Hospitality/STR: Vacation Rental Mastermind group, Guesty/Hostaway user communities, Airbnb Superhost forums',
+  ]},
+  { sub:'Pricing — What Clean Markets Bear', title:'Revenue Intelligence', items:[
+    'Home services: $400–$1,200/mo — price around number of booked estimates; ROI clear and fast',
+    'Real estate: $600–$1,800/mo — highest ceiling in clean verticals; outcome pricing emerging ($X per appointment)',
+    'Automotive: $800–$2,000/mo per rooftop — highest ARPU in clean markets; DMS integration commands premium',
+    'Gyms / fitness: $400–$900/mo — retention ROI (recovered lapsed members) drives upgrade to premium tiers',
+    'Restaurants: $300–$800/mo — highest volume, lower price point; reservation + event inquiry bundle',
+    'Setup fees of $500–$2,500 are expected and should never be waived — waiving signals lack of confidence',
+    'Annual contracts with 2-month discount incentive reduce monthly churn significantly across all clean verticals',
+  ]},
+  { sub:'Retention — What Makes Clean Market Clients Stay', title:'Churn Prevention', items:[
+    'Primary retention driver: monthly reports showing revenue or appointments generated (not minutes used)',
+    'First booked appointment in week one = 80%+ 90-day retention; no result in 30 days = 60% churn across all clean verticals',
+    'Real-time client portal showing live call logs and transcripts eliminates anxiety and reduces "is the AI working?" support requests',
+    'Home services clients: count the estimates booked — tie every invoice to a clear number of jobs enabled',
+    'Gym clients: show recovered lapsed members and reactivated trials — dollar value of retention is their language',
+    'Restaurant clients: count reservations handled after hours — the alternative was a missed booking',
+    'Voice quality is a silent churn trigger — robotic-sounding agents cause cancellation without explanation',
+  ]},
+  { sub:'Differentiation — How To Win Clean Markets', title:'Competitive Moats', items:[
+    'Pick 1–2 clean verticals and go deeper than any generalist can match — vertical depth beats breadth for retention and referrals',
+    'Build vertical-specific ROI dashboards: "Estimates Booked" for HVAC, "Memberships Saved" for gyms, "Reservations Captured" for restaurants',
+    'Create outcome-based pricing option as an entry point — "pay per appointment" removes purchase risk and is unused by most competitors',
+    'Spanish-English bilingual agents in Hispanic-dense markets: entirely unclaimed position across all clean verticals today',
+    'Pet services first-mover: zero competition, clear use case, tight word-of-mouth community — own it before competitors discover it',
+    'After-hours emergency packaging: frame as business continuity, not AI — every home services and restaurant owner fears missing that call',
+  ]},
+  { sub:'Marketing Plan — Execution Priority', title:'Where To Focus First', items:[
+    'Step 1: Pick one or two clean verticals — do not try to serve all eight simultaneously with one generic pitch',
+    'Step 2: Build 3–5 case studies with real outcome numbers in your chosen vertical before scaling acquisition',
+    'Step 3: Build your ROI dashboard before your first pitch — "we report in dollars, not minutes" should be slide 2',
+    'Step 4: Create one vertical-specific content series (YouTube, LinkedIn, or email) targeting your primary vertical — 90-day consistency minimum',
+    'Step 5: Offer one outcome-based pricing pilot to your first 3 clients — the testimonials will fund all future acquisition',
+    'Step 6: Build the bilingual capability — even if it\'s a future product, mention it in your pitch to Hispanic-market prospects as a differentiator',
+  ]},
+];
+
+/* ══════════════════════════════
+   RENDER
+══════════════════════════════ */
+function renderVerticals() {
+  const grid = document.getElementById('focus-grid');
+  VERTICALS.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'focus-card';
+    card.style.borderTopColor = v.color;
+    card.innerHTML = `
+      <span class="fc-icon">${v.icon}</span>
+      <div class="fc-name" style="color:${v.color}">${v.name}</div>
+      <span class="fc-reg-status fc-clean">${v.reg}</span>
+      <div class="fc-body">${v.body}</div>
+      <div class="fc-use"><strong>Primary AI Use Cases:</strong> ${v.use}</div>
+      <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+        <span style="font-family:Inconsolata,monospace;font-size:9px;padding:2px 8px;background:${v.color}15;border:1px solid ${v.color}40;color:${v.color};border-radius:2px">💰 ${v.size}</span>
+        <span style="font-family:Inconsolata,monospace;font-size:9px;padding:2px 8px;background:var(--warm);border:1px solid var(--rule);color:var(--ink3);border-radius:2px">📈 ${v.cagr}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('card-grid');
+  grid.innerHTML = '';
+  const list = filter === 'all' ? COMPS
+    : filter === 'hi' ? COMPS.filter(c => c.threat >= 4)
+    : COMPS.filter(c => c.type === filter);
+
+  list.forEach(c => {
+    const t = TYPES[c.type];
+    const card = document.createElement('div');
+    card.className = 'comp-card';
+    card.innerHTML = `
+      <div class="cc-hdr">
+        <div class="cc-top-bar" style="background:${t.color}"></div>
+        <div class="cc-rank">${String(c.id).padStart(2,'0')}</div>
+        <div class="cc-type-tag" style="background:${t.color}">${t.label}</div>
+        <div class="cc-name">${c.name}</div>
+        <div class="cc-tagline">${c.tagline}</div>
+      </div>
+      <div class="cc-body">
+        <div>
+          <div class="cc-label">Description</div>
+          <div class="cc-text">${c.desc}</div>
+        </div>
+        <div>
+          <div class="cc-label">Client Types</div>
+          <div class="badge-row">
+            ${c.clients.map(cl=>`<span class="badge${c.primary.includes(cl)?' primary':''}">${cl}</span>`).join('')}
+          </div>
+        </div>
+        <div>
+          <div class="cc-label">Strengths & Weaknesses</div>
+          <div class="sw-row">
+            <div class="sw-box sw-s"><div class="sw-hdr">Strengths</div><ul class="sw-ul">${c.str.map(s=>`<li>${s}</li>`).join('')}</ul></div>
+            <div class="sw-box sw-w"><div class="sw-hdr">Weaknesses</div><ul class="sw-ul">${c.wk.map(w=>`<li>${w}</li>`).join('')}</ul></div>
+          </div>
+        </div>
+        <div>
+          <div class="cc-label">Typical Pricing</div>
+          <span class="price-chip">💰 ${c.pricing}</span>
+        </div>
+        <div>
+          <div class="cc-label">Vertical Share (Est. · Clean Markets)</div>
+          <div class="share-grid">
+            ${[['Real Estate',c.share.re,VERTICALS[0].color],['Home Services',c.share.hs,VERTICALS[1].color],['Automotive',c.share.auto,VERTICALS[2].color],['Gyms / Fitness',c.share.gym,VERTICALS[3].color]].map(([l,v,col])=>`
+              <div class="share-row">
+                <div class="share-lbl">${l}</div>
+                <div class="share-track"><div class="share-fill" style="width:${v}%;background:${col}50"></div></div>
+                <div class="share-pct">${v > 0 ? v+'%' : '—'}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div>
+          <div class="cc-label">Threat Level</div>
+          <div class="threat-row">
+            <div class="tdots">
+              ${[1,2,3,4,5].map(i=>`<div class="tdot t${c.threat}${i<=c.threat?' lit':''}"></div>`).join('')}
+            </div>
+            <span class="threat-txt" style="color:${TC[c.threat]}">${TL[c.threat]}</span>
+          </div>
+        </div>
+        <div>
+          <div class="cc-label">How They Market</div>
+          <div class="cc-text" style="font-style:italic;font-size:11.5px">${c.mkt}</div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function filterCards(f, btn) {
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCards(f);
+}
+
+function renderShareTable() {
+  const tbody = document.getElementById('share-tbody');
+  const verts = ['re','hs','auto','gym','rest','hosp','pet','edu'];
+  const sorted = [...COMPS].sort((a,b) => b.overall - a.overall);
+  const maxO = Math.max(...sorted.map(c=>c.overall));
+
+  sorted.forEach(c => {
+    const t = TYPES[c.type];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="sh-name">${c.name}</div>
+        <div class="sh-type">${t.label}</div>
+      </td>
+      ${verts.map(v => {
+        const val = c.share[v] || 0;
+        return `<td>
+          <div class="sh-cell">
+            <div class="sh-num">${val > 0 ? val+'%' : '—'}</div>
+            ${val > 0 ? `<div class="sh-bar"><div class="sh-fill" style="width:${val}%;background:${t.color}"></div></div>` : ''}
+          </div>
+        </td>`;
+      }).join('')}
+      <td>
+        <div class="sh-cell">
+          <div class="sh-num" style="color:${t.color}">${c.overall}%</div>
+          <div class="sh-bar"><div class="sh-fill" style="width:${Math.round(c.overall/maxO*100)}%;background:${t.color}"></div></div>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderUnmet() {
+  const grid = document.getElementById('unmet-grid');
+  UNMET.forEach(u => {
+    const card = document.createElement('div');
+    card.className = 'unmet-card';
+    card.style.borderTopColor = u.color;
+    card.innerHTML = `
+      <div class="uc-pri" style="color:${u.color}">${u.pri} PRIORITY</div>
+      <div class="uc-title">${u.title}</div>
+      <div class="uc-body">${u.body}</div>
+      <div class="uc-opp" style="border-left-color:${u.color}"><strong>Opportunity →</strong> ${u.opp}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderIntel() {
+  const grid = document.getElementById('intel-grid');
+  INTEL.forEach(i => {
+    const card = document.createElement('div');
+    card.className = 'intel-card';
+    card.innerHTML = `
+      <div class="ic-hdr">
+        <div class="ic-sub">${i.sub}</div>
+        <div class="ic-title">${i.title}</div>
+      </div>
+      <div class="ic-body">
+        <ul class="ic-list">${i.items.map(x=>`<li>${x}</li>`).join('')}</ul>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+renderVerticals();
+renderCards('all');
+renderShareTable();
+renderUnmet();
+renderIntel();
+</script>
+</body>
+</html>
