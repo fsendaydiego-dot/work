@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plain vs Help Scout — Support Platform Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #F5F2EC;
+    --surface:   #FDFCF9;
+    --surface2:  #EDE9E0;
+    --border:    #D6D0C4;
+    --border2:   #C8C1B2;
+    --text:      #1A1814;
+    --muted:     #6B6560;
+    --faint:     #9B958D;
+    --plain:     #1C4BFF;
+    --plain-bg:  #EBF0FF;
+    --hs:        #2D7A4F;
+    --hs-bg:     #E8F5EE;
+    --warn:      #C27B1A;
+    --warn-bg:   #FEF3E2;
+    --danger:    #C13535;
+    --danger-bg: #FDEAEA;
+    --tick:      #2D7A4F;
+    --cross:     #C13535;
+    --serif:     'DM Serif Display', Georgia, serif;
+    --sans:      'Instrument Sans', sans-serif;
+    --mono:      'DM Mono', monospace;
+    --radius:    10px;
+    --radius-lg: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header { background: var(--text); color: var(--bg); padding: 3.5rem 2rem 3rem; position: relative; overflow: hidden; }
+  header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-55deg, transparent, transparent 40px, rgba(255,255,255,0.025) 40px, rgba(255,255,255,0.025) 41px); pointer-events: none; }
+  .header-inner { max-width: 900px; margin: 0 auto; position: relative; }
+  .header-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,242,236,0.45); margin-bottom: 1rem; }
+  header h1 { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 400; line-height: 1.12; margin-bottom: 1rem; letter-spacing: -0.01em; }
+  header h1 em { font-style: italic; color: rgba(245,242,236,0.45); }
+  header p { font-size: 15px; color: rgba(245,242,236,0.6); max-width: 560px; line-height: 1.7; }
+  .header-meta { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+  .meta-pill { font-family: var(--mono); font-size: 11px; padding: 4px 10px; border: 1px solid rgba(245,242,236,0.2); border-radius: 100px; color: rgba(245,242,236,0.5); letter-spacing: 0.04em; }
+
+  /* ── NAV ── */
+  .tab-nav-wrap { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(26,24,20,0.06); }
+  .tab-nav { max-width: 900px; margin: 0 auto; display: flex; padding: 0 2rem; overflow-x: auto; scrollbar-width: none; }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn { font-family: var(--sans); font-size: 13px; font-weight: 500; padding: 1rem 1.2rem; background: none; border: none; border-bottom: 2px solid transparent; color: var(--faint); cursor: pointer; transition: color 0.15s, border-color 0.15s; white-space: nowrap; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--text); }
+
+  /* ── MAIN ── */
+  main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+  .panel { display: none; animation: fadeIn 0.2s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); margin: 2.5rem 0 1rem; }
+  .section-label:first-child { margin-top: 0; }
+
+  /* ── PRODUCT CARDS ── */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 0.5rem; }
+  .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem 1.6rem; }
+  .product-card.plain-card { border-top: 3px solid var(--plain); }
+  .product-card.hs-card    { border-top: 3px solid var(--hs); }
+  .product-badge { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; margin-bottom: 10px; }
+  .plain-badge { background: var(--plain-bg); color: var(--plain); }
+  .hs-badge    { background: var(--hs-bg);    color: var(--hs); }
+  .product-name { font-family: var(--serif); font-size: 1.45rem; font-weight: 400; margin-bottom: 2px; }
+  .product-tag  { font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+  .product-price { font-family: var(--mono); font-size: 1.25rem; font-weight: 500; }
+  .product-price-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .feature-list { list-style: none; margin-top: 1rem; }
+  .feature-list li { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; font-size: 13px; line-height: 1.45; border-bottom: 1px solid var(--border); }
+  .feature-list li:last-child { border-bottom: none; }
+  .fi { flex-shrink: 0; width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 10px; margin-top: 1px; font-weight: 600; }
+  .fi-y { background: var(--hs-bg);     color: var(--tick); }
+  .fi-n { background: var(--danger-bg); color: var(--cross); }
+  .fi-w { background: var(--warn-bg);   color: var(--warn); }
+  .fi-note { font-size: 11px; color: var(--muted); display: block; margin-top: 1px; }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); margin-bottom: 1.5rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: var(--surface2); }
+  th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:not(:first-child) { text-align: center; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; line-height: 1.45; }
+  td:not(:first-child) { text-align: center; }
+  tr:last-child td { border-bottom: none; }
+  tr.grp-row td { background: var(--surface2); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); padding: 6px 14px; border-bottom: 1px solid var(--border); }
+  tr:hover:not(.grp-row) { background: rgba(26,24,20,0.02); }
+
+  .badge-native { display: inline-block; font-size: 10px; font-family: var(--mono); padding: 2px 7px; border-radius: 100px; background: var(--hs-bg); color: var(--hs); font-weight: 500; }
+  .badge-api    { display: inline-block; font-size: 10px; font-family: var(--mono); padding: 2px 7px; border-radius: 100px; background: var(--warn-bg); color: var(--warn); font-weight: 500; }
+  .badge-mw     { display: inline-block; font-size: 10px; font-family: var(--mono); padding: 2px 7px; border-radius: 100px; background: var(--surface2); color: var(--muted); font-weight: 500; }
+  .badge-no     { display: inline-block; font-size: 10px; font-family: var(--mono); padding: 2px 7px; border-radius: 100px; background: var(--danger-bg); color: var(--danger); font-weight: 500; }
+  .badge-plain  { display: inline-block; font-size: 10px; font-family: var(--mono); padding: 2px 7px; border-radius: 100px; background: var(--plain-bg); color: var(--plain); font-weight: 500; }
+  .td-note { font-size: 11px; color: var(--muted); display: block; margin-top: 2px; }
+  .nth-label { font-size: 10px; font-style: italic; color: var(--warn); margin-left: 4px; }
+
+  /* ── CALLOUT ── */
+  .callout { border: 1px solid var(--border); border-left: 3px solid var(--plain); border-radius: var(--radius); padding: 1rem 1.25rem; background: var(--surface); font-size: 13px; line-height: 1.7; margin-bottom: 1.5rem; }
+  .callout strong { color: var(--plain); font-weight: 600; }
+  .callout.hs-callout { border-left-color: var(--hs); }
+  .callout.hs-callout strong { color: var(--hs); }
+  .callout.warn-callout { border-left-color: var(--warn); }
+  .callout.warn-callout strong { color: var(--warn); }
+
+  /* ── SCORE CARDS ── */
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.5rem; }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem 1.6rem; }
+  .score-card.plain-score { border-top: 3px solid var(--plain); }
+  .score-card.hs-score    { border-top: 3px solid var(--hs); }
+  .score-name { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; margin-bottom: 1rem; }
+  .score-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .score-row:last-child { border-bottom: none; }
+  .score-label { flex: 1; color: var(--muted); }
+  .score-bar-wrap { width: 120px; height: 6px; background: var(--border); border-radius: 3px; flex-shrink: 0; }
+  .score-bar { height: 6px; border-radius: 3px; }
+  .score-bar.plain-bar { background: var(--plain); }
+  .score-bar.hs-bar    { background: var(--hs); }
+  .score-val { font-family: var(--mono); font-size: 11px; font-weight: 500; min-width: 28px; text-align: right; }
+
+  /* ── AI FEATURE CARDS ── */
+  .ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.5rem; }
+  .ai-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem 1.6rem; }
+  .ai-card.plain-ai { border-top: 3px solid var(--plain); }
+  .ai-card.hs-ai    { border-top: 3px solid var(--hs); }
+  .ai-card-name { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; margin-bottom: 4px; }
+  .ai-agent-name { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 1rem; }
+
+  /* ── COST ── */
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.5rem; }
+  .cost-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.4rem 1.6rem; }
+  .cost-name { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; margin-bottom: 3px; }
+  .cost-model { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-bottom: 1rem; }
+  .cost-row { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; gap: 8px; }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-label { color: var(--muted); flex: 1; }
+  .cost-val { font-weight: 600; font-family: var(--mono); font-size: 13px; text-align: right; }
+  .cost-sub { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+  /* ── CALCULATOR ── */
+  .calc-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2rem; }
+  .calc-title { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 1.25rem; }
+  .slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 13px; }
+  .slider-label { width: 160px; color: var(--muted); flex-shrink: 0; }
+  .slider-row input[type=range] { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; background: var(--border2); border-radius: 2px; outline: none; cursor: pointer; }
+  .slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--text); border-radius: 50%; cursor: pointer; transition: transform 0.1s; }
+  .slider-row input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .slider-val { min-width: 64px; text-align: right; font-family: var(--mono); font-weight: 500; font-size: 13px; }
+  .result-row { display: flex; gap: 12px; margin-top: 1.25rem; }
+  .result-box { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+  .result-platform { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .result-price { font-family: var(--mono); font-size: 1.7rem; font-weight: 500; line-height: 1; }
+  .result-price.win { color: var(--tick); }
+  .result-note { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+  .verdict-banner { margin-top: 1rem; padding: 10px 16px; border-radius: var(--radius); font-size: 13px; font-weight: 500; text-align: center; font-family: var(--mono); letter-spacing: 0.02em; transition: background 0.2s, color 0.2s; }
+  .verdict-plain { background: var(--plain-bg); color: var(--plain); }
+  .verdict-hs    { background: var(--hs-bg);    color: var(--hs); }
+  .verdict-tie   { background: var(--surface2); color: var(--muted); }
+
+  /* ── APPROACH CARDS ── */
+  .approach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2rem; }
+  .a-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.4rem; }
+  .a-name { font-family: var(--serif); font-size: 1.05rem; font-weight: 400; margin-bottom: 2px; }
+  .a-sub  { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-bottom: 1rem; }
+
+  /* ── QUESTIONS ── */
+  .q-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .q-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; margin-bottom: 1rem; }
+  .q-item { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.65; }
+  .q-item:last-child { border-bottom: none; }
+  .q-num { font-family: var(--mono); font-weight: 500; color: var(--faint); min-width: 22px; flex-shrink: 0; font-size: 12px; padding-top: 2px; }
+  .q-tag { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 100px; margin-left: 6px; vertical-align: middle; }
+  .qt-plain { background: var(--plain-bg); color: var(--plain); }
+  .qt-hs    { background: var(--hs-bg);    color: var(--hs); }
+  .qt-all   { background: var(--surface2); color: var(--muted); }
+
+  /* ── VERDICT CARDS ── */
+  .verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 1.5rem; }
+  .v-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; }
+  .v-card.plain-v { border-top: 3px solid var(--plain); }
+  .v-card.hs-v    { border-top: 3px solid var(--hs); }
+  .v-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 400; margin-bottom: 6px; }
+  .v-sub { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--text); color: rgba(245,242,236,0.4); text-align: center; padding: 2rem; font-size: 12px; font-family: var(--mono); letter-spacing: 0.04em; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .product-grid, .cost-grid, .score-grid, .ai-grid, .approach-grid, .verdict-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 2rem; }
+    main { padding: 2rem 1.25rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="header-eyebrow">Support Platform Evaluation · Mobile App</p>
+    <h1>Plain <em>vs</em> Help Scout</h1>
+    <p>A structured comparison of channels, integrations, data repository connectivity, analytics &amp; reporting, AI agent capabilities, and cost modelling.</p>
+    <div class="header-meta">
+      <span class="meta-pill">Email required</span>
+      <span class="meta-pill">Telegram nice-to-have</span>
+      <span class="meta-pill">Scales to thousands of customers</span>
+      <span class="meta-pill">Notion / data repo connectivity</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-nav-wrap">
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+    <button class="tab-btn" onclick="switchTab('channels')">Channels</button>
+    <button class="tab-btn" onclick="switchTab('integrations')">Integrations &amp; Data</button>
+    <button class="tab-btn" onclick="switchTab('ai')">AI Agent Features</button>
+    <button class="tab-btn" onclick="switchTab('reporting')">Data &amp; Reporting</button>
+    <button class="tab-btn" onclick="switchTab('cost')">Cost per User</button>
+    <button class="tab-btn" onclick="switchTab('considerations')">Other Considerations</button>
+    <button class="tab-btn" onclick="switchTab('questions')">Questions to Ask</button>
+  </nav>
+</div>
+
+<main>
+
+  <!-- ══════════════════ OVERVIEW ══════════════════ -->
+  <div class="panel active" id="panel-overview">
+    <p class="section-label">At a glance</p>
+    <div class="product-grid">
+      <div class="product-card plain-card">
+        <span class="product-badge plain-badge">API-first · B2B</span>
+        <p class="product-name">Plain</p>
+        <p class="product-tag">Support infrastructure built for engineering-led teams</p>
+        <p class="product-price">from $269<span style="font-size:13px;font-weight:400;color:var(--muted)">/mo</span></p>
+        <p class="product-price-sub">Horizon · 3 seats + $89/extra · billed annually</p>
+        <ul class="feature-list">
+          <li><span class="fi fi-y">✓</span><span>Email — native, up to 10 inboxes</span></li>
+          <li><span class="fi fi-y">✓</span><span>Slack, Teams, Discord — native<span class="fi-note">Best developer/community channels</span></span></li>
+          <li><span class="fi fi-w">~</span><span>WhatsApp / Telegram — API custom build</span></li>
+          <li><span class="fi fi-y">✓</span><span>Ari AI agent bundled — 250 resolutions/mo<span class="fi-note">No per-resolution fee on base bundle</span></span></li>
+          <li><span class="fi fi-y">✓</span><span>Sidekick — AI agent assist for agents<span class="fi-note">Draft replies, summarise, lookup context</span></span></li>
+          <li><span class="fi fi-y">✓</span><span>Themes &amp; trend detection — auto product insights</span></li>
+          <li><span class="fi fi-y">✓</span><span>SLAs, business hours, escalation native</span></li>
+          <li><span class="fi fi-y">✓</span><span>Linear, Jira, GitHub, Shortcut native</span></li>
+          <li><span class="fi fi-n">✗</span><span>Notion — no native connector; API build required</span></li>
+        </ul>
+      </div>
+      <div class="product-card hs-card">
+        <span class="product-badge hs-badge">Email-first · Consumer</span>
+        <p class="product-name">Help Scout</p>
+        <p class="product-tag">Shared inbox for consumer-facing support teams</p>
+        <p class="product-price">from $50<span style="font-size:13px;font-weight:400;color:var(--muted)">/mo</span></p>
+        <p class="product-price-sub">Standard/Plus · contact-based billing · unlimited agents</p>
+        <ul class="feature-list">
+          <li><span class="fi fi-y">✓</span><span>Email — native, core strength</span></li>
+          <li><span class="fi fi-y">✓</span><span>WhatsApp, Facebook, Instagram — native<span class="fi-note">Strong consumer social channels</span></span></li>
+          <li><span class="fi fi-w">~</span><span>Telegram — no-code via Zapier/Make</span></li>
+          <li><span class="fi fi-w">~</span><span>AI Answers — $0.75 per resolution<span class="fi-note">Add-on; costs grow with deflection volume</span></span></li>
+          <li><span class="fi fi-w">~</span><span>AI Drafts — basic reply suggestions<span class="fi-note">Less capable than Plain's Sidekick</span></span></li>
+          <li><span class="fi fi-n">✗</span><span>No automated product theme detection</span></li>
+          <li><span class="fi fi-n">✗</span><span>No native SLA tooling</span></li>
+          <li><span class="fi fi-y">✓</span><span>Salesforce, HubSpot native</span></li>
+          <li><span class="fi fi-w">~</span><span>Notion — no-code via Zapier/Make</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-top:2rem">Preliminary verdict</p>
+    <div class="verdict-grid">
+      <div class="v-card plain-v">
+        <p class="v-title">Choose Plain if…</p>
+        <p class="v-sub">You're building a developer or community product, your customers use Slack/Teams/Discord, you have a small agent team but a large customer base, and you want bundled AI + deep product analytics. Requires dev capacity for custom channel builds.</p>
+      </div>
+      <div class="v-card hs-v">
+        <p class="v-title">Choose Help Scout if…</p>
+        <p class="v-sub">Email + WhatsApp + Facebook are your primary channels, you want the simplest setup with no-code Notion sync, and your agent team grows faster than your contact volume. Best for non-technical teams that want things working out of the box.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ CHANNELS ══════════════════ -->
+  <div class="panel" id="panel-channels">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:40%">Channel</th><th>Plain</th><th>Help Scout</th></tr></thead>
+        <tbody>
+          <tr class="grp-row"><td colspan="3">Core messaging</td></tr>
+          <tr><td>Email</td><td><span class="badge-native">Native</span><span class="td-note">Up to 10 inboxes (Horizon)</span></td><td><span class="badge-native">Native</span><span class="td-note">Core strength</span></td></tr>
+          <tr><td>Live chat widget</td><td><span class="badge-native">Native</span></td><td><span class="badge-native">Native</span><span class="td-note">Beacon widget</span></td></tr>
+          <tr><td>In-app contact forms</td><td><span class="badge-native">Native</span></td><td><span class="badge-native">Native</span><span class="td-note">Via Beacon</span></td></tr>
+          <tr><td>WhatsApp</td><td><span class="badge-api">API</span><span class="td-note">Custom build required</span></td><td><span class="badge-native">Native</span><span class="td-note">March 2026</span></td></tr>
+          <tr><td>Facebook Messenger</td><td><span class="badge-api">API</span></td><td><span class="badge-native">Native</span></td></tr>
+          <tr><td>Instagram DM</td><td><span class="badge-api">API</span></td><td><span class="badge-native">Native</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Community &amp; workspace</td></tr>
+          <tr><td>Slack</td><td><span class="badge-native">Native</span><span class="td-note">Full two-way, unlimited channels</span></td><td><span class="badge-mw">Notifications only</span></td></tr>
+          <tr><td>Microsoft Teams</td><td><span class="badge-native">Native</span><span class="td-note">Horizon+</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Discord</td><td><span class="badge-native">Native</span><span class="td-note">Horizon+</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Discourse forums</td><td><span class="badge-native">Native</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Telegram <span class="nth-label">(nice-to-have)</span></td><td><span class="badge-api">API</span><span class="td-note">Custom build, dev effort</span></td><td><span class="badge-mw">Middleware</span><span class="td-note">Zapier / Make — no-code</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Voice, SMS &amp; self-service</td></tr>
+          <tr><td>Voice / phone</td><td><span class="badge-no">Not supported</span></td><td><span class="badge-native">Native</span><span class="td-note">Via Aircall</span></td></tr>
+          <tr><td>SMS / text</td><td><span class="badge-api">API</span></td><td><span class="badge-native">Native</span><span class="td-note">Via Textline</span></td></tr>
+          <tr><td>Help Center / knowledge base</td><td><span class="badge-native">Native</span><span class="td-note">AI-powered, Horizon+</span></td><td><span class="badge-native">Native</span><span class="td-note">Docs</span></td></tr>
+          <tr><td>Customer ticket portal</td><td><span class="badge-native">Native</span><span class="td-note">Headless — full UI control</span></td><td><span class="badge-mw">Limited</span><span class="td-note">Via Beacon only</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════ INTEGRATIONS ══════════════════ -->
+  <div class="panel" id="panel-integrations">
+    <div class="callout">
+      <strong>Notion:</strong> Neither platform has a native Notion integration. Plain requires a custom API/webhook build. Help Scout connects via Zapier, Make, n8n, or Relay — no-code options that add $20–50+/mo in middleware cost. Help Scout has the simpler no-code path; Plain has tighter programmatic control.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:40%">Integration</th><th>Plain</th><th>Help Scout</th></tr></thead>
+        <tbody>
+          <tr class="grp-row"><td colspan="3">Issue trackers &amp; engineering</td></tr>
+          <tr><td>Linear</td><td><span class="badge-native">Native</span><span class="td-note">Create &amp; link from thread</span></td><td><span class="badge-mw">Middleware</span></td></tr>
+          <tr><td>Jira</td><td><span class="badge-native">Native</span></td><td><span class="badge-native">Native</span><span class="td-note">Plus plan+</span></td></tr>
+          <tr><td>GitHub Issues</td><td><span class="badge-native">Native</span></td><td><span class="badge-mw">Middleware</span></td></tr>
+          <tr><td>Shortcut</td><td><span class="badge-native">Native</span></td><td><span class="badge-mw">Middleware</span></td></tr>
+          <tr class="grp-row"><td colspan="3">CRMs</td></tr>
+          <tr><td>HubSpot</td><td><span class="badge-native">Native</span></td><td><span class="badge-native">Native</span></td></tr>
+          <tr><td>Salesforce</td><td><span class="badge-native">Native</span></td><td><span class="badge-native">Native</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Data repositories &amp; knowledge</td></tr>
+          <tr><td>Notion</td><td><span class="badge-no">No connector</span><span class="td-note">Custom API / webhook build</span></td><td><span class="badge-mw">Middleware</span><span class="td-note">Zapier, Make, n8n, Relay</span></td></tr>
+          <tr><td>Confluence</td><td><span class="badge-no">No connector</span></td><td><span class="badge-mw">Middleware</span></td></tr>
+          <tr><td>Google Drive / Sheets</td><td><span class="badge-no">No connector</span></td><td><span class="badge-mw">Middleware</span></td></tr>
+          <tr><td>Airtable</td><td><span class="badge-no">No connector</span></td><td><span class="badge-mw">Middleware</span></td></tr>
+          <tr><td>Own knowledge base (AI-powered)</td><td><span class="badge-native">Native</span><span class="td-note">Horizon+ · AI Ask included</span></td><td><span class="badge-native">Native</span><span class="td-note">Docs</span></td></tr>
+          <tr><td>Codebase via Cursor</td><td><span class="badge-native">Native</span><span class="td-note">Lookup — Frontier plan only</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Incident management</td></tr>
+          <tr><td>Incident.io / Rootly</td><td><span class="badge-native">Native</span><span class="td-note">Both supported</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Automation &amp; middleware</td></tr>
+          <tr><td>Zapier</td><td><span class="badge-mw">Limited</span><span class="td-note">Less mature ecosystem</span></td><td><span class="badge-native">First-class</span><span class="td-note">50+ triggers</span></td></tr>
+          <tr><td>Make / n8n / Relay</td><td><span class="badge-api">Via API</span></td><td><span class="badge-native">Well-supported</span></td></tr>
+          <tr><td>REST API + webhooks</td><td><span class="badge-native">Comprehensive</span><span class="td-note">API-first by design</span></td><td><span class="badge-native">Full API</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="section-label">Notion connection — practical paths</p>
+    <div class="approach-grid">
+      <div class="a-card">
+        <p class="a-name">Plain + Notion</p>
+        <p class="a-sub">Dev effort required · tighter control</p>
+        <ul class="feature-list">
+          <li><span class="fi fi-w">~</span><span>Plain webhooks → your server → Notion API to push tickets as database entries</span></li>
+          <li><span class="fi fi-y">✓</span><span>Notion's MCP integration can feed Plain's AI agent with your knowledge base content</span></li>
+          <li><span class="fi fi-n">✗</span><span>No no-code path — developer hours required</span></li>
+        </ul>
+      </div>
+      <div class="a-card">
+        <p class="a-name">Help Scout + Notion</p>
+        <p class="a-sub">No-code available · middleware dependency</p>
+        <ul class="feature-list">
+          <li><span class="fi fi-y">✓</span><span>Zapier: "New conversation → Create Notion page" — ready in minutes</span></li>
+          <li><span class="fi fi-y">✓</span><span>Make / n8n / Relay have pre-built Help Scout + Notion templates</span></li>
+          <li><span class="fi fi-n">✗</span><span>Adds $20–50+/mo in middleware cost + ongoing maintenance</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ AI AGENT FEATURES ══════════════════ -->
+  <div class="panel" id="panel-ai">
+
+    <div class="callout">
+      <strong>Key distinction:</strong> Plain ships three distinct AI layers — an autonomous customer-facing agent (Ari), an agent-assist copilot (Sidekick), and a codebase query tool (Lookup). Help Scout's AI is a single layer focused on reply drafting and FAQ deflection. Plain's architecture is meaningfully deeper.
+    </div>
+
+    <p class="section-label">AI agent overview</p>
+    <div class="ai-grid">
+      <div class="ai-card plain-ai">
+        <p class="ai-card-name">Plain</p>
+        <p class="ai-agent-name">Ari (customer agent) · Sidekick (agent assist) · Lookup (codebase)</p>
+        <ul class="feature-list">
+          <li><span class="fi fi-y">✓</span><span><strong>Ari — autonomous AI agent</strong><span class="fi-note">Handles full customer conversations end-to-end; escalates to humans when unsure</span></span></li>
+          <li><span class="fi fi-y">✓</span><span><strong>Sidekick — agent copilot</strong><span class="fi-note">Drafts replies, summarises threads, searches knowledge sources; always a keyboard shortcut away</span></span></li>
+          <li><span class="fi fi-y">✓</span><span><strong>Lookup — codebase AI (Frontier)</strong><span class="fi-note">Queries your codebase via Cursor; answers technical questions without engineering escalation</span></span></li>
+          <li><span class="fi fi-y">✓</span><span>250 Ari resolutions bundled in Horizon; no extra fee for Sidekick<span class="fi-note">Overages at ~$1/resolution</span></span></li>
+          <li><span class="fi fi-y">✓</span><span>Auto-labelling and urgency detection on all tickets</span></li>
+          <li><span class="fi fi-y">✓</span><span>Ari deployable across all channels — Slack, Teams, Discord, email simultaneously</span></li>
+          <li><span class="fi fi-y">✓</span><span>Third-party AI agent marketplace — Duckie, Inkeep, Parahelp, Decimal<span class="fi-note">Plug in specialised agents for technical support</span></span></li>
+          <li><span class="fi fi-y">✓</span><span>Custom AI agent support — bring your own LLM or agent (Frontier)</span></li>
+          <li><span class="fi fi-y">✓</span><span>Knowledge base feeds AI directly; trains on your help articles</span></li>
+          <li><span class="fi fi-w">~</span><span>AI engage (proactive outreach) not supported<span class="fi-note">Ari is reactive / inbound only</span></span></li>
+        </ul>
+      </div>
+      <div class="ai-card hs-ai">
+        <p class="ai-card-name">Help Scout</p>
+        <p class="ai-agent-name">AI Answers (deflection) · AI Drafts (assist) · AI Summarise</p>
+        <ul class="feature-list">
+          <li><span class="fi fi-y">✓</span><span><strong>AI Answers — automated deflection</strong><span class="fi-note">Answers common questions from knowledge base before creating a ticket; $0.75/resolution</span></span></li>
+          <li><span class="fi fi-y">✓</span><span><strong>AI Drafts — reply suggestions</strong><span class="fi-note">Suggests replies for agents; included in Plus plan</span></span></li>
+          <li><span class="fi fi-y">✓</span><span><strong>AI Summarise</strong><span class="fi-note">One-click thread summary for agents catching up</span></span></li>
+          <li><span class="fi fi-y">✓</span><span>3-month free trial on AI Answers, then $0.75/resolution</span></li>
+          <li><span class="fi fi-n">✗</span><span>No autonomous end-to-end AI agent — AI Answers can deflect but not handle complex flows</span></li>
+          <li><span class="fi fi-n">✗</span><span>No agent copilot with context awareness (Sidekick equivalent)</span></li>
+          <li><span class="fi fi-n">✗</span><span>No third-party AI agent marketplace or bring-your-own-agent</span></li>
+          <li><span class="fi fi-n">✗</span><span>No codebase / technical query AI</span></li>
+          <li><span class="fi fi-w">~</span><span>AI Answers limited to knowledge base articles — can't reason across conversation history</span></li>
+          <li><span class="fi fi-w">~</span><span>No auto-labelling or urgency detection built-in</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="section-label">Feature-by-feature AI comparison</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:40%">AI capability</th><th>Plain</th><th>Help Scout</th></tr></thead>
+        <tbody>
+          <tr class="grp-row"><td colspan="3">Customer-facing AI</td></tr>
+          <tr><td>Autonomous end-to-end AI agent</td><td><span class="badge-native">Native</span><span class="td-note">Ari — handles full conversations</span></td><td><span class="badge-no">Not supported</span><span class="td-note">AI Answers deflects only</span></td></tr>
+          <tr><td>Multi-channel AI deployment</td><td><span class="badge-native">Native</span><span class="td-note">Slack, Teams, Discord, email</span></td><td><span class="badge-mw">Email / chat only</span></td></tr>
+          <tr><td>Conversation escalation to human</td><td><span class="badge-native">Native</span><span class="td-note">Ari escalates when unsure</span></td><td><span class="badge-native">Native</span><span class="td-note">AI Answers passes off to inbox</span></td></tr>
+          <tr><td>Trained on knowledge base</td><td><span class="badge-native">Native</span></td><td><span class="badge-native">Native</span><span class="td-note">Required for AI Answers</span></td></tr>
+          <tr><td>Trained on conversation history</td><td><span class="badge-native">Native</span><span class="td-note">Ari aware of past threads</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Agent assist (copilot)</td></tr>
+          <tr><td>AI reply drafting</td><td><span class="badge-native">Native</span><span class="td-note">Sidekick — context-aware drafts</span></td><td><span class="badge-native">Native</span><span class="td-note">AI Drafts — simpler</span></td></tr>
+          <tr><td>Thread summarisation</td><td><span class="badge-native">Native</span><span class="td-note">Sidekick</span></td><td><span class="badge-native">Native</span><span class="td-note">AI Summarise</span></td></tr>
+          <tr><td>Cross-source knowledge search</td><td><span class="badge-native">Native</span><span class="td-note">Sidekick searches all knowledge sources</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Customer history awareness</td><td><span class="badge-native">Native</span><span class="td-note">Sidekick sees full customer context</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Codebase query (technical support)</td><td><span class="badge-plain">Frontier only</span><span class="td-note">Lookup via Cursor</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Automation &amp; triage</td></tr>
+          <tr><td>Auto-labelling tickets</td><td><span class="badge-native">Native</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Urgency detection</td><td><span class="badge-native">Native</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>AI-powered workflows / routing</td><td><span class="badge-native">Native</span><span class="td-note">Horizon+</span></td><td><span class="badge-mw">Rule-based only</span></td></tr>
+          <tr><td>Third-party AI agent integrations</td><td><span class="badge-native">Native marketplace</span><span class="td-note">Duckie, Inkeep, Parahelp, Decimal</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Bring your own LLM / agent</td><td><span class="badge-plain">Frontier only</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Pricing</td></tr>
+          <tr><td>AI resolutions included</td><td><span class="badge-native">250/mo</span><span class="td-note">Bundled in Horizon; no separate fee</span></td><td><span class="badge-no">None included</span><span class="td-note">3-month trial, then pay-per-use</span></td></tr>
+          <tr><td>Cost per AI resolution</td><td><span class="td-note">~$1 after 250 included</span></td><td><span class="td-note">$0.75 per resolution, always</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="verdict-grid">
+      <div class="v-card plain-v">
+        <p class="v-title">Plain AI — best for</p>
+        <p class="v-sub">Teams that want an autonomous agent running 24/7 across all channels. Technical products where support agents need AI-assisted access to product context, conversation history, and code. Teams that want to plug in specialised third-party AI agents or build their own.</p>
+      </div>
+      <div class="v-card hs-v">
+        <p class="v-title">Help Scout AI — best for</p>
+        <p class="v-sub">Teams that want simple FAQ deflection before a ticket is created. Good enough for straightforward consumer support questions where the answer lives in a knowledge base article. Lower ceiling but lower complexity — no AI infrastructure to manage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ DATA & REPORTING ══════════════════ -->
+  <div class="panel" id="panel-reporting">
+
+    <div class="callout">
+      <strong>Key distinction:</strong> Plain is designed to feed insights back to your product team — it automatically surfaces themes, trends, and churn signals from support conversations. Help Scout's reporting is solid for support operations but data stays inside the tool unless exported. Neither has a native BI connector; both rely on API exports or middleware for deep analysis.
+    </div>
+
+    <p class="section-label">Reporting &amp; analytics overview</p>
+    <div class="score-grid">
+      <div class="score-card plain-score">
+        <p class="score-name">Plain</p>
+        <div class="score-row"><span class="score-label">Product insight generation</span><div class="score-bar-wrap"><div class="score-bar plain-bar" style="width:90%"></div></div><span class="score-val" style="color:var(--plain)">9/10</span></div>
+        <div class="score-row"><span class="score-label">Support ops reporting</span><div class="score-bar-wrap"><div class="score-bar plain-bar" style="width:70%"></div></div><span class="score-val" style="color:var(--plain)">7/10</span></div>
+        <div class="score-row"><span class="score-label">Real-time data access</span><div class="score-bar-wrap"><div class="score-bar plain-bar" style="width:85%"></div></div><span class="score-val" style="color:var(--plain)">8/10</span></div>
+        <div class="score-row"><span class="score-label">API / data export flexibility</span><div class="score-bar-wrap"><div class="score-bar plain-bar" style="width:90%"></div></div><span class="score-val" style="color:var(--plain)">9/10</span></div>
+        <div class="score-row"><span class="score-label">BI tool integration</span><div class="score-bar-wrap"><div class="score-bar plain-bar" style="width:65%"></div></div><span class="score-val" style="color:var(--plain)">6/10</span></div>
+        <div class="score-row"><span class="score-label">CSAT / customer feedback</span><div class="score-bar-wrap"><div class="score-bar plain-bar" style="width:60%"></div></div><span class="score-val" style="color:var(--plain)">6/10</span></div>
+      </div>
+      <div class="score-card hs-score">
+        <p class="score-name">Help Scout</p>
+        <div class="score-row"><span class="score-label">Product insight generation</span><div class="score-bar-wrap"><div class="score-bar hs-bar" style="width:30%"></div></div><span class="score-val" style="color:var(--hs)">3/10</span></div>
+        <div class="score-row"><span class="score-label">Support ops reporting</span><div class="score-bar-wrap"><div class="score-bar hs-bar" style="width:70%"></div></div><span class="score-val" style="color:var(--hs)">7/10</span></div>
+        <div class="score-row"><span class="score-label">Real-time data access</span><div class="score-bar-wrap"><div class="score-bar hs-bar" style="width:55%"></div></div><span class="score-val" style="color:var(--hs)">5/10</span></div>
+        <div class="score-row"><span class="score-label">API / data export flexibility</span><div class="score-bar-wrap"><div class="score-bar hs-bar" style="width:65%"></div></div><span class="score-val" style="color:var(--hs)">6/10</span></div>
+        <div class="score-row"><span class="score-label">BI tool integration</span><div class="score-bar-wrap"><div class="score-label hs-bar" style="width:60%"></div></div><span class="score-val" style="color:var(--hs)">6/10</span></div>
+        <div class="score-row"><span class="score-label">CSAT / customer feedback</span><div class="score-bar-wrap"><div class="score-bar hs-bar" style="width:75%"></div></div><span class="score-val" style="color:var(--hs)">7/10</span></div>
+      </div>
+    </div>
+
+    <p class="section-label">Feature-by-feature reporting comparison</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:40%">Capability</th><th>Plain</th><th>Help Scout</th></tr></thead>
+        <tbody>
+          <tr class="grp-row"><td colspan="3">Support operations reporting</td></tr>
+          <tr><td>Volume &amp; ticket trend reports</td><td><span class="badge-native">Native</span><span class="td-note">Horizon+ — all time history</span></td><td><span class="badge-native">Native</span><span class="td-note">All plans</span></td></tr>
+          <tr><td>First response time / resolution time</td><td><span class="badge-native">Native</span></td><td><span class="badge-native">Native</span></td></tr>
+          <tr><td>Agent performance reporting</td><td><span class="badge-native">Native</span><span class="td-note">Team reporting on Horizon</span></td><td><span class="badge-native">Native</span><span class="td-note">All plans</span></td></tr>
+          <tr><td>SLA breach tracking</td><td><span class="badge-native">Native</span><span class="td-note">Horizon+ — with alerting</span></td><td><span class="badge-no">Not supported</span><span class="td-note">No native SLA tooling</span></td></tr>
+          <tr><td>CSAT / satisfaction scores</td><td><span class="badge-native">Native</span><span class="td-note">Horizon+</span></td><td><span class="badge-native">Native</span><span class="td-note">All plans — strong feature</span></td></tr>
+          <tr><td>Report history depth</td><td><span class="badge-native">All time</span><span class="td-note">Horizon+ (7 days on Foundation)</span></td><td><span class="badge-native">All time</span><span class="td-note">All paid plans</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Product &amp; customer insights</td></tr>
+          <tr><td>Automated theme / topic detection</td><td><span class="badge-native">Native</span><span class="td-note">Themes — auto-groups recurring issues</span></td><td><span class="badge-no">Not supported</span><span class="td-note">Manual tagging only</span></td></tr>
+          <tr><td>Trend detection across conversations</td><td><span class="badge-native">Native</span><span class="td-note">Surfaces shifts in customer behaviour</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Churn signal detection</td><td><span class="badge-native">Native</span><span class="td-note">AI flags high-risk customer conversations</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Daily digest / automated summaries</td><td><span class="badge-native">Native</span><span class="td-note">AI-generated daily support digest</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>Customer tier / segment reporting</td><td><span class="badge-native">Native</span><span class="td-note">Tiers with SLA rules per segment</span></td><td><span class="badge-mw">Limited</span><span class="td-note">Manual tagging; no tier logic</span></td></tr>
+          <tr><td>Custom thread fields &amp; metadata</td><td><span class="badge-native">Native</span><span class="td-note">Thread fields for structured data capture</span></td><td><span class="badge-mw">Limited</span><span class="td-note">Custom fields on Plus+</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Data access &amp; export</td></tr>
+          <tr><td>REST API for data export</td><td><span class="badge-native">Comprehensive</span><span class="td-note">All conversation and customer data accessible</span></td><td><span class="badge-native">Full API</span></td></tr>
+          <tr><td>Webhooks for real-time events</td><td><span class="badge-native">Native</span><span class="td-note">Push events to any data warehouse</span></td><td><span class="badge-native">Native</span></td></tr>
+          <tr><td>Segment / analytics integration</td><td><span class="badge-api">Via API</span><span class="td-note">Push to Segment via webhooks</span></td><td><span class="badge-mw">Middleware</span><span class="td-note">Zapier → Segment</span></td></tr>
+          <tr><td>Native BI tool connector</td><td><span class="badge-no">Not supported</span><span class="td-note">Export via API to Looker/Metabase/etc</span></td><td><span class="badge-no">Not supported</span><span class="td-note">Export via API or Zapier</span></td></tr>
+          <tr><td>Data warehouse push (BigQuery, Redshift)</td><td><span class="badge-api">Via API</span><span class="td-note">Webhooks → your ETL pipeline</span></td><td><span class="badge-mw">Middleware</span><span class="td-note">Via Zapier / Fivetran community connector</span></td></tr>
+          <tr><td>Customer card / context data</td><td><span class="badge-native">Native</span><span class="td-note">Real-time customer cards (15s cache on Horizon)</span></td><td><span class="badge-mw">Limited</span><span class="td-note">Customer properties; less flexible</span></td></tr>
+          <tr class="grp-row"><td colspan="3">AI-driven reporting</td></tr>
+          <tr><td>AI-generated insight reports</td><td><span class="badge-native">Native</span><span class="td-note">Reporting Themes — Horizon+</span></td><td><span class="badge-no">Not supported</span></td></tr>
+          <tr><td>AI-suggested responses from patterns</td><td><span class="badge-native">Native</span><span class="td-note">Surfaces suggested answers from past resolutions</span></td><td><span class="badge-native">Native</span><span class="td-note">AI Drafts draws on past replies</span></td></tr>
+          <tr><td>Product feedback loop to roadmap</td><td><span class="badge-native">Native</span><span class="td-note">Themes feed directly into product workflows</span></td><td><span class="badge-no">Not supported</span><span class="td-note">Manual export required</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="verdict-grid">
+      <div class="v-card plain-v">
+        <p class="v-title">Plain reporting — best for</p>
+        <p class="v-sub">Teams that want support data to actively inform their product roadmap. Plain's auto-theme detection, churn signals, and daily digests are unique — no other platform in this comparison surfaces those insights without manual work. Best if analytics is a first-class requirement, not an afterthought.</p>
+      </div>
+      <div class="v-card hs-v">
+        <p class="v-title">Help Scout reporting — best for</p>
+        <p class="v-sub">Teams that need solid support operations metrics — response times, agent performance, CSAT — without complexity. Help Scout's reporting is clean and accessible to non-technical managers. Better CSAT tooling than Plain. If you need deeper analysis, export via Zapier to a BI tool.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ COST ══════════════════ -->
+  <div class="panel" id="panel-cost">
+    <p class="section-label">Pricing models</p>
+    <div class="cost-grid">
+      <div class="cost-card">
+        <p class="cost-name">Plain</p>
+        <p class="cost-model">Per agent seat · annual billing</p>
+        <div class="cost-row"><span class="cost-label">Foundation (1 seat)</span><span class="cost-val">$35/mo</span></div>
+        <div class="cost-row"><span class="cost-label">Horizon base (3 seats)</span><span class="cost-val">$269/mo</span></div>
+        <div class="cost-row"><span class="cost-label">Extra seat (Horizon)</span><span class="cost-val">$89/seat</span></div>
+        <div class="cost-row"><span class="cost-label">AI resolutions included</span><span class="cost-val">250/mo <span class="cost-sub">then ~$1 each</span></span></div>
+        <div class="cost-row"><span class="cost-label">Sidekick (agent AI)</span><span class="cost-val">Included</span></div>
+        <div class="cost-row"><span class="cost-label">Viewer seats</span><span class="cost-val">Free · unlimited</span></div>
+        <div class="cost-row"><span class="cost-label">Customer volume</span><span class="cost-val">Unlimited</span></div>
+      </div>
+      <div class="cost-card">
+        <p class="cost-name">Help Scout</p>
+        <p class="cost-model">Per contact helped/month · unlimited agents</p>
+        <div class="cost-row"><span class="cost-label">Free (50 contacts)</span><span class="cost-val">$0/mo</span></div>
+        <div class="cost-row"><span class="cost-label">Standard (100 contacts)</span><span class="cost-val">$50/mo</span></div>
+        <div class="cost-row"><span class="cost-label">Plus (100 contacts)</span><span class="cost-val">$75/mo</span></div>
+        <div class="cost-row"><span class="cost-label">Extra contacts (approx.)</span><span class="cost-val">~$0.15–0.30</span></div>
+        <div class="cost-row"><span class="cost-label">AI Answers (per resolution)</span><span class="cost-val">$0.75 each</span></div>
+        <div class="cost-row"><span class="cost-label">Agent seats</span><span class="cost-val">Unlimited</span></div>
+      </div>
+    </div>
+
+    <p class="section-label">Interactive cost calculator</p>
+    <div class="calc-wrap">
+      <p class="calc-title">Model your scenario</p>
+      <div class="slider-row">
+        <span class="slider-label">Support agents</span>
+        <input type="range" id="agents" min="1" max="20" value="3" step="1" oninput="calc()">
+        <span class="slider-val" id="agents-out">3</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Contacts / month</span>
+        <input type="range" id="contacts" min="100" max="10000" value="500" step="100" oninput="calc()">
+        <span class="slider-val" id="contacts-out">500</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">AI resolutions / mo</span>
+        <input type="range" id="aiRes" min="0" max="1000" value="100" step="10" oninput="calc()">
+        <span class="slider-val" id="aiRes-out">100</span>
+      </div>
+      <div class="result-row">
+        <div class="result-box">
+          <p class="result-platform">Plain — Horizon</p>
+          <p class="result-price" id="plain-price">$269/mo</p>
+          <p class="result-note" id="plain-note"></p>
+        </div>
+        <div class="result-box">
+          <p class="result-platform">Help Scout — Plus</p>
+          <p class="result-price" id="hs-price">$75/mo</p>
+          <p class="result-note" id="hs-note"></p>
+        </div>
+      </div>
+      <div class="verdict-banner verdict-tie" id="verdict-banner">Adjust sliders to compare</div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-title">Cost questions to pressure-test</p>
+      <div class="q-item"><span class="q-num">1.</span><span>What's your support agent headcount in 12 months? Plain's cost grows with agents — 5 agents on Horizon = $269 + 2×$89 = $447/mo.</span></div>
+      <div class="q-item"><span class="q-num">2.</span><span>How many unique customers will you support monthly? Help Scout charges per contact — 1,000 contacts/month can exceed $150–200+/mo before AI fees.</span></div>
+      <div class="q-item"><span class="q-num">3.</span><span>What's your expected AI deflection rate? Plain bundles 250 resolutions in Horizon. At 500 resolutions/month: Plain adds $250; Help Scout adds $375. At 1,000: roughly equal.</span></div>
+      <div class="q-item"><span class="q-num">4.</span><span>Do you plan to use middleware (Zapier/Make) for Notion or Telegram? Add $20–50+/mo for that tool depending on automation volume — applies to Help Scout more than Plain.</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ OTHER CONSIDERATIONS ══════════════════ -->
+  <div class="panel" id="panel-considerations">
+    <div class="callout warn-callout">
+      <strong>Topics worth reviewing before finalising:</strong> These are commonly the factors that cause regret 12 months post-implementation. None of these were in the original brief but all are relevant for a mobile app at scale.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:36%">Consideration</th><th>Plain</th><th>Help Scout</th></tr></thead>
+        <tbody>
+          <tr class="grp-row"><td colspan="3">Onboarding &amp; migration</td></tr>
+          <tr><td>Onboarding process</td><td><span class="badge-mw">Self-serve</span><span class="td-note">Foundation / Horizon; white-glove on Frontier</span></td><td><span class="badge-mw">Self-serve</span><span class="td-note">Good documentation; faster initial setup</span></td></tr>
+          <tr><td>Migration importers</td><td><span class="badge-native">Native</span><span class="td-note">From Zendesk, Intercom, Help Scout</span></td><td><span class="badge-mw">Limited</span><span class="td-note">Manual export tools; no structured importer</span></td></tr>
+          <tr><td>Vendor lock-in risk</td><td><span class="badge-native">Low</span><span class="td-note">API-first; data always accessible; easy to leave</span></td><td><span class="badge-mw">Medium</span><span class="td-note">Conversation history export is manual at scale</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Mobile app specific</td></tr>
+          <tr><td>Mobile SDK quality</td><td><span class="badge-mw">Moderate</span><span class="td-note">Headless portal — full control, more dev effort</span></td><td><span class="badge-native">Good</span><span class="td-note">Beacon — pre-styled, faster to ship</span></td></tr>
+          <tr><td>In-app chat customisation</td><td><span class="badge-native">High</span><span class="td-note">Full UI/UX control via headless portal</span></td><td><span class="badge-mw">Limited</span><span class="td-note">Beacon is pre-styled; limited theming</span></td></tr>
+          <tr><td>Time-to-live in app</td><td><span class="badge-api">Longer</span><span class="td-note">Headless portal requires dev implementation</span></td><td><span class="badge-native">Faster</span><span class="td-note">Beacon SDK drop-in; live in hours</span></td></tr>
+          <tr class="grp-row"><td colspan="3">Scale &amp; team growth</td></tr>
+          <tr><td>Multi-language / localisation</td><td><span class="badge-no">Limited</span><span class="td-note">No native multi-language tooling</span></td><td><span class="badge-no">Limited</span><span class="td-note">Manual translation; no AI language detection</span></td></tr>
+          <tr><td>SOC 2 Type II</td><td><span class="badge-native">All plans</span></td><td><span class="badge-mw">Available</span><span class="td-note">On request</span></td></tr>
+          <tr><td>Pricing trajectory risk</td><td><span class="badge-native">Low</span><span class="td-note">Stable pricing; API-first means predictable cost</span></td><td><span class="badge-mw">Medium</span><span class="td-note">Contact-based billing grows fast with user base</span></td></tr>
+          <tr><td>Product insight feedback loop</td><td><span class="badge-native">Built-in</span><span class="td-note">Themes auto-feed product roadmap signals</span></td><td><span class="badge-no">Manual</span><span class="td-note">Requires tagging + export to surface insights</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════ QUESTIONS ══════════════════ -->
+  <div class="panel" id="panel-questions">
+
+    <div class="q-block">
+      <p class="q-title">Channel requirements</p>
+      <div class="q-item"><span class="q-num">1.</span><span>Which channels are your customers actually on today vs where you expect them in 2 years? Channel strategy should drive platform choice. <span class="q-tag qt-all">All</span></span></div>
+      <div class="q-item"><span class="q-num">2.</span><span>For Telegram: does your team have dev capacity to build a custom connector on Plain's API, or do you need a no-code path via Help Scout + Zapier? <span class="q-tag qt-all">All</span></span></div>
+      <div class="q-item"><span class="q-num">3.</span><span>Do you need voice/phone support? Only Help Scout supports it natively. Plain has no voice capability. <span class="q-tag qt-hs">Help Scout only</span></span></div>
+      <div class="q-item"><span class="q-num">4.</span><span>Will customers reach you via WhatsApp, Facebook, or Instagram? Help Scout wins clearly — Plain has no native path for these. <span class="q-tag qt-hs">Help Scout</span></span></div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-title">AI agent &amp; automation</p>
+      <div class="q-item"><span class="q-num">5.</span><span>Do you need an autonomous AI agent that can fully resolve complex conversations end-to-end, or just FAQ deflection before a ticket is created? Plain's Ari does the former; Help Scout's AI Answers does the latter. <span class="q-tag qt-all">Critical</span></span></div>
+      <div class="q-item"><span class="q-num">6.</span><span>Do your support agents need AI-assisted access to customer history and product context while writing replies? Plain's Sidekick is purpose-built for this; Help Scout's AI Drafts is more basic. <span class="q-tag qt-plain">Plain</span></span></div>
+      <div class="q-item"><span class="q-num">7.</span><span>Is technical support a big part of your tickets (e.g. bugs, API errors, account edge cases)? Plain's Lookup and its third-party AI agent marketplace (Duckie, Inkeep) are meaningfully better for this. <span class="q-tag qt-plain">Plain</span></span></div>
+      <div class="q-item"><span class="q-num">8.</span><span>What % of tickets do you expect AI to deflect per month? Model costs carefully — at 500 resolutions/month, Plain saves ~$125/mo vs Help Scout. At 1,000 they're roughly equal. <span class="q-tag qt-all">All</span></span></div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-title">Data, reporting &amp; analytics</p>
+      <div class="q-item"><span class="q-num">9.</span><span>Do you want support data to actively inform your product roadmap? Plain's automated Themes is unique and doesn't exist in Help Scout — it requires zero manual effort to surface recurring issues. <span class="q-tag qt-plain">Plain leads</span></span></div>
+      <div class="q-item"><span class="q-num">10.</span><span>Do you need to push support data to a data warehouse (BigQuery, Redshift, Snowflake)? Both require an ETL layer, but Plain's API-first design makes building a pipeline cleaner. Help Scout can use Zapier → a warehouse connector. <span class="q-tag qt-all">All</span></span></div>
+      <div class="q-item"><span class="q-num">11.</span><span>How important is CSAT measurement? Help Scout has stronger native CSAT tooling and it's available on all paid plans. Plain has CSAT but it's a secondary feature. <span class="q-tag qt-hs">Help Scout stronger</span></span></div>
+      <div class="q-item"><span class="q-num">12.</span><span>Do you need SLA reporting with breach alerts? Plain has this natively; Help Scout does not. If you have response time commitments to customers, this is a hard requirement. <span class="q-tag qt-plain">Plain only</span></span></div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-title">Integrations &amp; data repositories</p>
+      <div class="q-item"><span class="q-num">13.</span><span>Is Notion a destination (tickets logged there) or a source (agents pull knowledge from it)? The source pattern is only practical with Plain's API + Notion MCP. <span class="q-tag qt-plain">Plain</span></span></div>
+      <div class="q-item"><span class="q-num">14.</span><span>Do you use Linear or GitHub for bug tracking? Plain has native two-way integrations for both. Help Scout requires middleware. <span class="q-tag qt-plain">Plain stronger</span></span></div>
+      <div class="q-item"><span class="q-num">15.</span><span>Do you use Salesforce or HubSpot as your CRM? Both platforms have native connectors — no differentiation here. <span class="q-tag qt-all">Equal</span></span></div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-title">Cost, scale &amp; fit</p>
+      <div class="q-item"><span class="q-num">16.</span><span>What's your support agent headcount in 12 months? Plain scales with agents; Help Scout scales with customers. Use the Cost tab to model both trajectories. <span class="q-tag qt-all">All</span></span></div>
+      <div class="q-item"><span class="q-num">17.</span><span>How fast do you need to go live in-app? Help Scout's Beacon is drop-in ready in hours. Plain's headless portal gives full control but needs developer implementation time. <span class="q-tag qt-all">All</span></span></div>
+      <div class="q-item"><span class="q-num">18.</span><span>How worried are you about vendor lock-in? Plain is API-first and provides migration tools. Help Scout's conversation history is harder to bulk-export at scale. <span class="q-tag qt-plain">Plain safer</span></span></div>
+      <div class="q-item"><span class="q-num">19.</span><span>Is your app global or multi-language? Neither platform has strong native multilingual AI. If this is important, factor in the additional tooling needed regardless of platform chosen. <span class="q-tag qt-all">Gap for both</span></span></div>
+      <div class="q-item"><span class="q-num">20.</span><span>Have you run a 14-day trial on both platforms with real traffic? No comparison document replaces live testing. Both offer free trials — running real conversations through both will surface UX and integration friction that specs cannot. <span class="q-tag qt-all">Strong recommendation</span></span></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Plain vs Help Scout · Evaluation Report · Updated March 2026
+</footer>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[onclick="switchTab(\'' + id + '\')"]').classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function fmt(n) { return '$' + Math.round(n).toLocaleString() + '/mo'; }
+
+function calc() {
+  const agents   = parseInt(document.getElementById('agents').value);
+  const contacts = parseInt(document.getElementById('contacts').value);
+  const aiRes    = parseInt(document.getElementById('aiRes').value);
+
+  document.getElementById('agents-out').textContent   = agents;
+  document.getElementById('contacts-out').textContent = contacts.toLocaleString();
+  document.getElementById('aiRes-out').textContent    = aiRes.toLocaleString();
+
+  // Plain (Horizon)
+  let plainCost = 269;
+  if (agents > 3) plainCost += (agents - 3) * 89;
+  const plainAiExtra = Math.max(0, aiRes - 250);
+  plainCost += Math.ceil(plainAiExtra / 100) * 100;
+
+  // Help Scout (Plus, contact-based tiers)
+  let hsCost;
+  if (contacts <= 50)        hsCost = 0;
+  else if (contacts <= 100)  hsCost = 75;
+  else if (contacts <= 500)  hsCost = 75  + Math.ceil((contacts - 100) / 100) * 15;
+  else if (contacts <= 2000) hsCost = 135 + Math.ceil((contacts - 500) / 500) * 30;
+  else                       hsCost = 225 + Math.ceil((contacts - 2000) / 1000) * 50;
+  hsCost += aiRes * 0.75;
+
+  const pEl = document.getElementById('plain-price');
+  const hEl = document.getElementById('hs-price');
+
+  pEl.textContent = fmt(plainCost);
+  hEl.textContent = fmt(hsCost);
+
+  const pNote = agents + ' agent' + (agents > 1 ? 's' : '') + (plainAiExtra > 0 ? ' · +$' + (Math.ceil(plainAiExtra / 100) * 100) + ' AI overage' : ' · 250 AI resolutions incl.');
+  const hNote = 'unlimited agents · ' + contacts.toLocaleString() + ' contacts' + (aiRes > 0 ? ' · +$' + Math.round(aiRes * 0.75) + ' AI' : '');
+  document.getElementById('plain-note').textContent = pNote;
+  document.getElementById('hs-note').textContent    = hNote;
+
+  pEl.className = 'result-price' + (plainCost < hsCost ? ' win' : '');
+  hEl.className = 'result-price' + (hsCost < plainCost ? ' win' : '');
+
+  const diff = Math.abs(plainCost - hsCost);
+  const banner = document.getElementById('verdict-banner');
+  if (plainCost < hsCost) {
+    banner.textContent = 'Plain is ~' + fmt(diff) + ' cheaper at these volumes';
+    banner.className   = 'verdict-banner verdict-plain';
+  } else if (hsCost < plainCost) {
+    banner.textContent = 'Help Scout is ~' + fmt(diff) + ' cheaper at these volumes';
+    banner.className   = 'verdict-banner verdict-hs';
+  } else {
+    banner.textContent = 'Roughly equal cost at these volumes';
+    banner.className   = 'verdict-banner verdict-tie';
+  }
+}
+calc();
+</script>
+</body>
+</html>
